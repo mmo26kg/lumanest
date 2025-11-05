@@ -1,12 +1,12 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { locales } from "@/i18n";
+import { routing } from "../../i18n/routing";
 
 import "./globals.css";
 
 export async function generateStaticParams() {
-  return locales.map((l) => ({ locale: l }));
+  return routing.locales.map((l) => ({ locale: l }));
 }
 
 const geistSans = Geist({
