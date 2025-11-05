@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "../../i18n/routing";
+import ThemeProvider from "@/provider/ThemeProvider";
 
 import "./globals.css";
 
@@ -29,12 +30,14 @@ export default async function RootLayout({ children }) {
   const messages = await getMessages();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
