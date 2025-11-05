@@ -2,5 +2,11 @@
     "welcome": "Welcome to our application!",
     "AboutPage": {
         "title": "About Page"
+    },
+    "HomePage": {
+        "title": "Home Page Title",
+        "welcomeMessage": "Welcome message",
+        "aboutLink": "About link text",
+        "toggleTheme": "Toggle theme button text"
     }
 }
