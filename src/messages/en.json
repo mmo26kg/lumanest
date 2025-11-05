@@ -1,3 +1,6 @@
 {
-    "welcome": "Welcome to our application!"
+    "welcome": "Welcome to our application!",
+    "AboutPage": {
+        "title": "About Page"
+    }
 }
