@@ -33,9 +33,9 @@ export function ThreeDCardDemo(data) {
     return (
         <CardContainer className="inter-var font-serif">
             <CardBody
-                className="bg-accent/5 relative group/card w-auto h-auto rounded-xl px-10 py-10 border border-muted ">
+                className="bg-accent/15 relative group/card w-auto h-auto rounded-xl px-10 py-10  border-muted ">
 
-                <CardItem translateZ="200" className="w-full ">
+                <CardItem translateZ="300" className="w-full ">
                     <img
                         src={data.image}
                         height="1200"
@@ -142,7 +142,7 @@ function ProductList() {
             <CarouselContent className="mt-1 max-h-[calc(100vh-120px)] flex gap-6" overflow="visible">
                 {data.map((item) => (
                     <CarouselItem key={item.id} className="md:basis-1/3 lg:basis-1/3 px-2">
-                        <Card className="rounded-xl px-4 py-12 bg-accent/5 hover:bg-accent/70 backdrop-blur-xs transition-colors duration-300">
+                        {/* <Card className="rounded-xl px-4 py-12 bg-accent/5 hover:bg-accent/70 backdrop-blur-xs transition-colors duration-300">
                             <Image
                                 src={item.image}
                                 alt={t(item.nameKey)}
@@ -163,14 +163,14 @@ function ProductList() {
                                     </div>
                                 </CardDescription>
                             </CardHeader>
-                        </Card>
-                        {/* <ThreeDCardDemo
+                        </Card> */}
+                        <ThreeDCardDemo
                             id={item.id}
                             name={t(item.nameKey)}
                             description={t(item.descriptionKey)}
                             image={item.image}
                             price={item.price}
-                        /> */}
+                        />
                     </CarouselItem>
                 ))}
             </CarouselContent>
@@ -194,7 +194,7 @@ export default function PopularProducts() {
                     alt="Popular Products Background"
                     width={700}
                     height={1080}
-                    className="absolute -top-20 -left-1/2 transform opacity-90"
+                    className="absolute -top-20 -left-1/2 transform"
                 >
 
                 </Image>
