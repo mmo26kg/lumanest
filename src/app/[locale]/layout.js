@@ -4,6 +4,7 @@ import { getMessages } from "next-intl/server";
 import { routing } from "../../i18n/routing";
 import ThemeProvider from "@/provider/ThemeProvider";
 import Header from "@/components/web/Header";
+import Footer from "@/components/web/Footer";
 
 
 import "./globals.css";
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Header />
             {children}
+            <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

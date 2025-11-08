@@ -22,7 +22,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
-export function ThreeDCardDemo(data) {
+export function ThreeDCard(data) {
     // const data = {
     //     id: 1,
     //     name: "3D Floating Card",
@@ -142,29 +142,7 @@ function ProductList() {
             <CarouselContent className="mt-1 max-h-[calc(100vh-120px)] flex gap-6" overflow="visible">
                 {data.map((item) => (
                     <CarouselItem key={item.id} className="md:basis-1/3 lg:basis-1/3 px-2">
-                        {/* <Card className="rounded-xl px-4 py-12 bg-accent/5 hover:bg-accent/70 backdrop-blur-xs transition-colors duration-300">
-                            <Image
-                                src={item.image}
-                                alt={t(item.nameKey)}
-                                width={1200}
-                                height={1200}
-                                className="w-auto h-64 object-contain rounded-2xl"
-                            />
-                            <CardHeader className="font-serif select-none">
-                                <CardTitle className="text-2xl text-secondary font-bold mt-4 text-ellipsis line-clamp-1">
-                                    {t(item.nameKey)}
-                                </CardTitle>
-                                <CardDescription className="text-base text-foreground/80">
-                                    <div className="line-clamp-1 text-secondary font-light">
-                                        {t(item.descriptionKey)}
-                                    </div>
-                                    <div className="mt-2 text-lg font-bold text-primary">
-                                        {item.price}
-                                    </div>
-                                </CardDescription>
-                            </CardHeader>
-                        </Card> */}
-                        <ThreeDCardDemo
+                        <ThreeDCard
                             id={item.id}
                             name={t(item.nameKey)}
                             description={t(item.descriptionKey)}
@@ -205,7 +183,6 @@ export default function PopularProducts() {
                         <FaArrowRight />
                     </Button>
                 </div>
-                <ThreeDCardDemo />
             </div>
         </section>
     );
