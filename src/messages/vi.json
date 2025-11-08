@@ -8,5 +8,78 @@
         "welcomeMessage": "Thông điệp chào mừng",
         "aboutLink": "Text link About",
         "toggleTheme": "Text nút chuyển theme"
+    },
+    "Header": {
+        "home": "Trang chủ",
+        "about": "Giới thiệu",
+        "products": "Sản phẩm",
+        "category": "Danh mục",
+        "contacts": "Liên hệ",
+        "search": "Tìm kiếm",
+        "cart": "Giỏ hàng",
+        "profile": "Hồ sơ"
+    },
+    "InConstruction": {
+        "title": "Đang Xây Dựng",
+        "subtitle": "Chúng tôi đang nỗ lực để mang đến tính năng này",
+        "stayTuned": "Hãy chờ đón các cập nhật!",
+        "progress": "Đang trong quá trình phát triển..."
+    },
+    "ExploreCategory": {
+        "title": "Khám Phá Danh Mục",
+        "searchPlaceholder": "Tìm kiếm...",
+        "allCategoriesButton": "Tất Cả Danh Mục",
+        "categories": {
+            "bedroom": "Phòng ngủ",
+            "kitchen": "Phòng bếp",
+            "meetingRoom": "Phòng họp",
+            "livingRoom": "Phòng khách",
+            "office": "Văn phòng",
+            "outdoor": "Ngoài trời",
+            "bathroom": "Phòng tắm",
+            "toilet": "Nhà vệ sinh",
+            "kidsRoom": "Phòng trẻ em",
+            "diningRoom": "Phòng ăn"
+        },
+        "products": {
+            "bed": {
+                "title": "Giường ngủ",
+                "description": "Thiết kế hiện đại, mang lại giấc ngủ sâu và thoải mái."
+            },
+            "wardrobe": {
+                "title": "Tủ quần áo",
+                "description": "Tối ưu không gian, dễ dàng sắp xếp và lấy đồ."
+            },
+            "nightstand": {
+                "title": "Bàn đầu giường",
+                "description": "Tiện lợi, gọn gàng, hỗ trợ sinh hoạt hàng ngày."
+            },
+            "rug": {
+                "title": "Thảm trải sàn",
+                "description": "Mềm mại, ấm áp, tăng tính thẩm mỹ cho phòng ngủ."
+            }
+        }
+    },
+    "PopularProducts": {
+        "title": "Sản Phẩm Phổ Biến",
+        "viewAllButton": "Xem Tất Cả",
+        "products": {
+            "armchair": {
+                "name": "Ghế Bành",
+                "description": "Ghế bành thoải mái, hoàn hảo cho mọi phòng khách."
+            },
+            "chair": {
+                "name": "Ghế",
+                "description": "Ghế phong cách, phù hợp với mọi trang trí hiện đại."
+            },
+            "minisofa": {
+                "name": "Sofa Mini",
+                "description": "Sofa mini nhỏ gọn, lý tưởng cho không gian nhỏ."
+            },
+            "sofa": {
+                "name": "Sofa",
+                "description": "Sofa rộng rãi, mang lại cả sự thoải mái và phong cách."
+            }
+        }
     }
 }

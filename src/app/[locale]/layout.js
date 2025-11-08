@@ -1,8 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Open_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "../../i18n/routing";
 import ThemeProvider from "@/provider/ThemeProvider";
+import Header from "@/components/web/Header";
+
 
 import "./globals.css";
 
@@ -10,17 +12,24 @@ export async function generateStaticParams() {
   return routing.locales.map((l) => ({ locale: l }));
 }
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+
+const PlayfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  preload: false
+});
+const OpenSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
   preload: false
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  preload: false
-});
+// const trirong = Trirong({
+//   variable: "--font-trirong",
+//   subsets: ["latin"],
+//   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+//   preload: false
+// });
 
 export const metadata = {
   title: "Create Next App",
@@ -34,10 +43,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` select-none ${PlayfairDisplay.variable} ${OpenSans.variable} antialiased sm:overflow-x-hidden`}
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Header />
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

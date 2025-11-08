@@ -8,5 +8,78 @@
         "welcomeMessage": "Welcome message",
         "aboutLink": "About link text",
         "toggleTheme": "Toggle theme button text"
+    },
+    "Header": {
+        "home": "Home",
+        "about": "About",
+        "products": "Products",
+        "category": "Category",
+        "contacts": "Contacts",
+        "search": "Search",
+        "cart": "Cart",
+        "profile": "Profile"
+    },
+    "InConstruction": {
+        "title": "Under Construction",
+        "subtitle": "We're working hard to bring you this feature",
+        "stayTuned": "Stay tuned for updates!",
+        "progress": "Development in progress..."
+    },
+    "ExploreCategory": {
+        "title": "Explore Categories",
+        "searchPlaceholder": "Search...",
+        "allCategoriesButton": "All Categories",
+        "categories": {
+            "bedroom": "Bedroom",
+            "kitchen": "Kitchen",
+            "meetingRoom": "Meeting Room",
+            "livingRoom": "Living Room",
+            "office": "Office",
+            "outdoor": "Outdoor",
+            "bathroom": "Bathroom",
+            "toilet": "Toilet",
+            "kidsRoom": "Kids Room",
+            "diningRoom": "Dining Room"
+        },
+        "products": {
+            "bed": {
+                "title": "Bed",
+                "description": "Modern design, provides deep and comfortable sleep."
+            },
+            "wardrobe": {
+                "title": "Wardrobe",
+                "description": "Optimizes space, easy to organize and retrieve items."
+            },
+            "nightstand": {
+                "title": "Nightstand",
+                "description": "Convenient, compact, supports daily activities."
+            },
+            "rug": {
+                "title": "Floor Rug",
+                "description": "Soft, warm, enhances bedroom aesthetics."
+            }
+        }
+    },
+    "PopularProducts": {
+        "title": "Popular Products",
+        "viewAllButton": "View All",
+        "products": {
+            "armchair": {
+                "name": "Armchair",
+                "description": "A comfortable armchair perfect for any living room."
+            },
+            "chair": {
+                "name": "Chair",
+                "description": "A stylish chair that fits any modern decor."
+            },
+            "minisofa": {
+                "name": "Mini Sofa",
+                "description": "A compact mini sofa ideal for small spaces."
+            },
+            "sofa": {
+                "name": "Sofa",
+                "description": "A spacious sofa that offers both comfort and style."
+            }
+        }
     }
 }
