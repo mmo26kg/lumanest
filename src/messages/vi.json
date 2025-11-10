@@ -9,6 +9,15 @@
         "aboutLink": "Text link About",
         "toggleTheme": "Text nút chuyển theme"
     },
+    "Hero": {
+        "title": "Ưu đãi độc quyền cho bộ sưu tập nội thất",
+        "description": "Khám phá các danh mục khác nhau. Tìm những ưu đãi tốt nhất.",
+        "cta": {
+            "shop": "Mua ngay",
+            "explore": "Khám phá"
+        },
+        "imageAlt": "Hình minh họa phần Hero"
+    },
     "Header": {
         "home": "Trang chủ",
         "about": "Giới thiệu",
@@ -17,7 +26,13 @@
         "contacts": "Liên hệ",
         "search": "Tìm kiếm",
         "cart": "Giỏ hàng",
-        "profile": "Hồ sơ"
+        "profile": "Hồ sơ",
+        "login": "Đăng nhập",
+        "chooseLoginMethod": "Chọn phương thức đăng nhập",
+        "loginWithGoogle": "Tiếp tục với Google",
+        "loginWithFacebook": "Tiếp tục với Facebook",
+        "secureLogin": "Đăng nhập an toàn",
+        "privacyNote": "Thông tin của bạn được bảo mật"
     },
     "InConstruction": {
         "title": "Đang Xây Dựng",
@@ -81,5 +96,162 @@
                 "description": "Sofa rộng rãi, mang lại cả sự thoải mái và phong cách."
             }
         }
+    },
+    "Benefit": {
+        "title": "Lợi ích cho sự thuận tiện của bạn",
+        "items": {
+            "easy": {
+                "title": "Dễ sử dụng",
+                "description": "Chúng tôi thiết kế để dễ dùng và dễ hiểu."
+            },
+            "fast": {
+                "title": "Nhanh và đáng tin cậy",
+                "description": "Chúng tôi đảm bảo hệ thống nhanh và ổn định."
+            },
+            "beautiful": {
+                "title": "Đẹp và hiện đại",
+                "description": "Thiết kế mang lại vẻ đẹp hiện đại."
+            }
+        }
+    },
+    "Testimonials": {
+        "testimonials": [
+            {
+                "quote": "Lumanest đã thay đổi cách tôi quản lý danh sách bất động sản. Giao diện trực quan và các tính năng mạnh mẽ giúp công việc của tôi dễ dàng hơn nhiều.",
+                "avatarAlt": "Ảnh đại diện Alice Johnson",
+                "name": "Alice Johnson",
+                "role": "Đại lý Bất động sản"
+            },
+            {
+                "quote": "Nhờ Lumanest, tôi đã tiếp cận được nhiều khách hàng hơn và chốt giao dịch nhanh hơn. Nền tảng thân thiện với người dùng và hiệu quả.",
+                "avatarAlt": "Ảnh đại diện Bob Smith",
+                "name": "Bob Smith",
+                "role": "Quản lý Bất động sản"
+            },
+            {
+                "quote": "Hỗ trợ khách hàng của Lumanest rất tuyệt vời. Họ giúp tôi thiết lập tài khoản và cung cấp các mẹo giá trị để tối ưu danh sách.",
+                "avatarAlt": "Ảnh đại diện Carol Davis",
+                "name": "Carol Davis",
+                "role": "Chủ nhà"
+            },
+            {
+                "quote": "Tôi thích cách Lumanest giữ mọi thứ ngăn nắp. Từ yêu cầu đến hợp đồng, mọi thứ đều ở cùng một nơi, giúp quản lý bất động sản trở nên nhẹ nhàng.",
+                "avatarAlt": "Ảnh đại diện David Wilson",
+                "name": "David Wilson",
+                "role": "Nhà đầu tư Bất động sản"
+            }
+        ]
+    },
+    "Newsletter": {
+        "titleLine1": "Đăng ký",
+        "titleAccent": "Nhận tin",
+        "description": "Nhận ưu đãi độc quyền, giảm giá và nhiều khuyến mãi.",
+        "placeholder": "Nhập email của bạn",
+        "cta": {
+            "subscribe": "Đăng ký"
+        },
+        "imageAlt": "Tòa nhà chọc trời"
+    },
+    "Products": {
+        "filters": {
+            "title": "Bộ lọc",
+            "button": "Bộ lọc",
+            "category": "Danh mục",
+            "room": "Không gian",
+            "price": "Giá"
+        },
+        "categories": {
+            "Chairs": "Ghế",
+            "Tables": "Bàn",
+            "Sofas": "Sofa",
+            "Lamps": "Đèn",
+            "Beds": "Giường",
+            "Storage": "Lưu trữ"
+        },
+        "rooms": {
+            "Office": "Văn phòng",
+            "Living Room": "Phòng khách",
+            "Bedroom": "Phòng ngủ",
+            "Kitchen": "Nhà bếp",
+            "Dining": "Phòng ăn"
+        },
+        "price": {
+            "min": "$0",
+            "current": "${value}"
+        },
+        "pagination": {
+            "previous": "Trước",
+            "next": "Tiếp",
+            "more": "Thêm trang",
+            "aria": {
+                "previous": "Đi đến trang trước",
+                "next": "Đi đến trang tiếp"
+            }
+        },
+        "results": "Kết quả ({count})",
+        "search": {
+            "placeholder": "Tìm kiếm sản phẩm..."
+        },
+        "actions": {
+            "addToCart": "Thêm vào giỏ",
+            "checkout": "Thanh toán ngay"
+        },
+        "noResults": {
+            "title": "Không tìm thấy sản phẩm",
+            "description": "Thử điều chỉnh tìm kiếm hoặc bộ lọc."
+        }
+    },
+    "Footer": {
+        "logoAlt": "Logo Lumanest",
+        "brandName": "Lumanest",
+        "contact": {
+            "addressLine1": "877 The Bronx, NY",
+            "addressLine2": "14568, USA",
+            "phone": "+123 654 987",
+            "email": "support@lumanest.com"
+        },
+        "nav": {
+            "myAccount": {
+                "title": "Tài khoản",
+                "links": {
+                    "signIn": "Đăng nhập",
+                    "register": "Đăng ký",
+                    "orderStatus": "Tình trạng đơn hàng"
+                }
+            },
+            "help": {
+                "title": "Trợ giúp",
+                "links": {
+                    "shipping": "Vận chuyển",
+                    "returns": "Trả hàng",
+                    "sizing": "Kích thước"
+                }
+            },
+            "shop": {
+                "title": "Cửa hàng",
+                "links": {
+                    "allProducts": "Tất cả sản phẩm",
+                    "bedroom": "Phòng ngủ",
+                    "diningRoom": "Phòng ăn"
+                }
+            },
+            "legal": {
+                "title": "Pháp lý",
+                "links": {
+                    "shippingDelivery": "Vận chuyển & Giao hàng",
+                    "terms": "Điều khoản & Điều kiện",
+                    "privacy": "Quyền riêng tư & Chính sách"
+                }
+            }
+        },
+        "social": {
+            "0": "Facebook",
+            "1": "Instagram",
+            "2": "Twitter",
+            "3": "LinkedIn",
+            "4": "Pinterest",
+            "link": "Liên kết mạng xã hội"
+        },
+        "copyright": "Bản quyền ©{year} {brand}. Mọi quyền được bảo lưu"
     }
 }

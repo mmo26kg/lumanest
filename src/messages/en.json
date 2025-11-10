@@ -9,6 +9,15 @@
         "aboutLink": "About link text",
         "toggleTheme": "Toggle theme button text"
     },
+    "Hero": {
+        "title": "Exclusive Deals of Furniture Collection",
+        "description": "Explore different categories. Find the best deals.",
+        "cta": {
+            "shop": "Shop now",
+            "explore": "Explore"
+        },
+        "imageAlt": "Hero section visual"
+    },
     "Header": {
         "home": "Home",
         "about": "About",
@@ -17,7 +26,13 @@
         "contacts": "Contacts",
         "search": "Search",
         "cart": "Cart",
-        "profile": "Profile"
+        "profile": "Profile",
+        "login": "Login",
+        "chooseLoginMethod": "Choose login method",
+        "loginWithGoogle": "Continue with Google",
+        "loginWithFacebook": "Continue with Facebook",
+        "secureLogin": "Secure login",
+        "privacyNote": "Your information is protected"
     },
     "InConstruction": {
         "title": "Under Construction",
@@ -81,5 +96,162 @@
                 "description": "A spacious sofa that offers both comfort and style."
             }
         }
+    },
+    "Benefit": {
+        "title": "Benefits for your expediency",
+        "items": {
+            "easy": {
+                "title": "Easy to use",
+                "description": "We've made it easy to use and understand."
+            },
+            "fast": {
+                "title": "Fast and reliable",
+                "description": "We've made it fast and reliable."
+            },
+            "beautiful": {
+                "title": "Beautiful and modern",
+                "description": "We've made it beautiful and modern."
+            }
+        }
+    },
+    "Testimonials": {
+        "testimonials": [
+            {
+                "quote": "Lumanest has transformed the way I manage my property listings. The intuitive interface and powerful features have made my job so much easier.",
+                "avatarAlt": "Alice Johnson avatar",
+                "name": "Alice Johnson",
+                "role": "Real Estate Agent"
+            },
+            {
+                "quote": "Thanks to Lumanest, I've been able to reach a wider audience and close deals faster. The platform is user-friendly and efficient.",
+                "avatarAlt": "Bob Smith avatar",
+                "name": "Bob Smith",
+                "role": "Property Manager"
+            },
+            {
+                "quote": "Lumanest's customer support is outstanding. They helped me set up my account and provided valuable tips to optimize my listings.",
+                "avatarAlt": "Carol Davis avatar",
+                "name": "Carol Davis",
+                "role": "Landlord"
+            },
+            {
+                "quote": "I love how Lumanest keeps everything organized. From inquiries to contracts, it's all in one place, making property management a breeze.",
+                "avatarAlt": "David Wilson avatar",
+                "name": "David Wilson",
+                "role": "Real Estate Investor"
+            }
+        ]
+    },
+    "Newsletter": {
+        "titleLine1": "Join Our",
+        "titleAccent": "Newsletter",
+        "description": "Receive exclusive deals, discounts and many offers.",
+        "placeholder": "Enter your email",
+        "cta": {
+            "subscribe": "Subscribe"
+        },
+        "imageAlt": "Skyscrapers"
+    },
+    "Products": {
+        "filters": {
+            "title": "Filters",
+            "button": "Filters",
+            "category": "Category",
+            "room": "Room",
+            "price": "Price"
+        },
+        "categories": {
+            "Chairs": "Chairs",
+            "Tables": "Tables",
+            "Sofas": "Sofas",
+            "Lamps": "Lamps",
+            "Beds": "Beds",
+            "Storage": "Storage"
+        },
+        "rooms": {
+            "Office": "Office",
+            "Living Room": "Living Room",
+            "Bedroom": "Bedroom",
+            "Kitchen": "Kitchen",
+            "Dining": "Dining"
+        },
+        "price": {
+            "min": "$0",
+            "current": "${value}"
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "more": "More pages",
+            "aria": {
+                "previous": "Go to previous page",
+                "next": "Go to next page"
+            }
+        },
+        "results": "Results ({count})",
+        "search": {
+            "placeholder": "Search for products..."
+        },
+        "actions": {
+            "addToCart": "Add to Cart",
+            "checkout": "Checkout Now"
+        },
+        "noResults": {
+            "title": "No Products Found",
+            "description": "Try adjusting your search or filters."
+        }
+    },
+    "Footer": {
+        "logoAlt": "Lumanest Logo",
+        "brandName": "Lumanest",
+        "contact": {
+            "addressLine1": "877 The Bronx, NY",
+            "addressLine2": "14568, USA",
+            "phone": "+123 654 987",
+            "email": "support@lumanest.com"
+        },
+        "nav": {
+            "myAccount": {
+                "title": "My Account",
+                "links": {
+                    "signIn": "Sign in",
+                    "register": "Register",
+                    "orderStatus": "Order status"
+                }
+            },
+            "help": {
+                "title": "Help",
+                "links": {
+                    "shipping": "Shipping",
+                    "returns": "Returns",
+                    "sizing": "Sizing"
+                }
+            },
+            "shop": {
+                "title": "Shop",
+                "links": {
+                    "allProducts": "All Products",
+                    "bedroom": "Bedroom",
+                    "diningRoom": "Dining Room"
+                }
+            },
+            "legal": {
+                "title": "Legal Stuff",
+                "links": {
+                    "shippingDelivery": "Shipping & Delivery",
+                    "terms": "Terms & Conditions",
+                    "privacy": "Privacy & Policy"
+                }
+            }
+        },
+        "social": {
+            "0": "Facebook",
+            "1": "Instagram",
+            "2": "Twitter",
+            "3": "LinkedIn",
+            "4": "Pinterest",
+            "link": "Social link"
+        },
+        "copyright": "Copyright ©{year} {brand}. All Rights Reserved"
     }
 }

@@ -1,33 +1,37 @@
+// ...existing code...
+"use client";
 // Benefit Section
 import { Check } from "lucide-react";
 import { FastForward, Package, Support } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Benefit() {
+    const t = useTranslations("Benefit");
+
     const data = [
         {
-            title: "Easy to use",
-            description: "We've made it easy to use and understand.",
+            title: t("items.easy.title"),
+            description: t("items.easy.description"),
             icon: <Check size={48} />,
         },
         {
-            title: "Fast and reliable",
-            description: "We've made it fast and reliable.",
+            title: t("items.fast.title"),
+            description: t("items.fast.description"),
             icon: <FastForward size={48} />,
         },
         {
-            title: "Beautiful and modern",
-            description: "We've made it beautiful and modern.",
+            title: t("items.beautiful.title"),
+            description: t("items.beautiful.description"),
             icon: <Package size={48} />,
         },
-    ]
+    ];
     return (
-        <section className="bg-secondary/10 text-foreground section-padding-y">
+        <section className="bg-primary/10 text-foreground section-padding-y">
             <div className="max-w-6xl mx-auto flex gap-4 lg:py-40 flex-col items-start">
                 <div className="flex flex-col gap-4 text-center w-full">
                     <h2 className="text-foreground text-2xl md:text-5xl tracking-tighter mx-auto font-medium text-center">
-                        Benefits for your expediency
+                        {t("title")}
                     </h2>
-
                 </div>
                 <div className="flex gap-10 pt-12 flex-col w-full">
                     <div className="grid grid-cols-2 items-start lg:grid-cols-3 gap-10">

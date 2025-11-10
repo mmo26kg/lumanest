@@ -3,45 +3,28 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-
-const testimonials = [
-    {
-        quote: "Lumanest has transformed the way I manage my property listings. The intuitive interface and powerful features have made my job so much easier.",
-        avatar: "/lumanest-logo-dark.png",
-        name: "Alice Johnson",
-        role: "Real Estate Agent",
-    },
-    {
-        quote: "Thanks to Lumanest, I've been able to reach a wider audience and close deals faster. The platform is user-friendly and efficient.",
-        avatar: "/lumanest-logo-dark.png",
-        name: "Bob Smith",
-        role: "Property Manager",
-    },
-    {
-        quote: "Lumanest's customer support is outstanding. They helped me set up my account and provided valuable tips to optimize my listings.",
-        avatar: "/lumanest-logo-dark.png",
-        name: "Carol Davis",
-        role: "Landlord",
-    },
-    {
-        quote: "I love how Lumanest keeps everything organized. From inquiries to contracts, it's all in one place, making property management a breeze.",
-        avatar: "/lumanest-logo-dark.png",
-        name: "David Wilson",
-        role: "Real Estate Investor",
-    },
-]
+import { useTranslations } from "next-intl"
 
 const DURATION = 5000 // ms
 const BAR_WIDTH = 50
 const CIRCLE_SIZE = 12
 
 export default function Testimonials() {
+    const t = useTranslations("Testimonials")
     const [index, setIndex] = useState(0)
     const timeoutRef = useRef(null)
 
+    // only metadata (avatars) kept in code; text comes from translations
+    const testimonialsMeta = [
+        { avatar: "/lumanest-logo-dark.png" },
+        { avatar: "/lumanest-logo-dark.png" },
+        { avatar: "/lumanest-logo-dark.png" },
+        { avatar: "/lumanest-logo-dark.png" },
+    ]
+
     useEffect(() => {
         const intervalRef = setInterval(() => {
-            setIndex((prev) => (prev + 1) % testimonials.length)
+            setIndex((prev) => (prev + 1) % testimonialsMeta.length)
         }, DURATION)
 
         return () => {
@@ -62,10 +45,11 @@ export default function Testimonials() {
                             transition={{ type: "spring", duration: 0.5 }}
                             className="text-foreground mb-8 text-center text-2xl leading-tight font-semibold md:text-4xl"
                         >
-                            “{testimonials[index].quote}”
+                            “{t(`testimonials.${index}.quote`)}”
                         </motion.blockquote>
                     </AnimatePresence>
                 </div>
+
                 <div className="flex w-full max-w-lg font-serif items-center justify-center gap-8 pt-8">
                     <AnimatePresence mode="wait" initial={false}>
                         <motion.div
@@ -77,8 +61,8 @@ export default function Testimonials() {
                             className="flex items-center gap-4"
                         >
                             <Image
-                                src={`${testimonials[index].avatar}`}
-                                alt={testimonials[index].name + " avatar"}
+                                src={testimonialsMeta[index].avatar}
+                                alt={t(`testimonials.${index}.avatarAlt`)}
                                 width={48}
                                 height={48}
                                 className="bg-foreground/10 h-12 w-12 rounded-full border object-cover"
@@ -86,22 +70,23 @@ export default function Testimonials() {
                             <div className="border-muted-foreground/30 mx-4 h-8 border-l" />
                             <div className="text-left">
                                 <div className="text-secondary text-xl font-bold ">
-                                    {testimonials[index].name}
+                                    {t(`testimonials.${index}.name`)}
                                 </div>
                                 <div className="text-muted-foreground text-base">
-                                    {testimonials[index].role}
+                                    {t(`testimonials.${index}.role`)}
                                 </div>
                             </div>
                         </motion.div>
                     </AnimatePresence>
                 </div>
+
                 {/* Progress Bar & Circles Indicator */}
                 <div className="mx-auto mt-8 flex w-full max-w-lg justify-center gap-3">
-                    {testimonials.map((testimonial, i) => {
+                    {testimonialsMeta.map((_, i) => {
                         const isActive = i === index
                         return (
                             <motion.span
-                                key={`testimonial-${testimonial.name}-${i}`}
+                                key={`testimonial-${i}`}
                                 layout
                                 initial={false}
                                 animate={{
@@ -124,7 +109,7 @@ export default function Testimonials() {
                             >
                                 {isActive && (
                                     <motion.div
-                                        key={index}
+                                        key={i}
                                         initial={{ width: 0 }}
                                         animate={{ width: "100%" }}
                                         exit={{ width: 0 }}

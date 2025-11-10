@@ -44,7 +44,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={` select-none ${PlayfairDisplay.variable} ${OpenSans.variable} antialiased sm:overflow-x-hidden`}
+        className={` select-none ${PlayfairDisplay.variable} ${OpenSans.variable} antialiased sm:overflow-x-hidden bg-background text-foreground`}
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

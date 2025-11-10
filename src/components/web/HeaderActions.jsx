@@ -5,10 +5,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import ToggleTheme from "./ToogleTheme";
 import SelectLanguage from "./SelectLanguage";
+import ShoppingCartButton from "./Cart";
+import Login from "./Login";
 
 const HeaderActions = () => {
     const t = useTranslations("Header");
-    const [cartCount] = useState(0); // TODO: Connect to cart state
+    const [cartCount] = useState(1); // TODO: Connect to cart state
 
     const iconVariants = {
         hover: { scale: 1.1 },
@@ -53,35 +55,18 @@ const HeaderActions = () => {
             </motion.button>
 
             {/* Cart Button */}
-            <motion.button
-                variants={iconVariants}
-                whileHover="hover"
-                whileTap="tap"
-                className="relative p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
-                aria-label={t("cart")}
-            >
-                <FaShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
-                {cartCount > 0 && (
-                    <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 bg-primary text-foreground-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
-                    >
-                        {cartCount}
-                    </motion.span>
-                )}
-            </motion.button>
+            <ShoppingCartButton />
 
             {/* User Button */}
-            <motion.button
+            {/* <motion.button
                 variants={iconVariants}
                 whileHover="hover"
                 whileTap="tap"
                 className="p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
             >
                 <FaUser className="w-4 h-4 md:w-5 md:h-5" />
-            </motion.button>
-
+            </motion.button> */}
+            <Login />
 
         </div>
     );

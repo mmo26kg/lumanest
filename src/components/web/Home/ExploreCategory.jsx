@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 import {
     Card,
     CardHeader,
@@ -32,15 +33,57 @@ import {
     FaTree
 } from "react-icons/fa";
 
+// Animation variants with viewport detection
+const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1],
+        },
+    },
+};
+
+const staggerContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2,
+        },
+    },
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+        },
+    },
+};
+
 function Searchbar() {
     const t = useTranslations("ExploreCategory");
 
     return (
-        <div className="grid w-full items-center gap-3 font-serif">
+        <motion.div
+            className="grid w-full items-center gap-3 font-serif"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUpVariants}
+        >
             <span>
                 <Input type="text" id="search" placeholder={t("searchPlaceholder")} />
             </span>
-        </div>
+        </motion.div>
     );
 }
 
@@ -77,12 +120,25 @@ function CategoryList() {
             className="w-full mt-4"
         >
             <CarouselContent className="mt-1 max-h-[calc(100vh-120px)] flex flex-col gap-2">
-                {data.map((item) => (
+                {data.map((item, index) => (
                     <CarouselItem key={item.id} className="md:basis-1/2">
-                        <Button variant="ghost" className="w-full justify-start gap-2 p-4">
-                            <item.icon className="mr-2 text-foreground text-3xl" />
-                            <span className="text-lg text-foreground font-light">{t(item.nameKey)}</span>
-                        </Button>
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{
+                                duration: 0.4,
+                                delay: index * 0.03,
+                                ease: "easeOut",
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            <Button variant="ghost" className="w-full justify-start gap-2 p-4">
+                                <item.icon className="mr-2 text-foreground text-3xl" />
+                                <span className="text-lg text-foreground font-light">{t(item.nameKey)}</span>
+                            </Button>
+                        </motion.div>
                     </CarouselItem>
                 ))}
             </CarouselContent>
@@ -120,91 +176,133 @@ function GridItem() {
     ];
 
     return (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+            className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainerVariants}
+        >
             {/* Tall Feature Card - Left */}
             <Card className="rounded-xl lg:col-span-2 lg:row-start-1">
-                <CardHeader>
-                    <CardTitle className="text-3xl font-semibold">
-                        {t(products[0].titleKey)}
-                    </CardTitle>
-                    <CardDescription>
-                        {t(products[0].descriptionKey)}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-col">
-                    <Image
-                        src={products[0].imageUrl}
-                        alt={t(products[0].titleKey)}
-                        width={1000}
-                        height={1000}
-                        className="w-full h-80 object-cover rounded-2xl"
-                    />
-                </CardContent>
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ delay: 0.5 }}
+                    variants={cardVariants}
+                    className="flex flex-col gap-4 h-full"
+                >
+                    <CardHeader>
+                        <CardTitle className="text-3xl font-semibold">
+                            {t(products[0].titleKey)}
+                        </CardTitle>
+                        <CardDescription>
+                            {t(products[0].descriptionKey)}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-col">
+                        <Image
+                            src={products[0].imageUrl}
+                            alt={t(products[0].titleKey)}
+                            width={1000}
+                            height={1000}
+                            className="w-full h-80 object-cover rounded-2xl"
+                        />
+                    </CardContent>
+                </motion.div>
             </Card>
 
             {/* Regular Feature Card - Top Right */}
             <Card className="rounded-xl lg:row-start-2">
-                <CardHeader>
-                    <CardTitle className="text-2xl font-semibold">
-                        {t(products[1].titleKey)}
-                    </CardTitle>
-                    <CardDescription>
-                        {t(products[1].descriptionKey)}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex h-full flex-col">
-                    <Image
-                        src={products[1].imageUrl}
-                        alt={t(products[1].titleKey)}
-                        width={1000}
-                        height={1000}
-                        className="h-full w-full object-cover h-80 rounded-2xl"
-                    />
-                </CardContent>
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ delay: 0.5 }}
+                    variants={cardVariants}
+                    className="flex flex-col gap-4 h-full"
+                >
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-semibold">
+                            {t(products[1].titleKey)}
+                        </CardTitle>
+                        <CardDescription>
+                            {t(products[1].descriptionKey)}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex h-full flex-col">
+                        <Image
+                            src={products[1].imageUrl}
+                            alt={t(products[1].titleKey)}
+                            width={1000}
+                            height={1000}
+                            className="h-full w-full object-cover h-80 rounded-2xl"
+                        />
+                    </CardContent>
+                </motion.div>
             </Card>
 
             {/* Regular Feature Card - Bottom Right */}
             <Card className="rounded-xl lg:row-start-2 lg:col-start-2">
-                <CardHeader>
-                    <CardTitle className="text-2xl font-semibold">
-                        {t(products[2].titleKey)}
-                    </CardTitle>
-                    <CardDescription>
-                        {t(products[2].descriptionKey)}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex h-full flex-col">
-                    <Image
-                        src={products[2].imageUrl}
-                        alt={t(products[2].titleKey)}
-                        width={1000}
-                        height={1000}
-                        className="h-full w-full object-cover h-80 rounded-2xl"
-                    />
-                </CardContent>
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ delay: 0.5 }}
+                    variants={cardVariants}
+                    className="flex flex-col gap-4 h-full"
+                >
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-semibold">
+                            {t(products[2].titleKey)}
+                        </CardTitle>
+                        <CardDescription>
+                            {t(products[2].descriptionKey)}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex h-full flex-col">
+                        <Image
+                            src={products[2].imageUrl}
+                            alt={t(products[2].titleKey)}
+                            width={1000}
+                            height={1000}
+                            className="h-full w-full object-cover h-80 rounded-2xl"
+                        />
+                    </CardContent>
+                </motion.div>
             </Card>
 
             {/* Tall Feature Card - Right */}
             <Card className="rounded-xl lg:col-start-3 lg:row-span-2 lg:row-start-1">
-                <CardHeader>
-                    <CardTitle className="text-2xl font-semibold">
-                        {t(products[3].titleKey)}
-                    </CardTitle>
-                    <CardDescription>
-                        {t(products[3].descriptionKey)}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex h-full flex-col">
-                    <Image
-                        src={products[3].imageUrl}
-                        alt={t(products[3].titleKey)}
-                        width={1000}
-                        height={1000}
-                        className="h-full w-full object-cover rounded-2xl"
-                    />
-                </CardContent>
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ delay: 0.5 }}
+                    variants={cardVariants}
+                    className="flex flex-col gap-4 h-full"
+                >
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-semibold">
+                            {t(products[3].titleKey)}
+                        </CardTitle>
+                        <CardDescription>
+                            {t(products[3].descriptionKey)}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex h-full flex-col">
+                        <Image
+                            src={products[3].imageUrl}
+                            alt={t(products[3].titleKey)}
+                            width={1000}
+                            height={1000}
+                            className="h-full w-full object-cover rounded-2xl"
+                        />
+                    </CardContent>
+                </motion.div>
             </Card>
-        </div>
+        </motion.div>
     );
 }
 
@@ -213,16 +311,39 @@ export default function ExploreCategory() {
 
     return (
         <section className="section-padding-y h-auto">
-            <h2 className="text-5xl text-center mb-12 font-bold">{t("title")}</h2>
+            <motion.h2
+                className="text-5xl text-foreground text-center mb-12 font-bold"
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.8 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+                {t("title")}
+            </motion.h2>
             <div className="max-w-6xl mx-auto flex lg:flex-row md:flex-col flex-col gap-10 md:gap-10 h-full">
-                <div className="lg:flex-1 h-full">
+                <motion.div
+                    className="lg:flex-1 h-full"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={staggerContainerVariants}
+                >
                     <Searchbar />
                     <CategoryList />
-                    <Button size="huge" className="w-full mt-6 justify-between">
-                        {t("allCategoriesButton")}
-                        <FaArrowRight />
-                    </Button>
-                </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <Button size="huge" className="w-full mt-6 justify-between">
+                            {t("allCategoriesButton")}
+                            <FaArrowRight />
+                        </Button>
+                    </motion.div>
+                </motion.div>
                 <div className="lg:flex-4 h-full">
                     <GridItem />
                 </div>
