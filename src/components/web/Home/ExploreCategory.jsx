@@ -33,6 +33,10 @@ import {
     FaTree
 } from "react-icons/fa";
 
+import { DataProvider, useData } from "@/context/DataContext";
+import { useLocale } from "next-intl";
+import { createClient } from "@/utils/supabase/client";
+
 // Animation variants with viewport detection
 const fadeInUpVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -87,7 +91,7 @@ function Searchbar() {
     );
 }
 
-function CategoryList() {
+function CategoryList({ selectedCategory, setSelectedCategory }) {
     const t = useTranslations("ExploreCategory.categories");
 
     const data = [
@@ -101,16 +105,6 @@ function CategoryList() {
         { id: 8, nameKey: "toilet", icon: FaDoorOpen },
         { id: 9, nameKey: "kidsRoom", icon: FaBaby },
         { id: 10, nameKey: "diningRoom", icon: FaUtensils },
-        { id: 11, nameKey: "bedroom", icon: FaBed },
-        { id: 12, nameKey: "kitchen", icon: FaUtensils },
-        { id: 13, nameKey: "meetingRoom", icon: FaChair },
-        { id: 14, nameKey: "livingRoom", icon: FaCouch },
-        { id: 15, nameKey: "office", icon: FaTable },
-        { id: 16, nameKey: "outdoor", icon: FaTree },
-        { id: 17, nameKey: "bathroom", icon: FaBath },
-        { id: 18, nameKey: "toilet", icon: FaDoorOpen },
-        { id: 19, nameKey: "kidsRoom", icon: FaBaby },
-        { id: 20, nameKey: "diningRoom", icon: FaUtensils },
     ];
 
     return (
@@ -134,9 +128,11 @@ function CategoryList() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >
-                            <Button variant="ghost" className="w-full justify-start gap-2 p-4">
+                            <Button variant="ghost" className={`w-full justify-start gap-2 p-4 ${selectedCategory === item.nameKey ? 'bg-primary/10' : ''}`}
+                                onClick={() => setSelectedCategory(item.nameKey)}>
                                 <item.icon className="mr-2 text-foreground text-3xl" />
                                 <span className="text-lg text-foreground font-light">{t(item.nameKey)}</span>
+                                <FaArrowRight className={`ml-auto text-secondary font-light ${selectedCategory === item.nameKey ? 'visible' : 'invisible'}`} />
                             </Button>
                         </motion.div>
                     </CarouselItem>
@@ -149,31 +145,31 @@ function CategoryList() {
     );
 }
 
-function GridItem() {
+function GridItem({ products }) {
     const t = useTranslations("ExploreCategory.products");
 
-    const products = [
-        {
-            titleKey: "bed.title",
-            descriptionKey: "bed.description",
-            imageUrl: "https://plus.unsplash.com/premium_photo-1676968002767-1f6a09891350?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
-        },
-        {
-            titleKey: "wardrobe.title",
-            descriptionKey: "wardrobe.description",
-            imageUrl: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
-        },
-        {
-            titleKey: "nightstand.title",
-            descriptionKey: "nightstand.description",
-            imageUrl: "https://images.unsplash.com/photo-1606744824163-985d376605aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1932",
-        },
-        {
-            titleKey: "rug.title",
-            descriptionKey: "rug.description",
-            imageUrl: "https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
-        },
-    ];
+    // const products = [
+    //     {
+    //         titleKey: "bed.title",
+    //         descriptionKey: "bed.description",
+    //         imageUrl: "https://plus.unsplash.com/premium_photo-1676968002767-1f6a09891350?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
+    //     },
+    //     {
+    //         titleKey: "wardrobe.title",
+    //         descriptionKey: "wardrobe.description",
+    //         imageUrl: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
+    //     },
+    //     {
+    //         titleKey: "nightstand.title",
+    //         descriptionKey: "nightstand.description",
+    //         imageUrl: "https://images.unsplash.com/photo-1606744824163-985d376605aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1932",
+    //     },
+    //     {
+    //         titleKey: "rug.title",
+    //         descriptionKey: "rug.description",
+    //         imageUrl: "https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
+    //     },
+    // ];
 
     return (
         <motion.div
@@ -195,18 +191,19 @@ function GridItem() {
                 >
                     <CardHeader>
                         <CardTitle className="text-3xl font-semibold">
-                            {t(products[0].titleKey)}
+                            {products[0]?.titleKey}
                         </CardTitle>
                         <CardDescription>
-                            {t(products[0].descriptionKey)}
+                            {products[0]?.descriptionKey}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col">
                         <Image
-                            src={products[0].imageUrl}
-                            alt={t(products[0].titleKey)}
+                            src={products[0]?.imageUrl}
+                            alt={products[0]?.titleKey}
                             width={1000}
                             height={1000}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="w-full h-80 object-cover rounded-2xl"
                         />
                     </CardContent>
@@ -225,18 +222,19 @@ function GridItem() {
                 >
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold">
-                            {t(products[1].titleKey)}
+                            {products[1]?.titleKey}
                         </CardTitle>
                         <CardDescription>
-                            {t(products[1].descriptionKey)}
+                            {products[1]?.descriptionKey}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="flex h-full flex-col">
                         <Image
-                            src={products[1].imageUrl}
-                            alt={t(products[1].titleKey)}
+                            src={products[1]?.imageUrl}
+                            alt={products[1]?.titleKey}
                             width={1000}
                             height={1000}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="h-full w-full object-cover h-80 rounded-2xl"
                         />
                     </CardContent>
@@ -255,18 +253,19 @@ function GridItem() {
                 >
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold">
-                            {t(products[2].titleKey)}
+                            {products[2]?.titleKey}
                         </CardTitle>
                         <CardDescription>
-                            {t(products[2].descriptionKey)}
+                            {products[2]?.descriptionKey}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="flex h-full flex-col">
                         <Image
-                            src={products[2].imageUrl}
-                            alt={t(products[2].titleKey)}
+                            src={products[2]?.imageUrl}
+                            alt={products[2]?.titleKey}
                             width={1000}
                             height={1000}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="h-full w-full object-cover h-80 rounded-2xl"
                         />
                     </CardContent>
@@ -285,18 +284,19 @@ function GridItem() {
                 >
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold">
-                            {t(products[3].titleKey)}
+                            {products[3]?.titleKey}
                         </CardTitle>
                         <CardDescription>
-                            {t(products[3].descriptionKey)}
+                            {products[3]?.descriptionKey}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="flex h-full flex-col">
                         <Image
-                            src={products[3].imageUrl}
-                            alt={t(products[3].titleKey)}
+                            src={products[3]?.imageUrl}
+                            alt={products[3]?.titleKey}
                             width={1000}
                             height={1000}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="h-full w-full object-cover rounded-2xl"
                         />
                     </CardContent>
@@ -308,6 +308,50 @@ function GridItem() {
 
 export default function ExploreCategory() {
     const t = useTranslations("ExploreCategory");
+    const locale = useLocale();
+    const [filteredProducts, setFilteredProducts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+    const [selectedCategory, setSelectedCategory] = React.useState('livingRoom');
+    const supabase = createClient();
+    React.useEffect(() => {
+        const getProducts = async () => {
+            try {
+                setLoading(true);
+                const { data, error } = await supabase
+                    .schema('lumanest')
+                    .from('product')
+                    .select('*')
+                    .eq('categorynamekey', selectedCategory)
+                    .limit(4);
+
+                if (error) throw error;
+
+                console.log('Debug Raw data:', data);
+                const convertedFilteredProducts = data.slice(0, 4).map((item) => ({
+                    titleKey: locale === 'en' ? item.name_en : item.name_vi,
+                    descriptionKey: locale === 'en' ? item.description_en : item.description_vi,
+                    imageUrl: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
+                }));
+                console.log('Debug Converted Filtered Products:', convertedFilteredProducts);
+                setFilteredProducts(convertedFilteredProducts);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getProducts();
+        console.log('Debug Filter product :', filteredProducts);
+
+    }, [locale, selectedCategory, supabase]);
+
+
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (
         <section className="section-padding-y h-auto">
@@ -329,7 +373,7 @@ export default function ExploreCategory() {
                     variants={staggerContainerVariants}
                 >
                     <Searchbar />
-                    <CategoryList />
+                    <CategoryList selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -345,9 +389,14 @@ export default function ExploreCategory() {
                     </motion.div>
                 </motion.div>
                 <div className="lg:flex-4 h-full">
-                    <GridItem />
+                    {loading ? (
+                        <div>Loading...</div>
+                    ) : (
+                        <GridItem products={filteredProducts} />
+                    )}
                 </div>
             </div>
         </section>
     );
 }
+

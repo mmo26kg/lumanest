@@ -5,21 +5,23 @@ import { createClient } from '@/utils/supabase/client';
 
 const DataContext = createContext();
 
-export default function DataProvider({ children }) {
-    const [data, setData] = useState([]); // Ví dụ: danh sách items
+export function DataProvider({ children, table = 'customer' }) {
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const supabase = createClient();
 
-    // Load dữ liệu một lần khi app khởi động
     useEffect(() => {
         fetchData();
-        console.log('Debug product data :', data);
 
-        // Realtime subscription (tự động cập nhật khi có thay đổi)
+        // Realtime subscription
         const channel = supabase
-            .channel('lumanest:product')
-            .on('postgres_changes', { event: '*', schema: 'lumanest', table: 'product' }, (payload) => {
+            .channel(`lumanest:${table}`)
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'lumanest',
+                table: table
+            }, (payload) => {
                 handleRealtimeChange(payload);
             })
             .subscribe();
@@ -29,27 +31,37 @@ export default function DataProvider({ children }) {
         };
     }, []);
 
+    // ✅ Debug data khi nó thay đổi
+    useEffect(() => {
+        console.log(`🔍 ${table} data updated:`, data);
+    }, [data]); // Chạy mỗi khi data thay đổi
+
     const fetchData = async () => {
         try {
             setLoading(true);
-            const { data, error } = await supabase
-                .from('product')
-                .select('*')
-                .schema('lumanest');
+            const { data: data, error } = await supabase
+                .schema('lumanest') // ✅ Đặt schema trước
+                .from(table)
+                .select('*');
             // .order('created_at', { ascending: false });
 
+            if (error) {
+                console.error('❌ Supabase error:', error);
+                throw error;
+            }
 
-            if (error) throw error;
             setData(data);
+            return data;
         } catch (err) {
+            console.error('❌ Fetch error:', err);
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-    // Xử lý realtime: insert, update, delete
     const handleRealtimeChange = (payload) => {
+        console.log('🔄 Realtime change:', payload.eventType);
         setData((current) => {
             switch (payload.eventType) {
                 case 'INSERT':
@@ -66,10 +78,10 @@ export default function DataProvider({ children }) {
         });
     };
 
-    // CRUD operations (gọi từ component)
     const createItem = async (newItem) => {
         const { data, error } = await supabase
-            .from('product')
+            .schema('lumanest')
+            .from(table)
             .insert([newItem])
             .select();
         if (error) throw error;
@@ -78,7 +90,8 @@ export default function DataProvider({ children }) {
 
     const updateItem = async (id, updates) => {
         const { data, error } = await supabase
-            .from('product')
+            .schema('lumanest')
+            .from(table)
             .update(updates)
             .eq('id', id)
             .select();
@@ -87,23 +100,26 @@ export default function DataProvider({ children }) {
     };
 
     const deleteItem = async (id) => {
-        const { error } = await supabase.from('product').delete().eq('id', id);
+        const { error } = await supabase
+            .schema('lumanest')
+            .from(table)
+            .delete()
+            .eq('id', id);
         if (error) throw error;
-    };
-
-    const value = {
-        data,
-        loading,
-        error,
-        createItem,
-        updateItem,
-        deleteItem,
-        refetch: fetchData,
     };
 
     return (
         <DataContext.Provider
-            value={value}
+            value={{
+                fetchData,
+                data,
+                loading,
+                error,
+                createItem,
+                updateItem,
+                deleteItem,
+                refetch: fetchData,
+            }}
         >
             {children}
         </DataContext.Provider>

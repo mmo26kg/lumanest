@@ -212,7 +212,7 @@ export default function PopularProducts() {
                         alt="Popular Products Background"
                         width={700}
                         height={1080}
-                        className="absolute -top-20 -left-1/2 transform"
+                        className="absolute -top-20 -left-1/2 transform w-auto h-auto"
                     />
                 </motion.div>
 

@@ -5,7 +5,6 @@ import { routing } from "../../i18n/routing";
 import ThemeProvider from "@/provider/ThemeProvider";
 import Header from "@/components/web/Header";
 import Footer from "@/components/web/Footer";
-import DataProvider from "@/context/DataContext";
 
 
 import "./globals.css";
@@ -49,11 +48,9 @@ export default async function RootLayout({ children }) {
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <DataProvider>
-              <Header />
-              {children}
-              <Footer />
-            </DataProvider>
+            <Header />
+            {children}
+            <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
