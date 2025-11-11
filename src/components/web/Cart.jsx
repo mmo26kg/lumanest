@@ -9,6 +9,7 @@ import {
     FaPlus,
     FaMinus,
 } from "react-icons/fa"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import {
     Sheet,
@@ -30,62 +31,62 @@ import Link from "next/link"
 /**
  * @typedef {Object} CartItemData
  * @property {string} id
- * @property {string} name
+ * @property {string} nameKey - Translation key for product name
  * @property {number} price
  * @property {number} quantity
  * @property {string} imageUrl
- * @property {string} altText
+ * @property {string} altTextKey - Translation key for alt text
  */
 
 /** @type {CartItemData[]} */
-const initialCartData = [
+const getInitialCartData = () => [
     {
         id: "1",
-        name: "Ghế Sofa Vải Lông Cừu",
+        nameKey: "products.boucleSofa.name",
         price: 12500000,
         quantity: 1,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBHabazBTkDbEgUiJwHciYWa7CwH0imGgXIwteFIo-Qdx7tJsIhG3EMfpexYD9x0tqZf7WFSTUYDMy-w6Z8vIeXgIYlJPsYn6WlZynmpsc5KVFtu5Mx2v3yFIq94xnPTKpxfPv6pFHH7T7jGwy0-1OjTR-uf31kNvSmfrbdL6U0kI8U_QkfBaeBnqfPeO2vOeGWHc8FvI1_YeGVJOTUpdfRjSukU1tqDWKivvetbtFBxEsfhRET8Rx8kq5YOcuxJUpVIJ_3PLaV318x",
-        altText: "Cream-colored bouclé fabric sofa",
+        altTextKey: "products.boucleSofa.alt",
     },
     {
         id: "2",
-        name: "Bàn Cà Phê Gỗ Sồi",
+        nameKey: "products.oakCoffeeTable.name",
         price: 4200000,
         quantity: 2,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCgRCtSGIj067SHKGt8I8lF94QcbSVJBO2P7fkJDol7eNO6Z5mqjL5D8eCReyl7Xkf9nfCnbRgOmK3ggnGM9lZzN7XBSM5l3UpK8owIBT_8R4slx234WivTuF68-AfdUkBj8fcIJpWQ0A1TrAjQ-L7zzrcfFa5xlAbefNEHF1jaLi3Oe4mU1k9jPuZO9d5UxhGKvSyggg8d3-sdguQAMTuEHxoM6lrGnkimXMR1vGQg927LvCPfpeCh-lxnvIxHUsCuKMR9VhsIn7Uw",
-        altText: "Low-profile oak wood coffee table",
+        altTextKey: "products.oakCoffeeTable.alt",
     },
     {
         id: "3",
-        name: "Đèn Sàn Cong Hiện Đại",
+        nameKey: "products.archedFloorLamp.name",
         price: 3150000,
         quantity: 1,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBtgWAYQiEg0661J8KjTbqcaLxwmPinjMm37QnqDKgi6l44Ty_QBVzfRr1VLH4vef0pUvBvGX_sCHFQWKys188P6ckP7IzCG4zI_2H03znFT2LqDrl-mumqkhis624-244cuMJZtf9xesbUT0uHF1WwOlVElVruuFfnUgFbDRWvK8e0odbbzReyXOrUJkVYjqk0Y2M5neAvGfjhKC5ET2678WXu-2PutT9ZRB1_Fy8vbMMXcdSF9TzxPCzxqkzE1PoeEEjCFEo0BWe9",
-        altText: "Modern arched floor lamp",
+        altTextKey: "products.archedFloorLamp.alt",
     },
     {
         id: "4",
-        name: "Ghế Sofa Vải Lông Cừu",
+        nameKey: "products.boucleSofa.name",
         price: 12500000,
         quantity: 1,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBHabazBTkDbEgUiJwHciYWa7CwH0imGgXIwteFIo-Qdx7tJsIhG3EMfpexYD9x0tqZf7WFSTUYDMy-w6Z8vIeXgIYlJPsYn6WlZynmpsc5KVFtu5Mx2v3yFIq94xnPTKpxfPv6pFHH7T7jGwy0-1OjTR-uf31kNvSmfrbdL6U0kI8U_QkfBaeBnqfPeO2vOeGWHc8FvI1_YeGVJOTUpdfRjSukU1tqDWKivvetbtFBxEsfhRET8Rx8kq5YOcuxJUpVIJ_3PLaV318x",
-        altText: "Cream-colored bouclé fabric sofa",
+        altTextKey: "products.boucleSofa.alt",
     },
     {
         id: "5",
-        name: "Bàn Cà Phê Gỗ Sồi",
+        nameKey: "products.oakCoffeeTable.name",
         price: 4200000,
         quantity: 2,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCgRCtSGIj067SHKGt8I8lF94QcbSVJBO2P7fkJDol7eNO6Z5mqjL5D8eCReyl7Xkf9nfCnbRgOmK3ggnGM9lZzN7XBSM5l3UpK8owIBT_8R4slx234WivTuF68-AfdUkBj8fcIJpWQ0A1TrAjQ-L7zzrcfFa5xlAbefNEHF1jaLi3Oe4mU1k9jPuZO9d5UxhGKvSyggg8d3-sdguQAMTuEHxoM6lrGnkimXMR1vGQg927LvCPfpeCh-lxnvIxHUsCuKMR9VhsIn7Uw",
-        altText: "Low-profile oak wood coffee table",
+        altTextKey: "products.oakCoffeeTable.alt",
     },
     {
         id: "6",
-        name: "Đèn Sàn Cong Hiện Đại",
+        nameKey: "products.archedFloorLamp.name",
         price: 3150000,
         quantity: 1,
         imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBtgWAYQiEg0661J8KjTbqcaLxwmPinjMm37QnqDKgi6l44Ty_QBVzfRr1VLH4vef0pUvBvGX_sCHFQWKys188P6ckP7IzCG4zI_2H03znFT2LqDrl-mumqkhis624-244cuMJZtf9xesbUT0uHF1WwOlVElVruuFfnUgFbDRWvK8e0odbbzReyXOrUJkVYjqk0Y2M5neAvGfjhKC5ET2678WXu-2PutT9ZRB1_Fy8vbMMXcdSF9TzxPCzxqkzE1PoeEEjCFEo0BWe9",
-        altText: "Modern arched floor lamp",
+        altTextKey: "products.archedFloorLamp.alt",
     },
 ]
 
@@ -113,6 +114,7 @@ const formatCurrency = (amount) => {
  * }} props
  */
 const CartItem = ({ item, onQuantityChange, onRemove }) => {
+    const t = useTranslations("Cart")
     const itemTotal = item.price * item.quantity
 
     const handleQtyChange = (e) => {
@@ -145,7 +147,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
                 <div
                     className="h-full w-full rounded-lg bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${item.imageUrl})` }}
-                    aria-label={item.altText}
+                    aria-label={t(item.altTextKey)}
                 ></div>
             </div>
 
@@ -153,14 +155,14 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
             <div className="flex flex-1 flex-col justify-between">
                 <div className="flex justify-between">
                     <p className="font-medium leading-normal font-sans text-foreground">
-                        {item.name}
+                        {t(item.nameKey)}
                     </p>
                     <Button
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-muted-foreground hover:text-red-500"
                         onClick={() => onRemove(item.id)}
-                        aria-label="Xóa sản phẩm"
+                        aria-label={t("actions.removeProduct")}
                     >
                         <FaTrash className="text-xl" />
                     </Button>
@@ -177,7 +179,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
                                 size="icon"
                                 className="h-7 w-7 rounded-full"
                                 onClick={handleDecrease}
-                                aria-label="Giảm số lượng"
+                                aria-label={t("actions.decreaseQuantity")}
                             >
                                 <FaMinus />
                             </Button>
@@ -186,14 +188,14 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
                                 className="h-7 w-8 border-none bg-transparent p-0 text-center text-base font-medium focus-visible:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                 value={item.quantity}
                                 onChange={handleQtyChange}
-                                aria-label="Số lượng"
+                                aria-label={t("actions.quantity")}
                             />
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-7 w-7 rounded-full"
                                 onClick={handleIncrease}
-                                aria-label="Tăng số lượng"
+                                aria-label={t("actions.increaseQuantity")}
                             >
                                 <FaPlus />
                             </Button>
@@ -213,13 +215,15 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
  * @param {{ itemCount: number }} props
  */
 const CartHeader = ({ itemCount }) => {
+    const t = useTranslations("Cart")
+
     return (
         <SheetHeader className="p-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <FaShoppingBag className="text-foreground text-2xl" />
                     <SheetTitle className="text-[24px] font-bold font-sans leading-tight tracking-tight text-foreground">
-                        Giỏ hàng ({itemCount})
+                        {t("title", { count: itemCount })}
                     </SheetTitle>
                 </div>
                 <SheetClose asChild>
@@ -227,7 +231,7 @@ const CartHeader = ({ itemCount }) => {
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10 rounded-full"
-                        aria-label="Đóng giỏ hàng"
+                        aria-label={t("actions.closeCart")}
                     >
                         <FaTimes className="text-xl" />
                     </Button>
@@ -241,12 +245,14 @@ const CartHeader = ({ itemCount }) => {
  * @param {{ subtotal: number }} props
  */
 const CartFooter = ({ subtotal }) => {
+    const t = useTranslations("Cart")
+
     return (
         <SheetFooter className="p-6">
             <div className="w-full ">
                 <div className="flex justify-between gap-x-6 py-2">
                     <p className="text-base font-medium leading-normal text-muted-foreground">
-                        Tổng phụ
+                        {t("subtotal")}
                     </p>
                     <p className="text-right text-lg font-bold leading-normal text-foreground">
                         {formatCurrency(subtotal)}
@@ -255,7 +261,7 @@ const CartFooter = ({ subtotal }) => {
                 <SheetClose asChild>
                     <Link href="/checkout">
                         <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                            Thanh toán
+                            {t("checkout")}
                         </Button>
                     </Link>
                 </SheetClose>
@@ -312,7 +318,8 @@ const CartContent = ({
 // Đây là component bạn sẽ import vào page của Next.js
 
 export default function ShoppingCartButton() {
-    const [cartItems, setCartItems] = useState(initialCartData)
+    const t = useTranslations("Cart")
+    const [cartItems, setCartItems] = useState(getInitialCartData())
 
     const subtotal = useMemo(() => {
         return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -337,7 +344,7 @@ export default function ShoppingCartButton() {
                 <SheetTrigger asChild>
                     <motion.button
                         className="p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
-                        aria-label="Giỏ hàng"
+                        aria-label={t("buttonLabel")}
                     >
                         <FaShoppingBag className="w-4 h-4 md:w-5 md:h-5" />
                     </motion.button>
@@ -354,5 +361,3 @@ export default function ShoppingCartButton() {
         </div>
     )
 }
-
-

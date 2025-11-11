@@ -253,5 +253,312 @@
             "link": "Social link"
         },
         "copyright": "Copyright ©{year} {brand}. All Rights Reserved"
+    },
+    "about": {
+        "hero": {
+            "title": "Lumanest Furniture",
+            "subtitle": "Crafting Homes, Building Futures."
+        },
+        "story": {
+            "title": "Our Story",
+            "content": "Founded on the principles of timeless design and impeccable craftsmanship, Lumanest Furniture began with a simple idea: to create beautiful, lasting pieces that turn a house into a home. Our journey started in a small workshop, driven by a passion for woodworking and a commitment to sustainable practices. Today, we continue to honor that legacy, blending traditional techniques with modern aesthetics to bring you furniture that is not only stylish but also built to be part of your family's story for generations."
+        },
+        "mission": {
+            "title": "Our Mission",
+            "content": "To design and craft high-quality, sustainable furniture that enhances the beauty and comfort of everyday living."
+        },
+        "vision": {
+            "title": "Our Vision",
+            "content": "To be a global leader in innovative and eco-conscious home furnishings, inspiring a more thoughtful way of life."
+        },
+        "coreValues": {
+            "title": "Our Core Values",
+            "subtitle": "The principles that guide every cut, stitch, and decision we make.",
+            "items": {
+                "quality": {
+                    "title": "Uncompromising Quality",
+                    "description": "We use only the finest materials and time-honored techniques to ensure every piece is a masterpiece of durability and design."
+                },
+                "sustainable": {
+                    "title": "Sustainable by Design",
+                    "description": "Our commitment to the planet is reflected in our responsibly sourced materials and eco-friendly production processes."
+                },
+                "innovation": {
+                    "title": "Timeless Innovation",
+                    "description": "We blend classic aesthetics with modern functionality, creating furniture that is both beautiful and perfectly suited for contemporary life."
+                }
+            }
+        },
+        "craftsmanship": {
+            "title": "Our Craftsmanship",
+            "subtitle": "From raw material to the heart of your home, every piece tells a story of dedication.",
+            "items": {
+                "materials": {
+                    "alt": "Close-up of solid oak wood planks",
+                    "title": "Sourcing the Finest Materials",
+                    "description": "Our journey begins with responsibly harvested solid wood. We hand-select each plank for its unique grain, character, and structural integrity, ensuring a foundation of unparalleled quality."
+                },
+                "finishing": {
+                    "alt": "Artisan sanding a wooden chair",
+                    "title": "Meticulous Hand-Finishing",
+                    "description": "Skilled artisans bring the design to life. Each joint is perfected, each surface is sanded to a flawless finish, and every detail is scrutinized to meet our exacting standards of excellence."
+                }
+            }
+        },
+        "team": {
+            "title": "Meet Our Makers",
+            "subtitle": "The passionate individuals behind every piece of Lumanest furniture.",
+            "items": {
+                "james": {
+                    "alt": "Headshot of James Alistair",
+                    "name": "James Alistair",
+                    "role": "Founder & CEO"
+                },
+                "eleanor": {
+                    "alt": "Headshot of Eleanor Vance",
+                    "name": "Eleanor Vance",
+                    "role": "Lead Designer"
+                },
+                "marcus": {
+                    "alt": "Headshot of Marcus Cole",
+                    "name": "Marcus Cole",
+                    "role": "Head of Craftsmanship"
+                }
+            }
+        },
+        "press": {
+            "title": "Featured In",
+            "subtitle": "We're proud to be recognized by leaders in design and lifestyle."
+        },
+        "locations": {
+            "title": "Visit Our Stores",
+            "subtitle": "Experience the quality of Lumanest Furniture in person.",
+            "items": {
+                "newyork": {
+                    "alt": "Map of New York store",
+                    "name": "New York",
+                    "address": "123 Design Avenue, SoHo",
+                    "hours": "Mon - Sat: 10am - 7pm"
+                },
+                "london": {
+                    "alt": "Map of London store",
+                    "name": "London",
+                    "address": "456 Craftsmanship Rd, Shoreditch",
+                    "hours": "Mon - Sat: 10am - 7pm"
+                },
+                "paris": {
+                    "alt": "Map of Paris store",
+                    "name": "Paris",
+                    "address": "789 Élégance St, Le Marais",
+                    "hours": "Mon - Sat: 10am - 7pm"
+                }
+            }
+        },
+        "cta": {
+            "title": "Discover Your Perfect Piece",
+            "subtitle": "Browse our curated collections and find the furniture that speaks to you.",
+            "button": "Explore Collections"
+        }
+    },
+    "contacts": {
+        "hero": {
+            "title": "Get in Touch",
+            "subtitle": "We'd love to hear from you. Contact us today for any questions or inquiries."
+        },
+        "info": {
+            "email": {
+                "title": "Email",
+                "value": "hello@lumanest.com"
+            },
+            "phone": {
+                "title": "Phone",
+                "value": "+1 (555) 123-4567"
+            },
+            "address": {
+                "title": "Address",
+                "value": "123 Furniture Street, Design City, DC 12345"
+            }
+        },
+        "form": {
+            "fields": {
+                "name": {
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name"
+                },
+                "email": {
+                    "label": "Email",
+                    "placeholder": "Enter your email"
+                },
+                "subject": {
+                    "label": "Subject",
+                    "placeholder": "Enter message subject"
+                },
+                "message": {
+                    "label": "Message",
+                    "placeholder": "Your message content..."
+                }
+            },
+            "submitButton": "Send Message"
+        },
+        "stores": {
+            "title": "Our Showrooms",
+            "subtitle": "Visit our showrooms to experience our products firsthand.",
+            "store1": {
+                "alt": "New York Showroom",
+                "title": "New York Flagship",
+                "address": "123 Fifth Avenue, New York, NY 10001",
+                "hours": "Mon - Sun: 9:00 AM - 9:00 PM"
+            },
+            "store2": {
+                "alt": "Los Angeles Showroom",
+                "title": "Los Angeles Studio",
+                "address": "456 Sunset Boulevard, Los Angeles, CA 90028",
+                "hours": "Mon - Sun: 10:00 AM - 8:00 PM"
+            }
+        },
+        "faq": {
+            "title": "Frequently Asked Questions",
+            "subtitle": "Find quick answers to common questions.",
+            "items": {
+                "shipping": {
+                    "question": "What are your shipping options?",
+                    "answer": "We offer free standard shipping on orders over $500. Express shipping is available for $50. White glove delivery service is also available for large furniture pieces."
+                },
+                "warranty": {
+                    "question": "What warranty do you offer?",
+                    "answer": "All our furniture comes with a 5-year warranty covering manufacturing defects. Fabric and leather have a 2-year warranty for normal wear and tear."
+                },
+                "returns": {
+                    "question": "What is your return policy?",
+                    "answer": "You can return items within 30 days of delivery in original condition. Custom orders and personalized items are not eligible for return."
+                },
+                "customization": {
+                    "question": "Do you offer customization options?",
+                    "answer": "Yes, we offer various customization options including fabric choices, wood finishes, and size modifications. Contact us to discuss your specific needs."
+                }
+            }
+        },
+        "social": {
+            "title": "Connect with Us",
+            "cta": {
+                "title": "Ready to transform your space?",
+                "button": "Explore Latest Collection"
+            }
+        }
+    },
+    "Cart": {
+        "title": "Cart ({count})",
+        "subtotal": "Subtotal",
+        "checkout": "Checkout",
+        "buttonLabel": "Shopping Cart",
+        "actions": {
+            "removeProduct": "Remove product",
+            "decreaseQuantity": "Decrease quantity",
+            "increaseQuantity": "Increase quantity",
+            "quantity": "Quantity",
+            "closeCart": "Close cart"
+        },
+        "products": {
+            "boucleSofa": {
+                "name": "Bouclé Fabric Sofa",
+                "alt": "Cream-colored bouclé fabric sofa"
+            },
+            "oakCoffeeTable": {
+                "name": "Oak Wood Coffee Table",
+                "alt": "Low-profile oak wood coffee table"
+            },
+            "archedFloorLamp": {
+                "name": "Modern Arched Floor Lamp",
+                "alt": "Modern arched floor lamp"
+            }
+        }
+    },
+    "Checkout": {
+        "brandName": "FurnitureCo",
+        "backToCart": "Back to cart",
+        "page": {
+            "title": "Checkout",
+            "description": "Please fill in the required information to complete your order."
+        },
+        "steps": {
+            "cart": "Cart",
+            "info": "Information",
+            "payment": "Payment",
+            "confirm": "Confirm"
+        },
+        "progress": "Step {current}/{total}: {name}",
+        "customer": {
+            "title": "Customer Information",
+            "fullName": "Full name",
+            "fullNamePlaceholder": "Enter your full name",
+            "phone": "Phone number",
+            "phonePlaceholder": "Enter your phone number",
+            "email": "Email",
+            "emailPlaceholder": "Enter your email address",
+            "items": {
+                "boucleSofa": {
+                    "name": "Bouclé Fabric Sofa",
+                    "alt": "Cream-colored bouclé fabric sofa"
+                },
+                "floorLamp": {
+                    "name": "Modern Arched Floor Lamp",
+                    "alt": "Stylish floor lamp with a spherical shade"
+                }
+            }
+        },
+        "address": {
+            "title": "Shipping Address",
+            "sameAsCustomer": "Same as customer information",
+            "line": "Address",
+            "linePlaceholder": "House number, street, ward",
+            "city": "City/Province",
+            "cityPlaceholder": "Select city/province",
+            "district": "District",
+            "districtPlaceholder": "Select district"
+        },
+        "shipping": {
+            "title": "Shipping method",
+            "methods": {
+                "standard": {
+                    "name": "Standard shipping",
+                    "description": "Estimated 3-5 days"
+                },
+                "express": {
+                    "name": "Express shipping",
+                    "description": "Estimated 1-2 days"
+                }
+            }
+        },
+        "payment": {
+            "title": "Payment method",
+            "methods": {
+                "cod": {
+                    "name": "Cash on Delivery (COD)"
+                },
+                "card": {
+                    "name": "Credit/Debit Card"
+                },
+                "bank": {
+                    "name": "Bank transfer"
+                }
+            }
+        },
+        "summary": {
+            "title": "Order summary",
+            "couponPlaceholder": "Coupon code",
+            "applyCoupon": "Apply",
+            "quantity": "Quantity",
+            "subtotal": "Subtotal",
+            "shipping": "Shipping fee",
+            "discount": "Discount",
+            "total": "Total",
+            "placeOrder": "Place order"
+        },
+        "footer": {
+            "securePayment": "Secure and protected payments",
+            "support": "Support",
+            "privacy": "Privacy policy",
+            "terms": "Terms of service"
+        }
     }
 }

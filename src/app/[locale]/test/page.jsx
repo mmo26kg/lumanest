@@ -183,7 +183,7 @@ const staggerItem = {
 const Logo = () => (
     <div className="flex items-center gap-4 text-foreground">
         <FaStarOfLife className="size-5 text-primary" />
-        <h2 className="text-lg font-bold tracking-tight">Moderno Furniture</h2>
+        <h2 className="text-lg font-bold tracking-tight">Lumanest Furniture</h2>
     </div>
 )
 
@@ -205,7 +205,7 @@ const HeroSection = () => (
             className="relative z-10 text-center text-white"
         >
             <h1 className="text-4xl font-black leading-tight tracking-tight md:text-6xl">
-                Moderno Furniture
+                Lumanest Furniture
             </h1>
             <p className="mt-2 text-lg md:text-xl">Crafting Homes, Building Futures.</p>
         </motion.div>
@@ -217,7 +217,7 @@ const BrandStory = () => (
         <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Our Story</h2>
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
             Founded on the principles of timeless design and impeccable craftsmanship,
-            Moderno Furniture began with a simple idea: to create beautiful, lasting
+            Lumanest Furniture began with a simple idea: to create beautiful, lasting
             pieces that turn a house into a home. Our journey started in a small
             workshop, driven by a passion for woodworking and a commitment to
             sustainable practices. Today, we continue to honor that legacy, blending
@@ -375,7 +375,7 @@ const TeamGallery = ({ members }) => (
                 Meet Our Makers
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                The passionate individuals behind every piece of Moderno furniture.
+                The passionate individuals behind every piece of Lumanest furniture.
             </p>
         </div>
         <motion.div
@@ -454,7 +454,7 @@ const StoreLocations = ({ locations }) => (
                 Visit Our Stores
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                Experience the quality of Moderno Furniture in person.
+                Experience the quality of Lumanest Furniture in person.
             </p>
         </div>
         <motion.div

@@ -253,5 +253,312 @@
             "link": "Liên kết mạng xã hội"
         },
         "copyright": "Bản quyền ©{year} {brand}. Mọi quyền được bảo lưu"
+    },
+    "about": {
+        "hero": {
+            "title": "Nội Thất Lumanest",
+            "subtitle": "Tạo dựng Nhà cửa, Xây dựng Tương lai."
+        },
+        "story": {
+            "title": "Câu chuyện của chúng tôi",
+            "content": "Được thành lập dựa trên những nguyên tắc của thiết kế vượt thời gian và kỹ thuật hoàn mỹ, Nội thất Lumanest bắt đầu với một ý tưởng đơn giản: tạo những chiếc nội thất đẹp mắt, bền vững để biến một ngôi nhà thành một ngôi nhà thân yêu. Hành trình của chúng tôi bắt đầu từ một xưởng nhỏ, được thúc đẩy bởi niềm đam mê đối với nghề mộc và cam kết với các phương pháp bền vững. Ngày nay, chúng tôi vẫn tiếp tục tôn vinh di sản đó, kết hợp những kỹ thuật truyền thống với th美học hiện đại để mang đến cho bạn những chiếc nội thất không chỉ phong cách mà còn được xây dựng để trở thành một phần của câu chuyện gia đình bạn trong nhiều thế hệ."
+        },
+        "mission": {
+            "title": "Sứ Mệnh của Chúng Tôi",
+            "content": "Thiết kế và chế tạo nội thất chất lượng cao, bền vững giúp nâng cao vẻ đẹp và sự thoải mái của cuộc sống hàng ngày."
+        },
+        "vision": {
+            "title": "Tầm Nhìn của Chúng Tôi",
+            "content": "Trở thành một nhà lãnh đạo toàn cầu trong lĩnh vực nội thất sáng tạo và thân thiện với môi trường, truyền cảm hứng cho một cách sống suy tư hơn."
+        },
+        "coreValues": {
+            "title": "Giá Trị Cốt Lõi của Chúng Tôi",
+            "subtitle": "Những nguyên tắc hướng dẫn mọi lần cắt, khâu và quyết định mà chúng tôi đưa ra.",
+            "items": {
+                "quality": {
+                    "title": "Chất Lượng Không Thỏa Hiệp",
+                    "description": "Chúng tôi chỉ sử dụng những vật liệu tốt nhất và những kỹ thuật lâu đời để đảm bảo mỗi sản phẩm là một kiệt tác về độ bền và thiết kế."
+                },
+                "sustainable": {
+                    "title": "Bền Vững Theo Thiết Kế",
+                    "description": "Cam kết của chúng tôi đối với hành tinh được phản ánh trong các vật liệu được tìm cách có trách nhiệm và các quy trình sản xuất thân thiện với môi trường."
+                },
+                "innovation": {
+                    "title": "Sáng Tạo Vượt Thời Gian",
+                    "description": "Chúng tôi kết hợp thẩm mỹ cổ điển với chức năng hiện đại, tạo ra nội thất vừa đẹp mắt vừa phù hợp hoàn hảo với cuộc sống hiện đại."
+                }
+            }
+        },
+        "craftsmanship": {
+            "title": "Kỹ Thuật Chế Tác của Chúng Tôi",
+            "subtitle": "Từ nguyên liệu thô đến trái tim của ngôi nhà bạn, mỗi sản phẩm kể một câu chuyện về sự tận tâm.",
+            "items": {
+                "materials": {
+                    "alt": "Ảnh gỗ sồi nguyên khối được cắt nhỏ",
+                    "title": "Tìm Kiếm Những Vật Liệu Tốt Nhất",
+                    "description": "Hành trình của chúng tôi bắt đầu với gỗ được khai thác một cách có trách nhiệm. Chúng tôi lựa chọn cẩn thận từng tấm gỗ vì các vân gỗ độc đáo, tính chất và tính toàn vẹn cấu trúc của nó, đảm bảo nền tảng có chất lượng không thể so sánh được."
+                },
+                "finishing": {
+                    "alt": "Ảnh nghệ nhân đánh mài ghế gỗ",
+                    "title": "Hoàn Thiện Cẩn Thận",
+                    "description": "Các thợ lành nghề mang thiết kế vào cuộc sống. Mỗi khớp được hoàn thiện, mỗi bề mặt được chà nhấm đến độ hoàn hảo, và mọi chi tiết được kiểm tra để đáp ứng tiêu chuẩn xuất sắc của chúng tôi."
+                }
+            }
+        },
+        "team": {
+            "title": "Gặp Các Nghệ Nhân của Chúng Tôi",
+            "subtitle": "Những cá nhân đam mê đằng sau mỗi chiếc nội thất Lumanest.",
+            "items": {
+                "james": {
+                    "alt": "Ảnh đại diện James Alistair",
+                    "name": "James Alistair",
+                    "role": "Sáng Lập Viên & CEO"
+                },
+                "eleanor": {
+                    "alt": "Ảnh đại diện Eleanor Vance",
+                    "name": "Eleanor Vance",
+                    "role": "Nhà Thiết Kế Chính"
+                },
+                "marcus": {
+                    "alt": "Ảnh đại diện Marcus Cole",
+                    "name": "Marcus Cole",
+                    "role": "Trưởng Bộ Phận Chế Tác"
+                }
+            }
+        },
+        "press": {
+            "title": "Được Giới Thiệu Trên",
+            "subtitle": "Chúng tôi tự hào được các nhà lãnh đạo trong thiết kế và lối sống công nhận."
+        },
+        "locations": {
+            "title": "Ghé Thăm Các Cửa Hàng của Chúng Tôi",
+            "subtitle": "Trải nghiệm chất lượng Nội thất Lumanest trực tiếp.",
+            "items": {
+                "newyork": {
+                    "alt": "Bản đồ cửa hàng New York",
+                    "name": "New York",
+                    "address": "123 Design Avenue, SoHo",
+                    "hours": "Thứ Hai - Thứ Bảy: 10 sáng - 7 tối"
+                },
+                "london": {
+                    "alt": "Bản đồ cửa hàng London",
+                    "name": "London",
+                    "address": "456 Craftsmanship Rd, Shoreditch",
+                    "hours": "Thứ Hai - Thứ Bảy: 10 sáng - 7 tối"
+                },
+                "paris": {
+                    "alt": "Bản đồ cửa hàng Paris",
+                    "name": "Paris",
+                    "address": "789 Élégance St, Le Marais",
+                    "hours": "Thứ Hai - Thứ Bảy: 10 sáng - 7 tối"
+                }
+            }
+        },
+        "cta": {
+            "title": "Khám Phá Chiếc Nội Thất Hoàn Hảo của Bạn",
+            "subtitle": "Duyệt qua các bộ sưu tập được lựa chọn và tìm chiếc nội thất nói với bạn.",
+            "button": "Khám Phá Bộ Sưu Tập"
+        }
+    },
+    "contacts": {
+        "hero": {
+            "title": "Liên Hệ Với Chúng Tôi",
+            "subtitle": "Chúng tôi rất mong được lắng nghe ý kiến từ bạn. Liên hệ với chúng tôi ngay hôm nay để biết thêm thông tin hoặc giải đáp thắc mắc."
+        },
+        "info": {
+            "email": {
+                "title": "Email",
+                "value": "hello@lumanest.com"
+            },
+            "phone": {
+                "title": "Điện thoại",
+                "value": "+84 (028) 123-4567"
+            },
+            "address": {
+                "title": "Địa chỉ",
+                "value": "123 Đường Nội Thất, Quận 1, TP. Hồ Chí Minh"
+            }
+        },
+        "form": {
+            "fields": {
+                "name": {
+                    "label": "Họ và Tên",
+                    "placeholder": "Nhập họ và tên của bạn"
+                },
+                "email": {
+                    "label": "Email",
+                    "placeholder": "Nhập email của bạn"
+                },
+                "subject": {
+                    "label": "Chủ đề",
+                    "placeholder": "Nhập chủ đề tin nhắn"
+                },
+                "message": {
+                    "label": "Tin nhắn",
+                    "placeholder": "Nội dung tin nhắn của bạn..."
+                }
+            },
+            "submitButton": "Gửi tin nhắn"
+        },
+        "stores": {
+            "title": "Hệ Thống Showroom",
+            "subtitle": "Ghé thăm showroom của chúng tôi để trải nghiệm sản phẩm trực tiếp.",
+            "store1": {
+                "alt": "Showroom Hà Nội",
+                "title": "Showroom Hà Nội",
+                "address": "123 Phố Bà Triệu, Quận Hai Bà Trưng, Hà Nội",
+                "hours": "Thứ 2 - Chủ Nhật: 8:00 - 22:00"
+            },
+            "store2": {
+                "alt": "Showroom TP.HCM",
+                "title": "Showroom TP. Hồ Chí Minh",
+                "address": "456 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
+                "hours": "Thứ 2 - Chủ Nhật: 9:00 - 21:00"
+            }
+        },
+        "faq": {
+            "title": "Câu hỏi thường gặp",
+            "subtitle": "Tìm câu trả lời nhanh cho các câu hỏi phổ biến.",
+            "items": {
+                "shipping": {
+                    "question": "Các tùy chọn vận chuyển của bạn là gì?",
+                    "answer": "Chúng tôi cung cấp dịch vụ vận chuyển tiêu chuẩn miễn phí cho đơn hàng trên 10 triệu đồng. Vận chuyển nhanh có phí 500.000 đồng. Chúng tôi cũng có dịch vụ giao hàng cao cấp cho các sản phẩm nội thất lớn."
+                },
+                "warranty": {
+                    "question": "Bạn có chế độ bảo hành nào?",
+                    "answer": "Tất cả nội thất của chúng tôi đi kèm với bảo hành 5 năm cho lỗi sản xuất. Vải và da có bảo hành 2 năm cho hao mòn thông thường."
+                },
+                "returns": {
+                    "question": "Chính sách đổi trả của bạn là gì?",
+                    "answer": "Bạn có thể trả lại sản phẩm trong vòng 30 ngày kể từ ngày giao hàng trong tình trạng nguyên vẹn. Đơn hàng tùy chỉnh và sản phẩm cá nhân hóa không được phép trả lại."
+                },
+                "customization": {
+                    "question": "Bạn có cung cấp tùy chọn tùy chỉnh không?",
+                    "answer": "Có, chúng tôi cung cấp nhiều tùy chọn tùy chỉnh bao gồm lựa chọn vải, hoàn thiện gỗ và thay đổi kích thước. Liên hệ với chúng tôi để thảo luận về nhu cầu cụ thể của bạn."
+                }
+            }
+        },
+        "social": {
+            "title": "Kết nối với chúng tôi",
+            "cta": {
+                "title": "Sẵn sàng làm mới không gian của bạn?",
+                "button": "Khám phá bộ sưu tập mới nhất"
+            }
+        }
+    },
+    "Cart": {
+        "title": "Giỏ hàng ({count})",
+        "subtotal": "Tổng phụ",
+        "checkout": "Thanh toán",
+        "buttonLabel": "Giỏ hàng",
+        "actions": {
+            "removeProduct": "Xóa sản phẩm",
+            "decreaseQuantity": "Giảm số lượng",
+            "increaseQuantity": "Tăng số lượng",
+            "quantity": "Số lượng",
+            "closeCart": "Đóng giỏ hàng"
+        },
+        "products": {
+            "boucleSofa": {
+                "name": "Ghế Sofa Vải Lông Cừu",
+                "alt": "Sofa vải lông cừu màu kem"
+            },
+            "oakCoffeeTable": {
+                "name": "Bàn Cà Phê Gỗ Sồi",
+                "alt": "Bàn cà phê gỗ sồi thấp"
+            },
+            "archedFloorLamp": {
+                "name": "Đèn Sàn Cong Hiện Đại",
+                "alt": "Đèn sàn cong hiện đại"
+            }
+        }
+    },
+    "Checkout": {
+        "brandName": "FurnitureCo",
+        "backToCart": "Quay lại giỏ hàng",
+        "page": {
+            "title": "Thanh toán",
+            "description": "Vui lòng điền các thông tin cần thiết để hoàn tất đơn hàng."
+        },
+        "steps": {
+            "cart": "Giỏ hàng",
+            "info": "Thông tin",
+            "payment": "Thanh toán",
+            "confirm": "Xác nhận"
+        },
+        "progress": "Bước {current}/{total}: {name}",
+        "customer": {
+            "title": "Thông tin khách hàng",
+            "fullName": "Họ và tên",
+            "fullNamePlaceholder": "Nhập họ và tên của bạn",
+            "phone": "Số điện thoại",
+            "phonePlaceholder": "Nhập số điện thoại",
+            "email": "Email",
+            "emailPlaceholder": "Nhập địa chỉ email",
+            "items": {
+                "boucleSofa": {
+                    "name": "Ghế Sofa Vải Bouclé",
+                    "alt": "Sofa vải bouclé màu kem"
+                },
+                "floorLamp": {
+                    "name": "Đèn sàn cong hiện đại",
+                    "alt": "Đèn sàn trang trí với chao hình cầu"
+                }
+            }
+        },
+        "address": {
+            "title": "Địa chỉ giao hàng",
+            "sameAsCustomer": "Giống thông tin khách hàng",
+            "line": "Địa chỉ",
+            "linePlaceholder": "Số nhà, tên đường, phường/xã",
+            "city": "Thành phố/Tỉnh",
+            "cityPlaceholder": "Chọn thành phố/tỉnh",
+            "district": "Quận/Huyện",
+            "districtPlaceholder": "Chọn quận/huyện"
+        },
+        "shipping": {
+            "title": "Phương thức vận chuyển",
+            "methods": {
+                "standard": {
+                    "name": "Giao hàng tiêu chuẩn",
+                    "description": "Dự kiến 3-5 ngày"
+                },
+                "express": {
+                    "name": "Giao hàng nhanh",
+                    "description": "Dự kiến 1-2 ngày"
+                }
+            }
+        },
+        "payment": {
+            "title": "Phương thức thanh toán",
+            "methods": {
+                "cod": {
+                    "name": "Thanh toán khi nhận hàng (COD)"
+                },
+                "card": {
+                    "name": "Thẻ tín dụng/ghi nợ"
+                },
+                "bank": {
+                    "name": "Chuyển khoản ngân hàng"
+                }
+            }
+        },
+        "summary": {
+            "title": "Tóm tắt đơn hàng",
+            "couponPlaceholder": "Mã giảm giá",
+            "applyCoupon": "Áp dụng",
+            "quantity": "Số lượng",
+            "subtotal": "Tạm tính",
+            "shipping": "Phí vận chuyển",
+            "discount": "Giảm giá",
+            "total": "Tổng cộng",
+            "placeOrder": "Đặt hàng"
+        },
+        "footer": {
+            "securePayment": "Thanh toán an toàn và bảo mật",
+            "support": "Hỗ trợ",
+            "privacy": "Chính sách bảo mật",
+            "terms": "Điều khoản dịch vụ"
+        }
     }
 }

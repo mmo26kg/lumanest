@@ -3,148 +3,21 @@
 import React from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useTranslations } from "next-intl"
 import {
     FaSearch,
     FaUser,
     FaShoppingCart,
-    FaStarOfLife, // Thay thế cho logo
-    FaShieldAlt, // Thay thế cho 'verified'
-    FaTree, // Thay thế cho 'forest'
-    FaLightbulb, // Thay thế cho 'emoji_objects'
+    FaStarOfLife,
+    FaShieldAlt,
+    FaTree,
+    FaLightbulb,
 } from "react-icons/fa"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-
-// --- Tách biệt Data ---
-
-/** @type {{ href: string, text: string, active?: boolean }[]} */
-const navLinksData = [
-    { href: "#", text: "Home" },
-    { href: "#", text: "Shop" },
-    { href: "#", text: "About Us", active: true },
-    { href: "#", text: "Contact" },
-]
-
-/** @type {{ icon: import('react-icons').IconType, title: string, description: string }[]} */
-const coreValuesData = [
-    {
-        icon: FaShieldAlt,
-        title: "Uncompromising Quality",
-        description:
-            "We use only the finest materials and time-honored techniques to ensure every piece is a masterpiece of durability and design.",
-    },
-    {
-        icon: FaTree,
-        title: "Sustainable by Design",
-        description:
-            "Our commitment to the planet is reflected in our responsibly sourced materials and eco-friendly production processes.",
-    },
-    {
-        icon: FaLightbulb,
-        title: "Timeless Innovation",
-        description:
-            "We blend classic aesthetics with modern functionality, creating furniture that is both beautiful and perfectly suited for contemporary life.",
-    },
-]
-
-/** @type {{ image: string, alt: string, title: string, description: string, order: 1 | 2 }[]} */
-const craftsmanshipData = [
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDn3tz7nUc2npV7h5MotIfVVl6GULOoS4kMN7P0HFzAU9c4rpsHYsGnKcmYUbRQnMxCRJbibcwTN8HCXFpiXFIS3VNujWIEreWqYg_tg6JVsgYcYpds5WhK4l9zRr-Q8fMOaQyh_tuFEVBWTHdmM1NY5nO485qJWUYlrTOQkE2aXsijTvBNbde4hucADbhp1-B4CnvEDg0LctnDcB5SIsM1SKIIzi0PrQU9zhGo_BnXezZUzVelHDE6wlna6mcd6d3XXBL0jWWL-tX_",
-        alt: "Close-up of solid oak wood planks",
-        title: "Sourcing the Finest Materials",
-        description:
-            "Our journey begins with responsibly harvested solid wood. We hand-select each plank for its unique grain, character, and structural integrity, ensuring a foundation of unparalleled quality.",
-        order: 1,
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDAVPF0u7KX1qGq5Yy3MR8BoSxu9Hljyaf_iE5I6BMrsRDbJPENx43koFRLF78wciw6FqYf4ov8EfdLXh71iPwhpHzbmchJwVVYgNLgBHQ0JmU9u7so0LEwJvpdsg1vUUyaMUqyXt_frMYnzSzO06WHE1QtMRoWvLolTTwaG0zjCKfPE9tIKmoNkoBeIotXtrXfj2nXxpks7fY4OkfN2tBLJvhHQFYU7tDA77erDYq5b-BTjrDhaXD9OGfYxOHbED0ZkejKR60TCbBs",
-        alt: "Artisan sanding a wooden chair",
-        title: "Meticulous Hand-Finishing",
-        description:
-            "Skilled artisans bring the design to life. Each joint is perfected, each surface is sanded to a flawless finish, and every detail is scrutinized to meet our exacting standards of excellence.",
-        order: 2,
-    },
-]
-
-/** @type {{ image: string, alt: string, name: string, role: string }[]} */
-const teamData = [
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAxxtSVYDodAijV8-8kIjBw63HefcOp4x0Yk9vm3VxJjQtNV4jh5LCqiPmypki2664pFgOYDIB5vE5awtYJzJOuMJV-XU6kYqN_BuZB_0LlROMziTOMEJRE7_-tY55vpTrbgmQb6YkGvJNAZ6dK5bXG5bj6O1LXv_Gz18gKfOQf9iw89W-TIZIuGudlma1eFO9aNw58RZSda5u-9qLIV3DlgkK2rVizjeQ3v376fjG32i_8EjPk7drDjcNAMx_JQJk_ydnyfBF0cYZz",
-        alt: "Headshot of James Alistair",
-        name: "James Alistair",
-        role: "Founder & CEO",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCP5-UyLftUDWHlXzpbLsOd1K49t4RSlzv5wMrtMNeufb615ltOyR4JM_zdIuNxuZ1yMjVdM_SNZ3bS8FFAmRP6uxISXpFSJiMKUUzgT5HAZ1RakeKuwg2-gQk3jQwB6XTG3cqi6757crqarZSgN09uHtqIRRvNYJrvpvcHZUp7u181MtJmRS_x_Gufnui-gSz8HffoalNf7SlRutvVq5Wo2Mk-0WiYXjjWQOUCLWU4I3o1SKtjVM1_2Yjax843fZtcrgdWgSmj3ksz",
-        alt: "Headshot of Eleanor Vance",
-        name: "Eleanor Vance",
-        role: "Lead Designer",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDfevki0uFmH4_V-rJ85mBumcUaYG7CDtUnfU6qwAtTeZNEhF1qyyDgtX4QDzdLo07lQMCAY6tTK63jql5TDnfCDGJPoaGCwT5kqDbGhzAu6rsuos6EUs2k--AFdSvCkjlF70nV0mDu3Lvuq_X42J3ahOY9joB0XXsrMj9GMq65Tg0hb2SmK5SfGoZI4MC0K9-PSUtj-YvDYv9y9d3oZP19AW-vQ9OsAsOXE3DoKUb6i3IE9oGnPfrTxBy4nWP7YP22VbMk8ZuOgSsH",
-        alt: "Headshot of Marcus Cole",
-        name: "Marcus Cole",
-        role: "Head of Craftsmanship",
-    },
-]
-
-/** @type {{ image: string, alt: string, className: string }[]} */
-const pressData = [
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCsFhOrsL4oFBZoFuhguB_5sZ8hFgHCg3x0HkjHtaUkzI0N231gLuVA0YYVTXkUBKJgTtqizszxyuv_GJA_eL5yR9ABB-A3kRNzZiferUp_cEVBHTVijTG-kvbDOkpZbM_2zjkPMJxpy58rm_L3jpwQrhsb1If6MEjIgmyb3hynkrrVGOu4uGqO4VqUzjOKWXJQIbjkpqxl3Q-ZmIzDvQmVkOJgfy4CkflcS5RjrBFKXFsHwNTtS1uQwojqEhYiQTMYwQYL7MeLze4-",
-        alt: "Architectural Digest logo",
-        className: "h-48",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10BRvJ9qY69gfpOw21WfXiUnLcTPErYsMFPWSTYuATRertk8hQsVG1_-bKb9jxFJ3JJN5JuTetpujwbYmhCiPHPL0GV4SLHV7KtHqoLuLTKSnTqJUzUQPLncIAaxUgwTHtRAzXtel_xCiFpQM33dd1LjFHQqL0o-kvbTt7Kr5rfUhZd-AYvL5bNM809HekQdq7eBKCaxhdG06g7Z6y6LeBLVXWKK_HGM3bWCS0V-zn5TZt_ewP4n2ChL1a10WzIyRvjjLCzYkzrYj",
-        alt: "Elle Decor logo",
-        className: "h-48",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOSy2ALDGcsyW2PHbidNsAh8IqQTEX5id4NQGKylnhTwGo8BdFO6_yMCSypwflRNh3sLk91UyUCIipWgsiTqy8r8ESzsWZ5UAAmb0C4BXYxAbNN6Js36BPKp9tgNcK1nJaH7FsJdOrMDE1WaEU0o5o5ebbcyN7hFpVqZr-baotOzUT42HBrE3sozEMIBJJjStiRUgS_GvkKOXHUOh5z5XcklOmacU0IfCx0J9PL4J2o6F3nmKNQbWSTfOsMFSFjjgiCVJ6o65TDmFk",
-        alt: "The New York Times logo",
-        className: "h-48",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB8hFohUe92nXSAiAAP8uKSc3wuv9_s23OWXTI4aJ2Zjvw9r3_ssViIG7y5bsijgUhktqawvTMDcscnamWz66XcbC9v3Uh7FFQFtouluhiEDeR_xLsxctqZ2eNpgbprfgwlSAeFFRqJDCs_SqFD8q06-Ai4zx8ShvMlU8H7oRDUty0zG7XB1Ua5JjpfjrxOK3EgPqMCTtCx6tVLI2G8S1Im1LIQaoyZYDfnCVQKZVsFAbdro-O_9tRkDlhk1BIK6qM3ubh09bvJIVNo",
-        alt: "Vogue logo",
-        className: "h-48",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwDYt5BTQkTZF9MjvXSNLs0gHjcpMgLmUlrfkNPUDpPTPjjIuT8c_gxzIzoxXZU8rqCtO44Q-7XJY00peATHHHZ7ySnlmLhlwoFT47gJpILdsWyRt-bFrvK9RI93wF1azOxOqPmxFtPvCF8HUo9aSpBa2VqyEaHMqRLT7dQpmTTHu0QNOfsNf_A6bdphR_iRnZZiE3h7BiUmPcef4mo2BuKLrL3DzgaxUY75nsVkYp70S6IDpF1KwyaQ53TcUlUhSkmVhYOtNQUqJN",
-        alt: "Wallpaper Magazine logo",
-        className: "h-48",
-    },
-]
-
-/** @type {{ image: string, alt: string, location: string, address: string, hours: string }[]} */
-const locationsData = [
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCoARohXPijWDInMlROYa-0dYeZN7G739sxHpODkZqKNTTioENxLOAPaV3hcu2k8EnRgyIoH-CeouGMpe6OTTFP2v-bkcEVfAkraC-eVylL6QMxTX_aNXtS9jjOeU9AfQMfM2BpHHPY_wlAr7FuzsAUQBeDoYRMWmOn6kBmdc6_aq9bqUpU8IbKD9XUnkOZZ8ibyE771pqsDDklsEWi2MqOw4riNoZP-AAaunMLvxuMIM5madamKDiSvU9i9fv_-jLPY_J5un07jUkS",
-        alt: "Map of New York store",
-        location: "New York",
-        address: "123 Design Avenue, SoHo",
-        hours: "Mon - Sat: 10am - 7pm",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFge8I1FxMr6DzMXWwASgGMfLtA7hO5bUdwraJrMH6g1giOHjMQLZg9FRv1m_-1UgamF7iANyraWFUmk7Tc7VOhbCiC95iQjO5FaIwCdVReB5zOLJ7KbltpYYh0Pfg1JiRWQobFjebh3GnyPYCPNSaxgjTIH-oThqDUREanBcJEXB2P4Jf83wQ4kjsdPTSyYuyUwhRcTtkUv7e6EiX3aHFAuvJicrW7twM-EipXF9Pzi25frlnRWARKfHmb-wJYp46xywzX2tdYeYF",
-        alt: "Map of London store",
-        location: "London",
-        address: "456 Craftsmanship Rd, Shoreditch",
-        hours: "Mon - Sat: 10am - 7pm",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBdK0ashzTe7lsR2NEjcXw_Saz84MKE0WI0XMpC07OnMmnBodhr3YOAmboXuse7ZQVxjQPc1Y-zow99UW6CBXmHE4uWcvsBKvbAk4SPpV8KTgfOlrOhop1zxTTUFW4_ncQ59wlhkorDznitaeCaoqFb1CKpDeqJxDBLzFfX6Opw1jsc3HkwvQ6aVFpxmWea4Q2KdcGu8QNmlFHBfbVD_40M5YLIzentc3JEniArnX83Zoa6UWkiK2tCQI-NrW_PbhxxCfXd9h8fSMfB",
-        alt: "Map of Paris store",
-        location: "Paris",
-        address: "789 Élégance St, Le Marais",
-        hours: "Mon - Sat: 10am - 7pm",
-    },
-]
 
 // --- Tiện ích Animation ---
 
@@ -183,13 +56,13 @@ const staggerItem = {
 const Logo = () => (
     <div className="flex items-center gap-4 text-foreground">
         <FaStarOfLife className="size-5 text-primary" />
-        <h2 className="text-lg font-bold tracking-tight">Moderno Furniture</h2>
+        <h2 className="text-lg font-bold tracking-tight">Lumanest Furniture</h2>
     </div>
 )
 
 
 
-const HeroSection = () => (
+const HeroSection = ({ t }) => (
     <section
         className="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center"
         style={{
@@ -205,30 +78,23 @@ const HeroSection = () => (
             className="relative z-10 text-center text-white"
         >
             <h1 className="text-4xl font-black leading-tight tracking-tight md:text-6xl">
-                Moderno Furniture
+                {t("about.hero.title")}
             </h1>
-            <p className="mt-2 text-lg md:text-xl">Crafting Homes, Building Futures.</p>
+            <p className="mt-2 text-lg md:text-xl">{t("about.hero.subtitle")}</p>
         </motion.div>
     </section>
 )
 
-const BrandStory = () => (
+const BrandStory = ({ t }) => (
     <AnimatedSection className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Our Story</h2>
+        <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{t("about.story.title")}</h2>
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
-            Founded on the principles of timeless design and impeccable craftsmanship,
-            Moderno Furniture began with a simple idea: to create beautiful, lasting
-            pieces that turn a house into a home. Our journey started in a small
-            workshop, driven by a passion for woodworking and a commitment to
-            sustainable practices. Today, we continue to honor that legacy, blending
-            traditional techniques with modern aesthetics to bring you furniture that
-            is not only stylish but also built to be part of your family's story for
-            generations.
+            {t("about.story.content")}
         </p>
     </AnimatedSection>
 )
 
-const MissionVision = () => (
+const MissionVision = ({ t }) => (
     <AnimatedSection>
         <motion.div
             variants={staggerContainer}
@@ -240,20 +106,18 @@ const MissionVision = () => (
                 variants={staggerItem}
                 className="flex flex-col gap-2 border-t-2 border-primary pt-4"
             >
-                <h3 className="text-2xl font-bold">Our Mission</h3>
+                <h3 className="text-2xl font-bold">{t("about.mission.title")}</h3>
                 <p className="text-base leading-relaxed text-muted-foreground">
-                    To design and craft high-quality, sustainable furniture that enhances
-                    the beauty and comfort of everyday living.
+                    {t("about.mission.content")}
                 </p>
             </motion.div>
             <motion.div
                 variants={staggerItem}
                 className="flex flex-col gap-2 border-t-2 border-primary pt-4"
             >
-                <h3 className="text-2xl font-bold">Our Vision</h3>
+                <h3 className="text-2xl font-bold">{t("about.vision.title")}</h3>
                 <p className="text-base leading-relaxed text-muted-foreground">
-                    To be a global leader in innovative and eco-conscious home
-                    furnishings, inspiring a more thoughtful way of life.
+                    {t("about.vision.content")}
                 </p>
             </motion.div>
         </motion.div>
@@ -280,14 +144,14 @@ const CoreValueCard = ({ icon: Icon, title, description }) => (
 /**
  * @param {{ values: { icon: import('react-icons').IconType, title: string, description: string }[] }} props
  */
-const CoreValues = ({ values }) => (
+const CoreValues = ({ values, t }) => (
     <AnimatedSection>
         <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Our Core Values
+                {t("about.coreValues.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                The principles that guide every cut, stitch, and decision we make.
+                {t("about.coreValues.subtitle")}
             </p>
         </div>
         <motion.div
@@ -331,15 +195,14 @@ const CraftsmanshipStep = ({ image, alt, title, description, order }) => (
 /**
  * @param {{ steps: { image: string, alt: string, title: string, description: string, order: 1 | 2 }[] }} props
  */
-const Craftsmanship = ({ steps }) => (
+const Craftsmanship = ({ steps, t }) => (
     <section>
         <AnimatedSection className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Our Craftsmanship
+                {t("about.craftsmanship.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                From raw material to the heart of your home, every piece tells a story of
-                dedication.
+                {t("about.craftsmanship.subtitle")}
             </p>
         </AnimatedSection>
         <div className="mt-12 space-y-16">
@@ -368,14 +231,14 @@ const TeamMember = ({ image, alt, name, role }) => (
 /**
  * @param {{ members: { image: string, alt: string, name: string, role: string }[] }} props
  */
-const TeamGallery = ({ members }) => (
+const TeamGallery = ({ members, t }) => (
     <AnimatedSection>
         <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Meet Our Makers
+                {t("about.team.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                The passionate individuals behind every piece of Moderno furniture.
+                {t("about.team.subtitle")}
             </p>
         </div>
         <motion.div
@@ -394,14 +257,14 @@ const TeamGallery = ({ members }) => (
 /**
  * @param {{ logos: { image: string, alt: string, className: string }[] }} props
  */
-const PressFeatures = ({ logos }) => (
+const PressFeatures = ({ logos, t }) => (
     <AnimatedSection>
         <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Featured In
+                {t("about.press.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                We're proud to be recognized by leaders in design and lifestyle.
+                {t("about.press.subtitle")}
             </p>
         </div>
         <motion.div
@@ -447,14 +310,14 @@ const LocationCard = ({ image, alt, location, address, hours }) => (
 /**
  * @param {{ locations: { image: string, alt: string, location: string, address: string, hours: string }[] }} props
  */
-const StoreLocations = ({ locations }) => (
+const StoreLocations = ({ locations, t }) => (
     <AnimatedSection>
         <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Visit Our Stores
+                {t("about.locations.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-                Experience the quality of Moderno Furniture in person.
+                {t("about.locations.subtitle")}
             </p>
         </div>
         <motion.div
@@ -470,7 +333,7 @@ const StoreLocations = ({ locations }) => (
     </AnimatedSection>
 )
 
-const CTASection = () => (
+const CTASection = ({ t }) => (
     <section
         className="relative flex min-h-[50vh] items-center justify-center bg-cover bg-center"
         style={{
@@ -481,16 +344,16 @@ const CTASection = () => (
         <div className="absolute inset-0 bg-black/60" />
         <AnimatedSection className="relative z-10 text-center text-white">
             <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-                Discover Your Perfect Piece
+                {t("about.cta.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-white/90">
-                Browse our curated collections and find the furniture that speaks to you.
+                {t("about.cta.subtitle")}
             </p>
             <Button
                 size="lg"
                 className="mt-8 h-12 px-6 text-base font-bold tracking-wide transition-transform hover:scale-105"
             >
-                Explore Collections
+                {t("about.cta.button")}
             </Button>
         </AnimatedSection>
     </section>
@@ -499,22 +362,133 @@ const CTASection = () => (
 // --- Component Trang Chính ---
 
 export default function AboutPage() {
+    const t = useTranslations()
+
+    // Data được định nghĩa trong component để có thể sử dụng translations
+    const getCoreValuesData = () => [
+        {
+            icon: FaShieldAlt,
+            title: t("about.coreValues.items.quality.title"),
+            description: t("about.coreValues.items.quality.description"),
+        },
+        {
+            icon: FaTree,
+            title: t("about.coreValues.items.sustainable.title"),
+            description: t("about.coreValues.items.sustainable.description"),
+        },
+        {
+            icon: FaLightbulb,
+            title: t("about.coreValues.items.innovation.title"),
+            description: t("about.coreValues.items.innovation.description"),
+        },
+    ]
+
+    const getCraftsmanshipData = () => [
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDn3tz7nUc2npV7h5MotIfVVl6GULOoS4kMN7P0HFzAU9c4rpsHYsGnKcmYUbRQnMxCRJbibcwTN8HCXFpiXFIS3VNujWIEreWqYg_tg6JVsgYcYpds5WhK4l9zRr-Q8fMOaQyh_tuFEVBWTHdmM1NY5nO485qJWUYlrTOQkE2aXsijTvBNbde4hucADbhp1-B4CnvEDg0LctnDcB5SIsM1SKIIzi0PrQU9zhGo_BnXezZUzVelHDE6wlna6mcd6d3XXBL0jWWL-tX_",
+            alt: t("about.craftsmanship.items.materials.alt"),
+            title: t("about.craftsmanship.items.materials.title"),
+            description: t("about.craftsmanship.items.materials.description"),
+            order: 1,
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDAVPF0u7KX1qGq5Yy3MR8BoSxu9Hljyaf_iE5I6BMrsRDbJPENx43koFRLF78wciw6FqYf4ov8EfdLXh71iPwhpHzbmchJwVVYgNLgBHQ0JmU9u7so0LEwJvpdsg1vUUyaMUqyXt_frMYnzSzO06WHE1QtMRoWvLolTTwaG0zjCKfPE9tIKmoNkoBeIotXtrXfj2nXxpks7fY4OkfN2tBLJvhHQFYU7tDA77erDYq5b-BTjrDhaXD9OGfYxOHbED0ZkejKR60TCbBs",
+            alt: t("about.craftsmanship.items.finishing.alt"),
+            title: t("about.craftsmanship.items.finishing.title"),
+            description: t("about.craftsmanship.items.finishing.description"),
+            order: 2,
+        },
+    ]
+
+    const getTeamData = () => [
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAxxtSVYDodAijV8-8kIjBw63HefcOp4x0Yk9vm3VxJjQtNV4jh5LCqiPmypki2664pFgOYDIB5vE5awtYJzJOuMJV-XU6kYqN_BuZB_0LlROMziTOMEJRE7_-tY55vpTrbgmQb6YkGvJNAZ6dK5bXG5bj6O1LXv_Gz18gKfOQf9iw89W-TIZIuGudlma1eFO9aNw58RZSda5u-9qLIV3DlgkK2rVizjeQ3v376fjG32i_8EjPk7drDjcNAMx_JQJk_ydnyfBF0cYZz",
+            alt: t("about.team.items.james.alt"),
+            name: t("about.team.items.james.name"),
+            role: t("about.team.items.james.role"),
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCP5-UyLftUDWHlXzpbLsOd1K49t4RSlzv5wMrtMNeufb615ltOyR4JM_zdIuNxuZ1yMjVdM_SNZ3bS8FFAmRP6uxISXpFSJiMKUUzgT5HAZ1RakeKuwg2-gQk3jQwB6XTG3cqi6757crqarZSgN09uHtqIRRvNYJrvpvcHZUp7u181MtJmRS_x_Gufnui-gSz8HffoalNf7SlRutvVq5Wo2Mk-0WiYXjjWQOUCLWU4I3o1SKtjVM1_2Yjax843fZtcrgdWgSmj3ksz",
+            alt: t("about.team.items.eleanor.alt"),
+            name: t("about.team.items.eleanor.name"),
+            role: t("about.team.items.eleanor.role"),
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDfevki0uFmH4_V-rJ85mBumcUaYG7CDtUnfU6qwAtTeZNEhF1qyyDgtX4QDzdLo07lQMCAY6tTK63jql5TDnfCDGJPoaGCwT5kqDbGhzAu6rsuos6EUs2k--AFdSvCkjlF70nV0mDu3Lvuq_X42J3ahOY9joB0XXsrMj9GMq65Tg0hb2SmK5SfGoZI4MC0K9-PSUtj-YvDYv9y9d3oZP19AW-vQ9OsAsOXE3DoKUb6i3IE9oGnPfrTxBy4nWP7YP22VbMk8ZuOgSsH",
+            alt: t("about.team.items.marcus.alt"),
+            name: t("about.team.items.marcus.name"),
+            role: t("about.team.items.marcus.role"),
+        },
+    ]
+
+    const getPressData = () => [
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCsFhOrsL4oFBZoFuhguB_5sZ8hFgHCg3x0HkjHtaUkzI0N231gLuVA0YYVTXkUBKJgTtqizszxyuv_GJA_eL5yR9ABB-A3kRNzZiferUp_cEVBHTVijTG-kvbDOkpZbM_2zjkPMJxpy58rm_L3jpwQrhsb1If6MEjIgmyb3hynkrrVGOu4uGqO4VqUzjOKWXJQIbjkpqxl3Q-ZmIzDvQmVkOJgfy4CkflcS5RjrBFKXFsHwNTtS1uQwojqEhYiQTMYwQYL7MeLze4-",
+            alt: "Architectural Digest logo",
+            className: "h-48",
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB10BRvJ9qY69gfpOw21WfXiUnLcTPErYsMFPWSTYuATRertk8hQsVG1_-bKb9jxFJ3JJN5JuTetpujwbYmhCiPHPL0GV4SLHV7KtHqoLuLTKSnTqJUzUQPLncIAaxUgwTHtRAzXtel_xCiFpQM33dd1LjFHQqL0o-kvbTt7Kr5rfUhZd-AYvL5bNM809HekQdq7eBKCaxhdG06g7Z6y6LeBLVXWKK_HGM3bWCS0V-zn5TZt_ewP4n2ChL1a10WzIyRvjjLCzYkzrYj",
+            alt: "Elle Decor logo",
+            className: "h-48",
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOSy2ALDGcsyW2PHbidNsAh8IqQTEX5id4NQGKylnhTwGo8BdFO6_yMCSypwflRNh3sLk91UyUCIipWgsiTqy8r8ESzsWZ5UAAmb0C4BXYxAbNN6Js36BPKp9tgNcK1nJaH7FsJdOrMDE1WaEU0o5o5ebbcyN7hFpVqZr-baotOzUT42HBrE3sozEMIBJJjStiRUgS_GvkKOXHUOh5z5XcklOmacU0IfCx0J9PL4J2o6F3nmKNQbWSTfOsMFSFjjgiCVJ6o65TDmFk",
+            alt: "The New York Times logo",
+            className: "h-48",
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB8hFohUe92nXSAiAAP8uKSc3wuv9_s23OWXTI4aJ2Zjvw9r3_ssViIG7y5bsijgUhktqawvTMDcscnamWz66XcbC9v3Uh7FFQFtouluhiEDeR_xLsxctqZ2eNpgbprfgwlSAeFFRqJDCs_SqFD8q06-Ai4zx8ShvMlU8H7oRDUty0zG7XB1Ua5JjpfjrxOK3EgPqMCTtCx6tVLI2G8S1Im1LIQaoyZYDfnCVQKZVsFAbdro-O_9tRkDlhk1BIK6qM3ubh09bvJIVNo",
+            alt: "Vogue logo",
+            className: "h-48",
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwDYt5BTQkTZF9MjvXSNLs0gHjcpMgLmUlrfkNPUDpPTPjjIuT8c_gxzIzoxXZU8rqCtO44Q-7XJY00peATHHHZ7ySnlmLhlwoFT47gJpILdsWyRt-bFrvK9RI93wF1azOxOqPmxFtPvCF8HUo9aSpBa2VqyEaHMqRLT7dQpmTTHu0QNOfsNf_A6bdphR_iRnZZiE3h7BiUmPcef4mo2BuKLrL3DzgaxUY75nsVkYp70S6IDpF1KwyaQ53TcUlUhSkmVhYOtNQUqJN",
+            alt: "Wallpaper Magazine logo",
+            className: "h-48",
+        },
+    ]
+
+    const getLocationsData = () => [
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCoARohXPijWDInMlROYa-0dYeZN7G739sxHpODkZqKNTTioENxLOAPaV3hcu2k8EnRgyIoH-CeouGMpe6OTTFP2v-bkcEVfAkraC-eVylL6QMxTX_aNXtS9jjOeU9AfQMfM2BpHHPY_wlAr7FuzsAUQBeDoYRMWmOn6kBmdc6_aq9bqUpU8IbKD9XUnkOZZ8ibyE771pqsDDklsEWi2MqOw4riNoZP-AAaunMLvxuMIM5madamKDiSvU9i9fv_-jLPY_J5un07jUkS",
+            alt: t("about.locations.items.newyork.alt"),
+            location: t("about.locations.items.newyork.name"),
+            address: t("about.locations.items.newyork.address"),
+            hours: t("about.locations.items.newyork.hours"),
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFge8I1FxMr6DzMXWwASgGMfLtA7hO5bUdwraJrMH6g1giOHjMQLZg9FRv1m_-1UgamF7iANyraWFUmk7Tc7VOhbCiC95iQjO5FaIwCdVReB5zOLJ7KbltpYYh0Pfg1JiRWQobFjebh3GnyPYCPNSaxgjTIH-oThqDUREanBcJEXB2P4Jf83wQ4kjsdPTSyYuyUwhRcTtkUv7e6EiX3aHFAuvJicrW7twM-EipXF9Pzi25frlnRWARKfHmb-wJYp46xywzX2tdYeYF",
+            alt: t("about.locations.items.london.alt"),
+            location: t("about.locations.items.london.name"),
+            address: t("about.locations.items.london.address"),
+            hours: t("about.locations.items.london.hours"),
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBdK0ashzTe7lsR2NEjcXw_Saz84MKE0WI0XMpC07OnMmnBodhr3YOAmboXuse7ZQVxjQPc1Y-zow99UW6CBXmHE4uWcvsBKvbAk4SPpV8KTgfOlrOhop1zxTTUFW4_ncQ59wlhkorDznitaeCaoqFb1CKpDeqJxDBLzFfX6Opw1jsc3HkwvQ6aVFpxmWea4Q2KdcGu8QNmlFHBfbVD_40M5YLIzentc3JEniArnX83Zoa6UWkiK2tCQI-NrW_PbhxxCfXd9h8fSMfB",
+            alt: t("about.locations.items.paris.alt"),
+            location: t("about.locations.items.paris.name"),
+            address: t("about.locations.items.paris.address"),
+            hours: t("about.locations.items.paris.hours"),
+        },
+    ]
+
     return (
         <div className="-mt-16 relative flex min-h-screen w-full flex-col bg-background text-foreground font-display">
-            <main className="flex-grow">
-                <HeroSection />
+            <main className="grow">
+                <HeroSection t={t} />
 
                 <div className="container mx-auto max-w-5xl px-4 py-16 sm:py-24 space-y-24 md:space-y-32">
-                    <BrandStory />
-                    <MissionVision />
-                    <CoreValues values={coreValuesData} />
-                    <Craftsmanship steps={craftsmanshipData} />
-                    <TeamGallery members={teamData} />
-                    <PressFeatures logos={pressData} />
-                    <StoreLocations locations={locationsData} />
+                    <BrandStory t={t} />
+                    <MissionVision t={t} />
+                    <CoreValues values={getCoreValuesData()} t={t} />
+                    <Craftsmanship steps={getCraftsmanshipData()} t={t} />
+                    <TeamGallery members={getTeamData()} t={t} />
+                    <PressFeatures logos={getPressData()} t={t} />
+                    <StoreLocations locations={getLocationsData()} t={t} />
                 </div>
 
-                <CTASection />
+                <CTASection t={t} />
             </main>
         </div>
     )

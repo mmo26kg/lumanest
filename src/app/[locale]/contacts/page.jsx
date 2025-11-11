@@ -3,8 +3,9 @@
 import React from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useTranslations } from "next-intl"
 import {
-    FaFeatherAlt, // Logo thay thế
+    FaFeatherAlt,
     FaHeart,
     FaShoppingCart,
     FaBars,
@@ -15,6 +16,7 @@ import {
     FaFacebookF,
     FaInstagram,
     FaPinterestP,
+    FaClock,
 } from "react-icons/fa"
 
 import { cn } from "@/lib/utils"
@@ -37,82 +39,6 @@ import {
 } from "@/components/ui/accordion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Separator } from "@/components/ui/separator"
-
-// --- Tách biệt Data ---
-
-/** @type {{ href: string, text: string, active?: boolean }[]} */
-const navLinksData = [
-    { href: "#", text: "Home" },
-    { href: "#", text: "Products" },
-    { href: "#", text: "About Us" },
-    { href: "#", text: "Contact Us", active: true },
-]
-
-/** @type {{ icon: import('react-icons').IconType, title: string, text: string }[]} */
-const contactInfoData = [
-    {
-        icon: FaEnvelope,
-        title: "Email",
-        text: "support@furniturebrand.com",
-    },
-    {
-        icon: FaPhoneAlt,
-        title: "Số điện thoại",
-        text: "(+84) 123 456 789",
-    },
-    {
-        icon: FaMapMarkerAlt,
-        title: "Địa chỉ trụ sở",
-        text: "123 Furniture St, District 1, HCMC",
-    },
-]
-
-/** @type {{ image: string, alt: string, title: string, address: string, hours: string }[]} */
-const storeLocationsData = [
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAn5YZh8v8KzMyHslJ-9_4wMwGHhSCuwdBfcKgs3b5dXBA4TiT9XormDynE2lnT_ml9R15j8AvtmYnJHX8VuZKIGmoF0fs9sJZPiU-7SRevXUpJUI25q31ZA_qd1vWhupkB95BdT5-HjWoPi7bxsBwwVYvo-GQdY1kycCkL_ZHAfgMgW8OWFYnCLSkn-chWz1FbVFLxkFaJU9Xwho96_91Oad3UpuXDAL-pv6YgIMwBmVeW9B_1_eG1yqTDw9rlNxvUEa1yYCGY4Hk2",
-        alt: "Abstract map view of Ho Chi Minh City",
-        title: "Showroom TP. Hồ Chí Minh",
-        address: "123 Lê Lợi, Phường Bến Nghé, Quận 1",
-        hours: "Giờ mở cửa: 9:00 - 21:00 hàng ngày",
-    },
-    {
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGi0oTTQ7WHkzA5_U2_06fGcDe12vubMyUbUZ5aZpPte_-7qWAtFDM8cLJNBMPpnylbErn7dmE4Q2RZcdtbfbjJPd3qWbV_-8BSSFjSlud3nvpc7VAYYKvS0_LSJNn_c_dsRg69isEojS3Siolu7kGnfRLH2BI-DwirV9oFn7WJ6fBeHCV0UBSmprwECRpQmUQvwVqnMo3v2HbDL6CeGhTZPLoDU-yGiP7fzfRnBFs6j694EZ_p5wr_fr5YeKuIACbXodi1eZkdgd4",
-        alt: "Abstract map view of Hanoi",
-        title: "Showroom Hà Nội",
-        address: "456 Tràng Tiền, Quận Hoàn Kiếm",
-        hours: "Giờ mở cửa: 9:00 - 21:00 hàng ngày",
-    },
-]
-
-/** @type {{ id: string, question: string, answer: string }[]} */
-const faqData = [
-    {
-        id: "faq-1",
-        question: "Làm thế nào để đặt hàng?",
-        answer:
-            "Bạn có thể đặt hàng trực tiếp trên website của chúng tôi bằng cách thêm sản phẩm vào giỏ hàng và tiến hành thanh toán. Hoặc bạn có thể gọi điện đến hotline để được hỗ trợ.",
-    },
-    {
-        id: "faq-2",
-        question: "Chính sách vận chuyển và lắp đặt?",
-        answer:
-            "Chúng tôi miễn phí vận chuyển và lắp đặt cho các đơn hàng trong nội thành TP.HCM và Hà Nội. Đối với các khu vực khác, phí vận chuyển sẽ được tính dựa trên địa chỉ giao hàng.",
-    },
-    {
-        id: "faq-3",
-        question: "Chính sách bảo hành và đổi trả?",
-        answer:
-            "Sản phẩm được bảo hành 12 tháng cho lỗi của nhà sản xuất. Chúng tôi hỗ trợ đổi trả trong vòng 7 ngày nếu sản phẩm có lỗi hoặc không đúng như mô tả.",
-    },
-]
-
-/** @type {{ name: string, icon: import('react-icons').IconType, href: string }[]} */
-const socialLinksData = [
-    { name: "Facebook", icon: FaFacebookF, href: "#" },
-    { name: "Instagram", icon: FaInstagram, href: "#" },
-    { name: "Pinterest", icon: FaPinterestP, href: "#" },
-]
 
 // --- Tiện ích Animation ---
 
@@ -158,7 +84,7 @@ const Logo = () => (
 )
 
 
-const HeroSection = () => (
+const HeroSection = ({ t }) => (
     <AnimatedSection className="w-full mb-16 sm:mb-20 lg:mb-24">
         <div
             className="relative flex min-h-[360px] md:min-h-[480px] flex-col gap-6 items-center justify-center p-4 text-center bg-cover bg-center bg-no-repeat rounded-xl"
@@ -175,11 +101,10 @@ const HeroSection = () => (
                 className="relative z-10"
             >
                 <h1 className="text-white text-4xl font-black leading-tight tracking-[-0.033em] sm:text-5xl lg:text-6xl">
-                    Liên hệ
+                    {t("contacts.hero.title")}
                 </h1>
                 <p className="text-white/90 text-sm font-normal leading-normal sm:text-base max-w-lg mt-4">
-                    Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn. Hãy liên hệ với chúng
-                    tôi qua các kênh dưới đây.
+                    {t("contacts.hero.subtitle")}
                 </p>
             </motion.div>
         </div>
@@ -189,25 +114,20 @@ const HeroSection = () => (
 /**
  * @param {{ icon: import('react-icons').IconType, title: string, text: string }} props
  */
-const ContactInfoCard = ({ icon: Icon, title, text }) => (
-    <motion.div variants={staggerItem}>
-        <Card className="flex flex-col flex-1 h-full shadow-sm">
-            <CardContent className="flex flex-col gap-4 p-6">
-                <Icon className="text-3xl text-primary" />
-                <div className="flex flex-col gap-1">
-                    <h2 className="text-lg font-bold leading-tight text-foreground">
-                        {title}
-                    </h2>
-                    <p className="text-base font-normal leading-normal text-muted-foreground">
-                        {text}
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
+const ContactInfoCard = ({ icon: Icon, title, info, t }) => (
+    <motion.div
+        variants={staggerItem}
+        className="bg-card p-6 rounded-xl border shadow-sm text-center"
+    >
+        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <Icon className="text-primary text-xl" />
+        </div>
+        <h3 className="font-semibold text-lg mb-2">{t(title)}</h3>
+        <p className="text-muted-foreground">{t(info)}</p>
     </motion.div>
 )
 
-const ContactForm = () => (
+const ContactForm = ({ t }) => (
     <motion.div
         variants={staggerItem}
         className="lg:col-span-3 bg-card p-6 sm:p-8 rounded-xl border shadow-sm"
@@ -216,43 +136,43 @@ const ContactForm = () => (
             <div className="flex flex-col sm:flex-row gap-6">
                 <div className="flex-1 space-y-2">
                     <Label htmlFor="name" className="text-base font-medium">
-                        Họ và Tên
+                        {t("contacts.form.fields.name.label")}
                     </Label>
                     <Input
                         id="name"
-                        placeholder="Nhập họ và tên của bạn"
+                        placeholder={t("contacts.form.fields.name.placeholder")}
                         className="h-12 px-4"
                     />
                 </div>
                 <div className="flex-1 space-y-2">
                     <Label htmlFor="email" className="text-base font-medium">
-                        Email
+                        {t("contacts.form.fields.email.label")}
                     </Label>
                     <Input
                         id="email"
                         type="email"
-                        placeholder="Nhập email của bạn"
+                        placeholder={t("contacts.form.fields.email.placeholder")}
                         className="h-12 px-4"
                     />
                 </div>
             </div>
             <div className="space-y-2">
                 <Label htmlFor="subject" className="text-base font-medium">
-                    Chủ đề
+                    {t("contacts.form.fields.subject.label")}
                 </Label>
                 <Input
                     id="subject"
-                    placeholder="Nhập chủ đề tin nhắn"
+                    placeholder={t("contacts.form.fields.subject.placeholder")}
                     className="h-12 px-4"
                 />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="message" className="text-base font-medium">
-                    Tin nhắn
+                    {t("contacts.form.fields.message.label")}
                 </Label>
                 <Textarea
                     id="message"
-                    placeholder="Nội dung tin nhắn của bạn..."
+                    placeholder={t("contacts.form.fields.message.placeholder")}
                     className="min-h-32 p-4"
                 />
             </div>
@@ -261,7 +181,7 @@ const ContactForm = () => (
                 size="lg"
                 className="h-12 px-6 text-base font-bold w-full sm:w-auto"
             >
-                Gửi tin nhắn
+                {t("contacts.form.submitButton")}
             </Button>
         </form>
     </motion.div>
@@ -270,20 +190,20 @@ const ContactForm = () => (
 /**
  * @param {{ image: string, alt: string, title: string, address: string, hours: string }} props
  */
-const StoreLocationCard = ({ image, alt, title, address, hours }) => (
+const StoreLocationCard = ({ image, alt, title, address, hours, t }) => (
     <motion.div variants={staggerItem}>
         <Card className="flex flex-col h-full shadow-sm overflow-hidden">
             <AspectRatio ratio={16 / 9}>
                 <div
                     className="h-full w-full bg-cover bg-center"
                     style={{ backgroundImage: `url(${image})` }}
-                    aria-label={alt}
+                    aria-label={t(alt)}
                 />
             </AspectRatio>
             <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground">{title}</h3>
-                <p className="text-muted-foreground mt-2">{address}</p>
-                <p className="text-sm text-muted-foreground/80 mt-2">{hours}</p>
+                <h3 className="text-xl font-bold text-foreground">{t(title)}</h3>
+                <p className="text-muted-foreground mt-2">{t(address)}</p>
+                <p className="text-sm text-muted-foreground/80 mt-2">{t(hours)}</p>
             </CardContent>
         </Card>
     </motion.div>
@@ -292,14 +212,14 @@ const StoreLocationCard = ({ image, alt, title, address, hours }) => (
 /**
  * @param {{ items: { id: string, question: string, answer: string }[] }} props
  */
-const FaqSection = ({ items }) => (
+const FaqSection = ({ items, t }) => (
     <AnimatedSection className="mb-16 sm:mb-20 lg:mb-24 max-w-4xl mx-auto">
         <div className="text-center mb-10">
             <h2 className="text-foreground text-3xl font-bold tracking-tight">
-                Câu hỏi thường gặp
+                {t("contacts.faq.title")}
             </h2>
             <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
-                Tìm câu trả lời nhanh cho các câu hỏi phổ biến.
+                {t("contacts.faq.subtitle")}
             </p>
         </div>
         <Accordion
@@ -329,12 +249,12 @@ const FaqSection = ({ items }) => (
 /**
  * @param {{ socials: { name: string, icon: import('react-icons').IconType, href: string }[] }} props
  */
-const SocialCtaSection = ({ socials }) => (
+const SocialCtaSection = ({ socials, t }) => (
     <AnimatedSection>
         <Card className="text-center shadow-sm">
             <CardContent className="p-8 sm:p-12">
                 <h2 className="text-foreground text-2xl font-bold tracking-tight mb-2">
-                    Kết nối với chúng tôi
+                    {t("contacts.social.title")}
                 </h2>
                 <div className="flex justify-center gap-4 mt-4">
                     {socials.map((social) => (
@@ -354,10 +274,10 @@ const SocialCtaSection = ({ socials }) => (
                 </div>
                 <Separator className="my-8" />
                 <h3 className="text-foreground text-2xl font-bold tracking-tight mb-4">
-                    Sẵn sàng làm mới không gian của bạn?
+                    {t("contacts.social.cta.title")}
                 </h3>
                 <Button size="lg" variant="secondary" className="h-12 px-6 text-base font-bold">
-                    Khám phá bộ sưu tập mới nhất
+                    {t("contacts.social.cta.button")}
                 </Button>
             </CardContent>
         </Card>
@@ -367,11 +287,78 @@ const SocialCtaSection = ({ socials }) => (
 // --- Component Trang Chính ---
 
 export default function ContactPage() {
+    const t = useTranslations()
+
+    // Data functions using translations
+    const getContactInfoData = () => [
+        {
+            icon: FaEnvelope,
+            title: "contacts.info.email.title",
+            info: "contacts.info.email.value",
+        },
+        {
+            icon: FaPhoneAlt,
+            title: "contacts.info.phone.title",
+            info: "contacts.info.phone.value",
+        },
+        {
+            icon: FaMapMarkerAlt,
+            title: "contacts.info.address.title",
+            info: "contacts.info.address.value",
+        },
+    ]
+
+    const getStoreLocationsData = () => [
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAgbRddTMIyQ2M5pHZk0KTUaJi6BTo8LXYVlz82-rP8wqVw1vy9FH0fnZonXWXNzFXOGjGXSuiI4bZzi-XVZVjkHRmhaAMXyKuddrXaR4PK4-SR3Vrx0381uiFwR6i-ks9Osqv1nLXd2I3Tr7FfYlwyfirKmQOjmYIHbMDH1q2Dx1EM1BSu4zStdGPQ_c0Fl45wf25HbYfTdNGf1LUoUBDQWCqEvgdIya-du_R9kEzYmG8DyRi1r5-VhYXAlvCIQYkvlUQozNPwprON",
+            alt: "contacts.stores.store1.alt",
+            title: "contacts.stores.store1.title",
+            address: "contacts.stores.store1.address",
+            hours: "contacts.stores.store1.hours",
+        },
+        {
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAgbRddTMIyQ2M5pHZk0KTUaJi6BTo8LXYVlz82-rP8wqVw1vy9FH0fnZonXWXNzFXOGjGXSuiI4bZzi-XVZVjkHRmhaAMXyKuddrXaR4PK4-SR3Vrx0381uiFwR6i-ks9Osqv1nLXd2I3Tr7FfYlwyfirKmQOjmYIHbMDH1q2Dx1EM1BSu4zStdGPQ_c0Fl45wf25HbYfTdNGf1LUoUBDQWCqEvgdIya-du_R9kEzYmG8DyRi1r5-VhYXAlvCIQYkvlUQozNPwprON",
+            alt: "contacts.stores.store2.alt",
+            title: "contacts.stores.store2.title",
+            address: "contacts.stores.store2.address",
+            hours: "contacts.stores.store2.hours",
+        },
+    ]
+
+    const getFaqData = (t) => [
+        {
+            id: "shipping",
+            question: t("contacts.faq.items.shipping.question"),
+            answer: t("contacts.faq.items.shipping.answer"),
+        },
+        {
+            id: "warranty",
+            question: t("contacts.faq.items.warranty.question"),
+            answer: t("contacts.faq.items.warranty.answer"),
+        },
+        {
+            id: "returns",
+            question: t("contacts.faq.items.returns.question"),
+            answer: t("contacts.faq.items.returns.answer"),
+        },
+        {
+            id: "customization",
+            question: t("contacts.faq.items.customization.question"),
+            answer: t("contacts.faq.items.customization.answer"),
+        },
+    ]
+
+    const getSocialLinksData = () => [
+        { name: "Facebook", icon: FaFacebookF, href: "#" },
+        { name: "Instagram", icon: FaInstagram, href: "#" },
+        { name: "Pinterest", icon: FaPinterestP, href: "#" },
+    ]
+
     return (
         <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-display overflow-x-hidden">
             <main className="flex flex-col items-center">
                 <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-                    <HeroSection />
+                    <HeroSection t={t} />
 
                     {/* Contact Info & Form */}
                     <motion.div
@@ -381,26 +368,27 @@ export default function ContactPage() {
                         className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 mb-16 sm:mb-20 lg:mb-24"
                     >
                         <div className="lg:col-span-2 flex flex-col gap-6">
-                            {contactInfoData.map((info) => (
+                            {getContactInfoData().map((info) => (
                                 <ContactInfoCard
                                     key={info.title}
                                     icon={info.icon}
                                     title={info.title}
-                                    text={info.text}
+                                    info={info.info}
+                                    t={t}
                                 />
                             ))}
                         </div>
-                        <ContactForm />
+                        <ContactForm t={t} />
                     </motion.div>
 
                     {/* Store Locations */}
                     <AnimatedSection className="mb-16 sm:mb-20 lg:mb-24">
                         <div className="text-center mb-10">
                             <h2 className="text-foreground text-3xl font-bold tracking-tight">
-                                Hệ thống cửa hàng
+                                {t("contacts.stores.title")}
                             </h2>
                             <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
-                                Ghé thăm showroom của chúng tôi để trải nghiệm sản phẩm trực tiếp.
+                                {t("contacts.stores.subtitle")}
                             </p>
                         </div>
                         <motion.div
@@ -409,7 +397,7 @@ export default function ContactPage() {
                             whileInView="visible"
                             className="grid grid-cols-1 md:grid-cols-2 gap-8"
                         >
-                            {storeLocationsData.map((store) => (
+                            {getStoreLocationsData().map((store) => (
                                 <StoreLocationCard
                                     key={store.title}
                                     image={store.image}
@@ -417,14 +405,15 @@ export default function ContactPage() {
                                     title={store.title}
                                     address={store.address}
                                     hours={store.hours}
+                                    t={t}
                                 />
                             ))}
                         </motion.div>
                     </AnimatedSection>
 
-                    <FaqSection items={faqData} />
+                    <FaqSection items={getFaqData(t)} t={t} />
 
-                    <SocialCtaSection socials={socialLinksData} />
+                    <SocialCtaSection socials={getSocialLinksData()} t={t} />
 
                 </div>
             </main>
