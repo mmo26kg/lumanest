@@ -2,15 +2,18 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { FaGoogle, FaFacebook, FaUserCircle, FaChevronDown } from "react-icons/fa";
-
+import { useAuth } from '@/provider/AuthProvider';
 
 const Login = () => {
     const [isOpen, setIsOpen] = useState(false);
     const t = useTranslations('Header');
-    // const handleGoogleLogin = () => {
-
-    //     window.location.href = `${STRAPI_API_URL}/api/connect/google`;
-    // };
+    const { loginWithGoogle } = useAuth();
+    const handleGoogleLogin = async () => {
+        const result = await loginWithGoogle();
+        if (!result.success) {
+            alert(result.error || 'Đăng nhập thất bại');
+        }
+    }
 
     // const handleFacebookLogin = () => {
     //     // Implement Facebook login
@@ -46,7 +49,7 @@ const Login = () => {
 
                     {/* Google Login Button */}
                     <button
-                        // onClick={handleGoogleLogin}
+                        onClick={handleGoogleLogin}
                         className="flex items-center w-full px-4 py-3 mb-2 text-sm font-medium text-gray-700 bg-white border-2 border-gray-200 rounded-lg hover:bg-gray-50 hover:border-red-500 hover:text-red-500 transition-all duration-200 group"
                         aria-label="Login with Google"
                     >

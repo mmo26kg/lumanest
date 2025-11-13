@@ -29,8 +29,8 @@
         "profile": "Hồ sơ",
         "login": "Đăng nhập",
         "chooseLoginMethod": "Chọn phương thức đăng nhập",
-        "loginWithGoogle": "Tiếp tục với Google",
-        "loginWithFacebook": "Tiếp tục với Facebook",
+        "loginWithGoogle": "Đăng nhập với Google",
+        "loginWithFacebook": "Đăng nhập với Facebook",
         "secureLogin": "Đăng nhập an toàn",
         "privacyNote": "Thông tin của bạn được bảo mật"
     },
@@ -161,12 +161,16 @@
             "price": "Giá"
         },
         "categories": {
-            "Chairs": "Ghế",
-            "Tables": "Bàn",
-            "Sofas": "Sofa",
-            "Lamps": "Đèn",
-            "Beds": "Giường",
-            "Storage": "Lưu trữ"
+            "bedroom": "Phòng ngủ",
+            "kitchen": "Phòng bếp",
+            "meetingRoom": "Phòng họp",
+            "livingRoom": "Phòng khách",
+            "office": "Văn phòng",
+            "outdoor": "Ngoài trời",
+            "bathroom": "Phòng tắm",
+            "toilet": "Nhà vệ sinh",
+            "kidsRoom": "Phòng trẻ em",
+            "diningRoom": "Phòng ăn"
         },
         "rooms": {
             "Office": "Văn phòng",
@@ -471,14 +475,17 @@
                 "name": "Đèn Sàn Cong Hiện Đại",
                 "alt": "Đèn sàn cong hiện đại"
             }
+        },
+        "emptyCart": {
+            "title": "Giỏ hàng trống",
+            "description": "Bạn chưa có sản phẩm nào trong giỏ hàng. Hãy khám phá các sản phẩm của chúng tôi!",
+            "continueShopping": "Tiếp tục mua sắm"
         }
     },
     "Checkout": {
-        "brandName": "FurnitureCo",
-        "backToCart": "Quay lại giỏ hàng",
         "page": {
             "title": "Thanh toán",
-            "description": "Vui lòng điền các thông tin cần thiết để hoàn tất đơn hàng."
+            "description": "Hoàn tất đơn hàng của bạn"
         },
         "steps": {
             "cart": "Giỏ hàng",
@@ -490,42 +497,33 @@
         "customer": {
             "title": "Thông tin khách hàng",
             "fullName": "Họ và tên",
-            "fullNamePlaceholder": "Nhập họ và tên của bạn",
+            "fullNamePlaceholder": "Nguyễn Văn A",
             "phone": "Số điện thoại",
-            "phonePlaceholder": "Nhập số điện thoại",
+            "phonePlaceholder": "0123456789",
             "email": "Email",
-            "emailPlaceholder": "Nhập địa chỉ email",
-            "items": {
-                "boucleSofa": {
-                    "name": "Ghế Sofa Vải Bouclé",
-                    "alt": "Sofa vải bouclé màu kem"
-                },
-                "floorLamp": {
-                    "name": "Đèn sàn cong hiện đại",
-                    "alt": "Đèn sàn trang trí với chao hình cầu"
-                }
-            }
+            "emailPlaceholder": "example@email.com",
+            "autoFilled": "Tự động điền từ tài khoản của bạn"
         },
         "address": {
             "title": "Địa chỉ giao hàng",
             "sameAsCustomer": "Giống thông tin khách hàng",
             "line": "Địa chỉ",
-            "linePlaceholder": "Số nhà, tên đường, phường/xã",
-            "city": "Thành phố/Tỉnh",
-            "cityPlaceholder": "Chọn thành phố/tỉnh",
+            "linePlaceholder": "Số nhà, tên đường",
+            "city": "Tỉnh/Thành phố",
+            "cityPlaceholder": "Hồ Chí Minh",
             "district": "Quận/Huyện",
-            "districtPlaceholder": "Chọn quận/huyện"
+            "districtPlaceholder": "Quận 1"
         },
         "shipping": {
             "title": "Phương thức vận chuyển",
             "methods": {
                 "standard": {
                     "name": "Giao hàng tiêu chuẩn",
-                    "description": "Dự kiến 3-5 ngày"
+                    "description": "Giao hàng trong 3-5 ngày làm việc"
                 },
                 "express": {
                     "name": "Giao hàng nhanh",
-                    "description": "Dự kiến 1-2 ngày"
+                    "description": "Giao hàng trong 1-2 ngày làm việc"
                 }
             }
         },
@@ -536,7 +534,7 @@
                     "name": "Thanh toán khi nhận hàng (COD)"
                 },
                 "card": {
-                    "name": "Thẻ tín dụng/ghi nợ"
+                    "name": "Thẻ tín dụng/Ghi nợ"
                 },
                 "bank": {
                     "name": "Chuyển khoản ngân hàng"
@@ -545,20 +543,103 @@
         },
         "summary": {
             "title": "Tóm tắt đơn hàng",
-            "couponPlaceholder": "Mã giảm giá",
-            "applyCoupon": "Áp dụng",
+            "emptyCart": "Giỏ hàng trống",
             "quantity": "Số lượng",
+            "couponPlaceholder": "Nhập mã giảm giá",
+            "applyCoupon": "Áp dụng",
             "subtotal": "Tạm tính",
             "shipping": "Phí vận chuyển",
             "discount": "Giảm giá",
             "total": "Tổng cộng",
-            "placeOrder": "Đặt hàng"
+            "placeOrder": "Đặt hàng",
+            "processing": "Đang xử lý..."
+        },
+        "success": {
+            "title": "Đặt hàng thành công!",
+            "description": "Cảm ơn bạn đã mua hàng. Chúng tôi sẽ liên hệ sớm nhất.",
+            "orderId": "Mã đơn hàng"
+        },
+        "error": {
+            "title": "Có lỗi xảy ra"
         },
         "footer": {
-            "securePayment": "Thanh toán an toàn và bảo mật",
+            "securePayment": "Thanh toán an toàn & bảo mật",
             "support": "Hỗ trợ",
             "privacy": "Chính sách bảo mật",
-            "terms": "Điều khoản dịch vụ"
+            "terms": "Điều khoản sử dụng"
         }
+    },
+    "OrderSuccess": {
+        "title": "Đặt hàng thành công!",
+        "subtitle": "Cảm ơn bạn đã mua hàng. Chúng tôi sẽ liên hệ với bạn sớm nhất.",
+        "orderId": "Mã đơn hàng",
+        "orderDate": "Ngày đặt",
+        "timeline": {
+            "title": "Trạng thái đơn hàng",
+            "pending": "Chờ xử lý",
+            "processing": "Đang xử lý",
+            "shipped": "Đang giao",
+            "delivered": "Đã giao"
+        },
+        "customer": {
+            "title": "Thông tin khách hàng",
+            "email": "Email",
+            "phone": "Số điện thoại",
+            "address": "Địa chỉ giao hàng"
+        },
+        "items": {
+            "title": "Sản phẩm đã đặt",
+            "quantity": "Số lượng"
+        },
+        "summary": {
+            "title": "Tổng quan đơn hàng",
+            "subtotal": "Tạm tính",
+            "shipping": "Phí vận chuyển",
+            "discount": "Giảm giá",
+            "total": "Tổng cộng",
+            "paymentMethod": "Phương thức thanh toán",
+            "shippingMethod": "Phương thức vận chuyển",
+            "methods": {
+                "cod": "Thanh toán khi nhận hàng",
+                "card": "Thẻ tín dụng",
+                "bank": "Chuyển khoản ngân hàng"
+            },
+            "shippingMethods": {
+                "standard": "Giao hàng tiêu chuẩn",
+                "express": "Giao hàng nhanh"
+            }
+        },
+        "actions": {
+            "continueShopping": "Tiếp tục mua sắm",
+            "backHome": "Về trang chủ"
+        },
+        "error": {
+            "title": "Có lỗi xảy ra",
+            "notFound": "Không tìm thấy đơn hàng"
+        }
+    },
+    "Auth": {
+        "error": {
+            "title": "Đăng nhập thất bại",
+            "subtitle": "Có lỗi xảy ra trong quá trình xác thực",
+            "defaultMessage": "Không thể xác thực tài khoản của bạn. Vui lòng thử lại.",
+            "possibleReasons": "Nguyên nhân có thể:",
+            "reasons": {
+                "invalidCredentials": "Thông tin đăng nhập không chính xác",
+                "emailNotVerified": "Email chưa được xác thực",
+                "accountBlocked": "Tài khoản bị khóa hoặc tạm ngưng",
+                "networkIssue": "Lỗi kết nối mạng"
+            },
+            "tryAgain": "Thử lại",
+            "backHome": "Về trang chủ"
+        }
+    },
+    "Profile": {
+        "guest": "Khách",
+        "orders": "Tra cứu đơn hàng",
+        "profile": "Thông tin cá nhân",
+        "wishlist": "Yêu thích",
+        "logout": "Đăng xuất",
+        "secureAccount": "Tài khoản được bảo mật"
     }
 }

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaBed, FaUtensils, FaChair, FaCouch, FaTable, FaTree, FaBath, FaDoorOpen, FaBaby } from 'react-icons/fa';
 import {
     Search,
     ShoppingCart,
@@ -11,7 +12,7 @@ import {
     MoreHorizontal,
     X,
 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 // Import UI Components
 import { Button } from '@/components/ui/button';
@@ -44,159 +45,45 @@ import {
 // Utility
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/client';
+import { getProductImageUrls, getBatchProductImages } from '@/lib/image';
+import { Loading } from '@/components/ui/loading';
+import { useCart } from '@/provider/CartProvider';
 
-// --- MOCK DATA ---
-const MOCK_PRODUCTS = [
-    {
-        id: 1,
-        name: 'Ergonomic Office Chair',
-        description: 'Supportive mesh back and adjustable armrests.',
-        price: 249.99,
-        category: 'Chairs',
-        room: 'Office',
-        imageUrl: 'https://placehold.co/600x400/5e5e5e/ffffff?text=Office+Chair',
-    },
-    {
-        id: 2,
-        name: 'Minimalist Oak Desk',
-        description: 'Solid oak wood with a natural finish.',
-        price: 399.0,
-        category: 'Tables',
-        room: 'Office',
-        imageUrl: 'https://placehold.co/600x400/a8a29e/ffffff?text=Oak+Desk',
-    },
-    {
-        id: 3,
-        name: 'Plush Velvet Sofa',
-        description: 'A 3-seater sofa in deep navy blue velvet.',
-        price: 799.5,
-        category: 'Sofas',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/262626/ffffff?text=Velvet+Sofa',
-    },
-    {
-        id: 4,
-        name: 'Industrial Floor Lamp',
-        description: 'Matte black finish with an Edison bulb.',
-        price: 129.0,
-        category: 'Lamps',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/404040/ffffff?text=Floor+Lamp',
-    },
-    {
-        id: 5,
-        name: 'Queen Size Platform Bed',
-        description: 'Upholstered headboard with wooden slats.',
-        price: 450.0,
-        category: 'Beds',
-        room: 'Bedroom',
-        imageUrl: 'https://placehold.co/600x400/737373/ffffff?text=Platform+Bed',
-    },
-    {
-        id: 6,
-        name: 'Modern Nightstand',
-        description: 'Two-drawer nightstand with gold hardware.',
-        price: 179.99,
-        category: 'Storage',
-        room: 'Bedroom',
-        imageUrl: 'https://placehold.co/600x400/a3a3a3/ffffff?text=Nightstand',
-    },
-    {
-        id: 7,
-        name: 'Marble Coffee Table',
-        description: 'Genuine marble top with a brass frame.',
-        price: 349.0,
-        category: 'Tables',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/f5f5f5/000000?text=Marble+Table',
-    },
-    {
-        id: 8,
-        name: 'Bookshelf Etagere',
-        description: '5-tier open-concept bookshelf.',
-        price: 220.0,
-        category: 'Storage',
-        room: 'Office',
-        imageUrl: 'https://placehold.co/600x400/d4d4d4/000000?text=Bookshelf',
-    },
-    {
-        id: 9,
-        name: 'Kitchen Island Cart',
-        description: 'Butcher block top with rolling casters.',
-        price: 199.0,
-        category: 'Storage',
-        room: 'Kitchen',
-        imageUrl: 'https://placehold.co/600x400/e5e5e5/000000?text=Kitchen+Cart',
-    },
-    {
-        id: 10,
-        name: 'Dining Table Set',
-        description: 'Extendable table with four matching chairs.',
-        price: 650.0,
-        category: 'Tables',
-        room: 'Dining',
-        imageUrl: 'https://placehold.co/600x400/8a8a8a/ffffff?text=Dining+Set',
-    },
-    {
-        id: 11,
-        name: 'Leather Accent Chair',
-        description: 'Top-grain leather in a warm cognac color.',
-        price: 329.0,
-        category: 'Chairs',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/7f5539/ffffff?text=Leather+Chair',
-    },
-    {
-        id: 12,
-        name: 'LED Desk Lamp',
-        description: 'Adjustable brightness and color temperature.',
-        price: 49.99,
-        category: 'Lamps',
-        room: 'Office',
-        imageUrl: 'https://placehold.co/600x400/bfbfbf/000000?text=Desk+Lamp',
-    },
-    {
-        id: 13,
-        name: '6-Drawer Dresser',
-        description: 'Wide dresser in a white lacquer finish.',
-        price: 380.0,
-        category: 'Storage',
-        room: 'Bedroom',
-        imageUrl: 'https://placehold.co/600x400/fafafa/000000?text=Dresser',
-    },
-    {
-        id: 14,
-        name: 'Bar Stool (Set of 2)',
-        description: 'Counter height stools with low backs.',
-        price: 149.0,
-        category: 'Chairs',
-        room: 'Kitchen',
-        imageUrl: 'https://placehold.co/600x400/525252/ffffff?text=Bar+Stools',
-    },
-    {
-        id: 15,
-        name: 'Sectional Sofa',
-        description: 'L-shaped sectional with chaise lounge.',
-        price: 999.0,
-        category: 'Sofas',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/78716c/ffffff?text=Sectional',
-    },
-    {
-        id: 16,
-        name: 'TV Stand Console',
-        description: 'Mid-century modern design, fits 65-inch TVs.',
-        price: 289.0,
-        category: 'Storage',
-        room: 'Living Room',
-        imageUrl: 'https://placehold.co/600x400/a1a1aa/ffffff?text=TV+Stand',
-    },
-];
 
-const CATEGORIES = ['Chairs', 'Tables', 'Sofas', 'Lamps', 'Beds', 'Storage'];
+const DEBOUNCE_DELAY = 500; // ✅ 500ms debounce delay
+// const CATEGORIES = ['Chairs', 'Tables', 'Sofas', 'Lamps', 'Beds', 'Storage'];
 const ROOMS = ['Office', 'Living Room', 'Bedroom', 'Kitchen', 'Dining'];
-const MAX_PRICE = 1000;
+const categories = [
+    { id: 1, nameKey: "bedroom", icon: FaBed },
+    { id: 2, nameKey: "kitchen", icon: FaUtensils },
+    { id: 3, nameKey: "meetingRoom", icon: FaChair },
+    { id: 4, nameKey: "livingRoom", icon: FaCouch },
+    { id: 5, nameKey: "office", icon: FaTable },
+    { id: 6, nameKey: "outdoor", icon: FaTree },
+    { id: 7, nameKey: "bathroom", icon: FaBath },
+    { id: 8, nameKey: "toilet", icon: FaDoorOpen },
+    { id: 9, nameKey: "kidsRoom", icon: FaBaby },
+    { id: 10, nameKey: "diningRoom", icon: FaUtensils },
+];
+const MAX_PRICE = 2000;
 const PRODUCTS_PER_PAGE = 6;
+
+function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    React.useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+}
 
 // --- CUSTOM PAGINATION COMPONENTS ---
 const Pagination = ({ className, ...props }) => (
@@ -226,8 +113,8 @@ function PaginationLink({ className, isActive, size = 'default', ...props }) {
                 'h-10 px-4 py-2',
                 size === 'icon' && 'h-10 w-10',
                 isActive
-                    ? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-50'
-                    : 'hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50',
+                    ? 'bg-primary text-primary-foreground'
+                    : 'hover:bg-secondary dark:hover:text-secondary-foreground',
                 className
             )}
             {...props}
@@ -295,26 +182,26 @@ function FilterSidebar({ filters, onFilterChange, onPriceChange }) {
 
     return (
         <div className="w-full">
-            <Accordion type="multiple" className="w-full">
+            <Accordion type="multiple" defaultValue={['category', 'room', 'price']} className="w-full">
                 {/* Category Filter */}
                 <AccordionItem value="category">
                     <AccordionTrigger className="font-sans">{t('filters.category')}</AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-2">
-                            {CATEGORIES.map((category) => (
-                                <div key={category} className="flex items-center space-x-2">
+                            {categories.map((category) => (
+                                <div key={category.nameKey} className="flex items-center space-x-2">
                                     <Checkbox
-                                        id={`cat-${category}`}
-                                        checked={filters.category.includes(category)}
+                                        id={category.nameKey}
+                                        checked={filters.category.includes(category.nameKey)}
                                         onCheckedChange={() =>
-                                            handleCheckboxChange('category', category)
+                                            handleCheckboxChange('category', category.nameKey)
                                         }
                                     />
                                     <Label
-                                        htmlFor={`cat-${category}`}
+                                        htmlFor={category.nameKey}
                                         className="font-normal cursor-pointer"
                                     >
-                                        {t(`categories.${category}`)}
+                                        {t(`categories.${category.nameKey}`)}
                                     </Label>
                                 </div>
                             ))}
@@ -323,7 +210,7 @@ function FilterSidebar({ filters, onFilterChange, onPriceChange }) {
                 </AccordionItem>
 
                 {/* Room Filter */}
-                <AccordionItem value="room">
+                {/* <AccordionItem value="room">
                     <AccordionTrigger className="font-sans">{t('filters.room')}</AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-2">
@@ -344,19 +231,20 @@ function FilterSidebar({ filters, onFilterChange, onPriceChange }) {
                             ))}
                         </div>
                     </AccordionContent>
-                </AccordionItem>
+                </AccordionItem> */}
 
                 {/* Price Filter */}
                 <AccordionItem value="price">
                     <AccordionTrigger className="font-sans">{t('filters.price')}</AccordionTrigger>
                     <AccordionContent>
-                        <div className="space-y-3">
+                        <div className="space-y-3 overflow-visible">
                             <Slider
                                 min={0}
                                 max={MAX_PRICE}
                                 step={10}
                                 value={[filters.price]}
                                 onValueChange={(value) => onPriceChange(value[0])}
+                                className='pt-2'
                             />
                             <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                                 <span>{t('price.min', { value: 0 })}</span>
@@ -373,8 +261,14 @@ function FilterSidebar({ filters, onFilterChange, onPriceChange }) {
 /**
  * ProductCard Component
  */
-function ProductCard({ product }) {
+function ProductCard({ product, loading }) {
     const t = useTranslations('Products');
+    const locale = useLocale();
+    const { addToCart } = useCart();
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        addToCart(product);
+    };
     return (
         <motion.div
             layout
@@ -384,38 +278,46 @@ function ProductCard({ product }) {
             transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.03, y: -5 }}
         >
-            <Link href={`/products/1`}>
-                <Card className="overflow-hidden h-full flex flex-col">
-                    <CardHeader className="pb-2 ">
-                        <CardTitle className="font-sans text-xl">{product.name}</CardTitle>
-                        <CardDescription className="pt-1 h-10">
-                            {product.description}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grow">
-                        <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className="w-full h-48 object-cover rounded-md mb-4"
-                            onError={(e) =>
-                            (e.currentTarget.src =
-                                'https://placehold.co/600x400/ef4444/ffffff?text=Image+Error')
-                            }
-                        />
-                        <div className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-                            ${product.price.toFixed(2)}
+            <Link href={`/products/${product.id}`}>
+                <Card className="overflow-hidden h-full flex flex-col gap-2">
+                    {loading ? (
+                        <div className="flex items-center justify-center h-48">
+                            <Loading />
                         </div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col lg:flex-row sm:justify-between gap-2">
-                        <Button variant="outline" className=" w-full lg:w-auto">
-                            <ShoppingCart className="mr-2 lg:mr-0 h-4 w-4" />
-                            <span className='sm:block md:block lg:hidden'>{t('actions.addToCart')}</span>
-                        </Button>
-                        <Button variant="default" className="flex-2 w-full lg:w-auto">
-                            <CreditCard className="mr-2 h-4 w-4" />
-                            <span>{t('actions.checkout')}</span>
-                        </Button>
-                    </CardFooter>
+                    ) : (
+                        <>
+                            <CardHeader className="pb-2 gap-1 ">
+                                <CardTitle className="font-sans text-xl line-clamp-1">{locale === 'vi' ? product.name_vi : product.name_en}</CardTitle>
+                                <CardDescription className="pt-1 line-clamp-1  ">
+                                    {locale === 'vi' ? product.description_vi : product.description_en}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="grow">
+                                <img
+                                    src={product.imageUrl}
+                                    alt={locale === 'vi' ? product.name_vi : product.name}
+                                    className="w-full h-48 object-cover rounded-md mb-4"
+                                    onError={(e) =>
+                                    (e.currentTarget.src =
+                                        'https://placehold.co/600x400/ef4444/ffffff?text=Image+Error')
+                                    }
+                                />
+                                <div className="text-xl font-bold text-primary">
+                                    ${product.price.toFixed(2)}
+                                </div>
+                            </CardContent>
+                            <CardFooter className="flex flex-col lg:flex-row sm:justify-between gap-2">
+                                <Button variant="outline" className=" w-full lg:w-auto border-muted text-primary" onClick={handleAddToCart}>
+                                    <ShoppingCart className="mr-2 lg:mr-0 h-4 w-4" />
+                                    <span className='sm:block md:block lg:hidden'>{t('actions.addToCart')}</span>
+                                </Button>
+                                <Button variant="default" className="flex-2 w-full lg:w-auto">
+                                    <CreditCard className="mr-2 h-4 w-4" />
+                                    <span>{t('actions.checkout')}</span>
+                                </Button>
+                            </CardFooter>
+                        </>
+                    )}
                 </Card>
             </Link>
         </motion.div>
@@ -509,15 +411,90 @@ function PaginationComponent({
  */
 export default function ProductsPage() {
     const t = useTranslations('Products');
+    const locale = useLocale();
+    const supabase = createClient();
 
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     const [filters, setFilters] = useState({
         category: [],
         room: [],
         price: MAX_PRICE,
     });
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY);
+    const debouncedPrice = useDebounce(filters.price, DEBOUNCE_DELAY);
+
+    // ✅ Optimized fetchProducts: Batch fetch images
+    const fetchProducts = React.useCallback(async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            console.log('🔍 Fetching products with:', {
+                filters,
+                searchTerm: debouncedSearchTerm,
+                price: debouncedPrice,
+                locale
+            });
+
+            let query = supabase.schema('lumanest').from('product').select('*');
+
+            // Apply filters
+            if (filters.category.length > 0) {
+                query = query.in('categorynamekey', filters.category);
+            }
+
+            if (debouncedPrice < MAX_PRICE) {
+                query = query.lte('price', debouncedPrice);
+            }
+
+            if (debouncedSearchTerm.trim()) {
+                const nameField = locale === 'vi' ? 'name_vi' : 'name_en';
+                const descriptionField = locale === 'vi' ? 'description_vi' : 'description_en';
+
+                query = query.or(
+                    `${nameField}.ilike.%${debouncedSearchTerm}%,${descriptionField}.ilike.%${debouncedSearchTerm}%`
+                );
+            }
+
+            const { data: products, error: productError } = await query;
+
+            if (productError) throw productError;
+
+            console.log('✅ Fetched products:', products?.length || 0);
+
+            // ✅ Batch fetch images for all products in 1 query
+            const productIds = products.map(p => p.id);
+            const imageMap = await getBatchProductImages(productIds);
+
+            console.log('✅ Fetched images map:', Object.keys(imageMap).length);
+
+            // ✅ Map products with images
+            const productsWithImages = products.map((product) => ({
+                ...product,
+                imageUrl: imageMap[product.id]?.thumbnail ||
+                    'https://placehold.co/600x400/ef4444/ffffff?text=No+Image',
+            }));
+
+            setFilteredProducts(productsWithImages);
+        } catch (err) {
+            console.error('❌ Fetch error:', err);
+            setError(err.message);
+            setFilteredProducts([]);
+        } finally {
+            setLoading(false);
+        }
+    }, [filters.category, debouncedSearchTerm, debouncedPrice, locale, supabase]);
+
+    React.useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
 
     const handleFilterChange = (group, newFilters) => {
         setFilters((prev) => ({
@@ -535,25 +512,6 @@ export default function ProductsPage() {
         setCurrentPage(1);
     };
 
-    const filteredProducts = useMemo(() => {
-        return MOCK_PRODUCTS.filter((product) => {
-            const matchesSearch =
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchTerm.toLowerCase());
-
-            const matchesCategory =
-                filters.category.length === 0 ||
-                filters.category.includes(product.category);
-
-            const matchesRoom =
-                filters.room.length === 0 || filters.room.includes(product.room);
-
-            const matchesPrice = product.price <= filters.price;
-
-            return matchesSearch && matchesCategory && matchesRoom && matchesPrice;
-        });
-    }, [searchTerm, filters]);
-
     const paginatedProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
         const endIndex = startIndex + PRODUCTS_PER_PAGE;
@@ -569,7 +527,7 @@ export default function ProductsPage() {
     );
 
     return (
-        <div className="bg-background text-foreground font-serif">
+        <div className="bg-background text-foreground font-serif min-h-screen">
             <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
                 {/* Mobile Filter Sheet */}
                 <SheetContent side="left">
@@ -589,7 +547,7 @@ export default function ProductsPage() {
                 </Button>
 
                 {/* Main Content */}
-                <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Desktop Sidebar */}
                         <aside className="hidden md:block w-full md:w-64 lg:w-72 shrink-0 sticky top-20 self-start">
@@ -597,11 +555,12 @@ export default function ProductsPage() {
                         </aside>
 
                         {/* Product Grid */}
-                        <main className="w-full min-w-0">
+                        <main className="w-full min-w-0 min-h-full">
                             <div className="flex flex-col lg:flex-row justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold  font-sans">
+                                <h2 className="text-xl font-semibold font-sans">
                                     {t('results', { count: filteredProducts.length })}
                                 </h2>
+
                                 {/* Search Bar */}
                                 <div className="w-full lg:max-w-xl flex-1 lg:my-2 lg:pl-10 my-4">
                                     <div className="relative flex">
@@ -616,18 +575,37 @@ export default function ProductsPage() {
                                                 setCurrentPage(1);
                                             }}
                                         />
+                                        {searchTerm !== debouncedSearchTerm && (
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                <div className="h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
-                            {paginatedProducts.length > 0 ? (
+                            {loading ? (
+                                <div className="flex justify-center items-center py-8">
+                                    <Loading variant="wave" size="md" />
+                                </div>
+                            ) : error ? (
+                                <div className="flex flex-col items-center justify-center h-64 border border-destructive/50 rounded-lg bg-destructive/10">
+                                    <X className="h-12 w-12 text-destructive mb-4" />
+                                    <h3 className="text-lg font-semibold text-destructive">Error</h3>
+                                    <p className="text-destructive/80">{error}</p>
+                                </div>
+                            ) : paginatedProducts.length > 0 ? (
                                 <motion.div
                                     layout
                                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                                 >
                                     <AnimatePresence>
                                         {paginatedProducts.map((product) => (
-                                            <ProductCard key={product.id} product={product} />
+                                            <ProductCard
+                                                key={product.id}
+                                                product={product}
+                                                loading={false}
+                                            />
                                         ))}
                                     </AnimatePresence>
                                 </motion.div>

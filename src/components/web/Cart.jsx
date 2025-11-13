@@ -9,7 +9,7 @@ import {
     FaPlus,
     FaMinus,
 } from "react-icons/fa"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
 import { cn } from "@/lib/utils"
 import {
     Sheet,
@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
+import { useCart } from "@/provider/CartProvider";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 
 // --- Tách biệt Data ---
 
@@ -115,6 +117,8 @@ const formatCurrency = (amount) => {
  */
 const CartItem = ({ item, onQuantityChange, onRemove }) => {
     const t = useTranslations("Cart")
+    const locale = useLocale();
+    const nameField = locale === 'vi' ? 'name_vi' : 'name_en';
     const itemTotal = item.price * item.quantity
 
     const handleQtyChange = (e) => {
@@ -134,28 +138,31 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
         }
     }
 
+
     return (
         <motion.div
             layout
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, x: -50, transition: { duration: 0.2 } }}
-            className="flex gap-4 p-6"
+            className="flex gap-4 p-6 mb-2"
         >
-            {/* Image */}
-            <div className="h-24 w-24 shrink-0">
-                <div
-                    className="h-full w-full rounded-lg bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${item.imageUrl})` }}
-                    aria-label={t(item.altTextKey)}
-                ></div>
+            <div className="shrink-0 w-24 h-24">
+                {/* Image */}
+                <AspectRatio ratio={3 / 4} className="rounded-lg overflow-hidden">
+                    <img
+                        src={item.imageUrl}
+                        alt={item[nameField]}
+                        className="object-cover w-full h-full"
+                    />
+                </AspectRatio>
             </div>
 
             {/* Details */}
             <div className="flex flex-1 flex-col justify-between">
                 <div className="flex justify-between">
                     <p className="font-medium leading-normal font-sans text-foreground">
-                        {t(item.nameKey)}
+                        {item[nameField]}
                     </p>
                     <Button
                         variant="ghost"
@@ -167,7 +174,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
                         <FaTrash className="text-xl" />
                     </Button>
                 </div>
-                <div>
+                <div className="mt-2 flex flex-col gap-2">
                     <p className="text-sm font-normal leading-normal text-muted-foreground">
                         {formatCurrency(item.price)}
                     </p>
@@ -248,9 +255,9 @@ const CartFooter = ({ subtotal }) => {
     const t = useTranslations("Cart")
 
     return (
-        <SheetFooter className="p-6">
-            <div className="w-full ">
-                <div className="flex justify-between gap-x-6 py-2">
+        <SheetFooter className="px-6 py-4">
+            <div className="w-full space-y-4">
+                <div className="flex justify-between gap-x-6">
                     <p className="text-base font-medium leading-normal text-muted-foreground">
                         {t("subtotal")}
                     </p>
@@ -267,6 +274,55 @@ const CartFooter = ({ subtotal }) => {
                 </SheetClose>
             </div>
         </SheetFooter>
+    )
+}
+
+/**
+ * Empty Cart View Component
+ */
+const EmptyCartView = () => {
+    const t = useTranslations("Cart")
+
+    return (
+        <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+            <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                className="mb-6"
+            >
+                <FaShoppingBag className="text-muted-foreground text-6xl" />
+            </motion.div>
+            <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-xl font-bold font-sans text-foreground mb-2"
+            >
+                {t("emptyCart.title")}
+            </motion.h3>
+            <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-muted-foreground mb-6 font-serif"
+            >
+                {t("emptyCart.description")}
+            </motion.p>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+            >
+                <SheetClose asChild>
+                    <Link href="/products">
+                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            {t("emptyCart.continueShopping")}
+                        </Button>
+                    </Link>
+                </SheetClose>
+            </motion.div>
+        </div>
     )
 }
 
@@ -293,23 +349,29 @@ const CartContent = ({
             <CartHeader itemCount={itemCount} />
             <Separator />
 
-            <ScrollArea className="flex-1 max-h-[calc(100vh-280px)]">
-                <div className="flex flex-col divide-border">
-                    <AnimatePresence>
-                        {cartItems.map((item) => (
-                            <CartItem
-                                key={item.id}
-                                item={item}
-                                onQuantityChange={onQuantityChange}
-                                onRemove={onRemove}
-                            />
-                        ))}
-                    </AnimatePresence>
-                </div>
-            </ScrollArea>
+            {cartItems.length === 0 ? (
+                <EmptyCartView />
+            ) : (
+                <>
+                    <ScrollArea className="flex-1 max-h-[calc(100vh-280px)]">
+                        <div className="flex flex-col divide-border">
+                            <AnimatePresence>
+                                {cartItems.map((item) => (
+                                    <CartItem
+                                        key={item.id}
+                                        item={item}
+                                        onQuantityChange={onQuantityChange}
+                                        onRemove={onRemove}
+                                    />
+                                ))}
+                            </AnimatePresence>
+                        </div>
+                    </ScrollArea>
 
-            <Separator />
-            <CartFooter subtotal={subtotal} />
+                    <Separator />
+                    <CartFooter subtotal={subtotal} />
+                </>
+            )}
         </SheetContent>
     )
 }
@@ -317,45 +379,52 @@ const CartContent = ({
 // --- Component Page (Wrapper) ---
 // Đây là component bạn sẽ import vào page của Next.js
 
+// ...existing code...
+
 export default function ShoppingCartButton() {
     const t = useTranslations("Cart")
-    const [cartItems, setCartItems] = useState(getInitialCartData())
-
-    const subtotal = useMemo(() => {
-        return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    }, [cartItems])
+    const { cart, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart()
 
     const handleQuantityChange = (id, quantity) => {
-        setCartItems((prevItems) =>
-            prevItems
-                .map((item) => (item.id === id ? { ...item, quantity } : item))
-                .filter((item) => item.quantity > 0) // Tự động xóa nếu số lượng = 0
-        )
+        updateQuantity(id, quantity)
     }
 
     const handleRemoveItem = (id) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id))
+        removeFromCart(id)
     }
 
     return (
-        <div className="">
+        <div className="relative">
             {/* Nút để mở giỏ hàng */}
             <Sheet>
                 <SheetTrigger asChild>
                     <motion.button
-                        className="p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
+                        className="relative p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
                         aria-label={t("buttonLabel")}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                     >
                         <FaShoppingBag className="w-4 h-4 md:w-5 md:h-5" />
+
+                        {/* Badge số lượng */}
+                        {totalItems > 0 && (
+                            <motion.span
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-background font-serif border-primary border-2 text-xs font-bold"
+                            >
+                                {totalItems > 99 ? '99+' : totalItems}
+                            </motion.span>
+                        )}
                     </motion.button>
                 </SheetTrigger>
 
                 {/* Nội dung giỏ hàng */}
                 <CartContent
-                    cartItems={cartItems}
+                    cartItems={cart}
                     onQuantityChange={handleQuantityChange}
                     onRemove={handleRemoveItem}
-                    subtotal={subtotal}
+                    subtotal={totalPrice}
                 />
             </Sheet>
         </div>

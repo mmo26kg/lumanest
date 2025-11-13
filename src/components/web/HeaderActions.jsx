@@ -1,5 +1,5 @@
 'use client';
-import { FaSearch, FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -7,10 +7,12 @@ import ToggleTheme from "./ToogleTheme";
 import SelectLanguage from "./SelectLanguage";
 import ShoppingCartButton from "./Cart";
 import Login from "./Login";
+import ProfileMenu from "./ProfileMenu";
+import { useAuth } from "@/provider/AuthProvider";
 
 const HeaderActions = () => {
     const t = useTranslations("Header");
-    const [cartCount] = useState(1); // TODO: Connect to cart state
+    const { isAuthenticated, loading } = useAuth();
 
     const iconVariants = {
         hover: { scale: 1.1 },
@@ -35,7 +37,6 @@ const HeaderActions = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
                 className="hidden md:block"
-
             >
                 <ToggleTheme />
             </motion.div>
@@ -57,17 +58,14 @@ const HeaderActions = () => {
             {/* Cart Button */}
             <ShoppingCartButton />
 
-            {/* User Button */}
-            {/* <motion.button
-                variants={iconVariants}
-                whileHover="hover"
-                whileTap="tap"
-                className="p-2 text-foreground hover:bg-primary/10 rounded-full transition-colors"
-            >
-                <FaUser className="w-4 h-4 md:w-5 md:h-5" />
-            </motion.button> */}
-            <Login />
-
+            {/* Login or Profile Menu */}
+            {loading ? (
+                <div className="w-9 h-9 rounded-full bg-muted animate-pulse" />
+            ) : isAuthenticated ? (
+                <ProfileMenu />
+            ) : (
+                <Login />
+            )}
         </div>
     );
 };

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { motion } from "framer-motion"
 import {
     FaTruck,
@@ -9,8 +9,13 @@ import {
     FaRegCreditCard,
     FaLandmark,
     FaShieldAlt,
+    FaCheckCircle,
 } from "react-icons/fa"
 import { useTranslations } from "next-intl"
+import { useCart } from "@/provider/CartProvider"
+import { useCheckout } from "@/hooks/useCheckout"
+import { useAuth } from "@/provider/AuthProvider"
+import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -30,40 +35,13 @@ import {
     RadioGroup,
     RadioGroupItem,
 } from "@/components/ui/radio-group"
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
 
 // --- Dữ liệu (Tách riêng) ---
-
-/**
- * @typedef {Object} OrderItemData
- * @property {string} id
- * @property {string} nameKey
- * @property {number} quantity
- * @property {number} price
- * @property {string} imageUrl
- * @property {string} altTextKey
- */
-
-/** @type {OrderItemData[]} */
-const orderItemsData = [
-    {
-        id: "1",
-        nameKey: "customer.items.boucleSofa.name",
-        quantity: 1,
-        price: 2500000,
-        imageUrl:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuBSc15T86lQs1y9zqfL3UVfwlmy5eEUhhOeVkvWF1GI1rIeHrC3Q__uZCCZbgyrtG1e5ZY7QcZD-g0ac2ML7Gt9WCRGkksDNpH1RrpcN-5Zj9sOQcuGi6LY92Sp1M_R9dyyGw27PxooBvioZ2yKKKssDaIPgJfwl4AjXx1u9YvQkW2S2ed2FeHoxkJTSGvxJKjccb1VsZd6_1xo5Z_1OtrDNcFXQqOBXVE0WXvUe7QlObcfP8ecH7dz9qj2mBBrcL47hQhhbn5qDjcb",
-        altTextKey: "customer.items.boucleSofa.alt",
-    },
-    {
-        id: "2",
-        nameKey: "customer.items.floorLamp.name",
-        quantity: 1,
-        price: 1200000,
-        imageUrl:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuByDKfSV6ID5kn4XNEE5mCqn1_jl7l6N6cv7dtzRPJlvBTou0H72sf0a83i9SzdW1Xc0GuvHneljDDmREliU8OeEcrBzUUfGz9xlOWiRyF80yworuxHMJW4yObXYfJRB-EaeGHPBlk7Kcd7sRj8u5E3g_jHDIcalr_jKFhakXW7JuvAP9ndKi4hIGYspyJC5-5pa4hhzMD0qFxUPt1YLB7dAqhWhu3ydze4Xcm7ucG0Aeqv22iQT8KkFe9gLvr7BjjwMrhlbmCOjWJf",
-        altTextKey: "customer.items.floorLamp.alt",
-    },
-]
 
 /**
  * @typedef {Object} ShippingMethod
@@ -186,37 +164,85 @@ const CheckoutProgress = () => {
     )
 }
 
-const CustomerInfoForm = () => {
+/**
+ * @param {{
+ * customerInfo: any,
+ * onCustomerInfoChange: (field: string, value: string) => void,
+ * isAuthenticated: boolean
+ * }} props
+ */
+const CustomerInfoForm = ({ customerInfo, onCustomerInfoChange, isAuthenticated }) => {
+    const t = useTranslations("Checkout")
+
     return (
         <section>
-            <h2 className="text-foreground  font-sans text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-                <CustomerInfoFormTitle />
-            </h2>
+            <div className="flex items-center justify-between px-4 pb-3 pt-5">
+                <h2 className="text-foreground font-sans text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                    {t("customer.title")}
+                </h2>
+                {isAuthenticated && (
+                    <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                        <FaCheckCircle />
+                        <span className="font-medium">{t("customer.autoFilled")}</span>
+                    </div>
+                )}
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 px-4 py-3">
-                <FormInput id="full-name" labelKey="customer.fullName" placeholderKey="customer.fullNamePlaceholder" />
-                <FormInput id="phone" labelKey="customer.phone" placeholderKey="customer.phonePlaceholder" />
+                <FormInput
+                    id="full-name"
+                    labelKey="customer.fullName"
+                    placeholderKey="customer.fullNamePlaceholder"
+                    value={customerInfo.name}
+                    onChange={(e) => onCustomerInfoChange('name', e.target.value)}
+                    required
+                />
+                <FormInput
+                    id="phone"
+                    labelKey="customer.phone"
+                    placeholderKey="customer.phonePlaceholder"
+                    value={customerInfo.phone}
+                    onChange={(e) => onCustomerInfoChange('phone', e.target.value)}
+                    required
+                />
                 <div className="md:col-span-2">
-                    <FormInput id="email" labelKey="customer.email" type="email" placeholderKey="customer.emailPlaceholder" />
+                    <FormInput
+                        id="email"
+                        labelKey="customer.email"
+                        type="email"
+                        placeholderKey="customer.emailPlaceholder"
+                        value={customerInfo.email}
+                        onChange={(e) => onCustomerInfoChange('email', e.target.value)}
+                        required
+                        disabled={isAuthenticated}
+                    />
                 </div>
             </div>
         </section>
     )
 }
-const CustomerInfoFormTitle = () => {
-    const t = useTranslations("Checkout")
-    return t("customer.title")
-}
 
-const ShippingAddressForm = () => {
+/**
+ * @param {{
+ * shippingAddress: any,
+ * onShippingAddressChange: (field: string, value: string) => void
+ * }} props
+ */
+const ShippingAddressForm = ({ shippingAddress, onShippingAddressChange }) => {
     const t = useTranslations("Checkout")
+    const [sameAsCustomer, setSameAsCustomer] = useState(false)
+
     return (
         <section>
             <div className="flex items-center justify-between px-4 pb-3 pt-5">
-                <h2 className="text-foreground  font-sans text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                <h2 className="text-foreground font-sans text-[22px] font-bold leading-tight tracking-[-0.015em]">
                     {t("address.title")}
                 </h2>
                 <div className="flex items-center gap-2">
-                    <Checkbox id="same-address" />
+                    <Checkbox
+                        id="same-address"
+                        checked={sameAsCustomer}
+                        onCheckedChange={setSameAsCustomer}
+                    />
                     <Label htmlFor="same-address" className="text-sm font-medium text-muted-foreground">
                         {t("address.sameAsCustomer")}
                     </Label>
@@ -224,10 +250,29 @@ const ShippingAddressForm = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 px-4 py-3">
                 <div className="md:col-span-2">
-                    <FormInput id="address" labelKey="address.line" placeholderKey="address.linePlaceholder" />
+                    <FormInput
+                        id="address"
+                        labelKey="address.line"
+                        placeholderKey="address.linePlaceholder"
+                        value={shippingAddress.address}
+                        onChange={(e) => onShippingAddressChange('address', e.target.value)}
+                        required
+                    />
                 </div>
-                <FormInput id="city" labelKey="address.city" placeholderKey="address.cityPlaceholder" />
-                <FormInput id="district" labelKey="address.district" placeholderKey="address.districtPlaceholder" />
+                <FormInput
+                    id="city"
+                    labelKey="address.city"
+                    placeholderKey="address.cityPlaceholder"
+                    value={shippingAddress.city}
+                    onChange={(e) => onShippingAddressChange('city', e.target.value)}
+                />
+                <FormInput
+                    id="district"
+                    labelKey="address.district"
+                    placeholderKey="address.districtPlaceholder"
+                    value={shippingAddress.district}
+                    onChange={(e) => onShippingAddressChange('district', e.target.value)}
+                />
             </div>
         </section>
     )
@@ -316,72 +361,123 @@ const PaymentMethodSection = ({ methods, selectedId, onSelect }) => {
 }
 
 /**
- * @param {{ item: OrderItemData }} props
+ * @param {{ item: any }} props
  */
 const OrderSummaryItem = ({ item }) => {
     const t = useTranslations("Checkout")
+    const locale = useTranslations().locale || 'vi'
+
     return (
         <div className="flex items-center gap-4">
-            <img className="w-20 h-20 object-cover rounded-lg" src={item.imageUrl} alt={t(item.altTextKey)} />
+            <img
+                className="w-20 h-20 object-cover rounded-lg"
+                src={item.imageUrl || 'https://placehold.co/80x80/ef4444/ffffff?text=No+Image'}
+                alt={locale === 'vi' ? item.name_vi : item.name_en}
+            />
             <div className="flex-1">
-                <p className="font-semibold  font-sans text-foreground">{t(item.nameKey)}</p>
-                <p className="text-sm text-muted-foreground">{t("summary.quantity")}: {item.quantity}</p>
+                <p className="font-semibold font-sans text-foreground">
+                    {locale === 'vi' ? item.name_vi : item.name_en}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                    {t("summary.quantity")}: {item.quantity}
+                </p>
             </div>
-            <p className="font-semibold text-foreground">{formatCurrency(item.price)}</p>
+            <p className="font-semibold text-foreground">
+                {formatCurrency((item.sale_price || item.price) * item.quantity)}
+            </p>
         </div>
     )
 }
 
 /**
  * @param {{ 
- * items: OrderItemData[], 
  * shippingCost: number, 
- * discount: number, 
- * subtotal: number,
- * total: number
+ * discount: number,
+ * onPlaceOrder: () => void,
+ * isSubmitting: boolean
  * }} props
  */
-const OrderSummary = ({ items, shippingCost, discount, subtotal, total }) => {
+const OrderSummary = ({ shippingCost, discount, onPlaceOrder, isSubmitting }) => {
     const t = useTranslations("Checkout")
+    const { cart, totalPrice } = useCart()
+
+    const total = totalPrice + shippingCost - discount
+
     return (
         <Card className="lg:sticky lg:top-10 h-max">
             <CardHeader>
-                <CardTitle className="text-xl  font-sans font-bold">{t("summary.title")}</CardTitle>
+                <CardTitle className="text-xl font-sans font-bold">{t("summary.title")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="space-y-4">
-                    {items.map((item) => (
-                        <OrderSummaryItem key={item.id} item={item} />
-                    ))}
-                </div>
-                <Separator />
-                <div className="flex gap-2">
-                    <Input placeholder={t("summary.couponPlaceholder")} className="h-12" />
-                    <Button variant="secondary" className="h-12 px-4 text-sm font-bold">{t("summary.applyCoupon")}</Button>
-                </div>
-                <Separator />
-                <div className="space-y-2 text-muted-foreground">
-                    <div className="flex justify-between">
-                        <p>{t("summary.subtotal")}</p>
-                        <p className="text-foreground">{formatCurrency(subtotal)}</p>
+                {cart.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                        <p>{t("summary.emptyCart")}</p>
                     </div>
-                    <div className="flex justify-between">
-                        <p>{t("summary.shipping")}</p>
-                        <p className="text-foreground">{formatCurrency(shippingCost)}</p>
+                ) : (
+                    <div className="space-y-4">
+                        {cart.map((item) => (
+                            <OrderSummaryItem key={item.id} item={item} />
+                        ))}
                     </div>
-                    <div className="flex justify-between text-green-600 dark:text-green-400">
-                        <p>{t("summary.discount")}</p>
-                        <p>- {formatCurrency(discount)}</p>
-                    </div>
-                </div>
-                <Separator />
-                <div className="flex justify-between font-bold text-lg text-foreground">
-                    <p>{t("summary.total")}</p>
-                    <p>{formatCurrency(total)}</p>
-                </div>
+                )}
+
+                {cart.length > 0 && (
+                    <>
+                        <Separator />
+
+                        {/* Coupon Input */}
+                        <div className="flex gap-2">
+                            <Input placeholder={t("summary.couponPlaceholder")} className="h-12" />
+                            <Button variant="secondary" className="h-12 px-4 text-sm font-bold">
+                                {t("summary.applyCoupon")}
+                            </Button>
+                        </div>
+
+                        <Separator />
+
+                        {/* Price Breakdown */}
+                        <div className="space-y-2 text-muted-foreground">
+                            <div className="flex justify-between">
+                                <p>{t("summary.subtotal")}</p>
+                                <p className="text-foreground">{formatCurrency(totalPrice)}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>{t("summary.shipping")}</p>
+                                <p className="text-foreground">{formatCurrency(shippingCost)}</p>
+                            </div>
+                            {discount > 0 && (
+                                <div className="flex justify-between text-green-600 dark:text-green-400">
+                                    <p>{t("summary.discount")}</p>
+                                    <p>- {formatCurrency(discount)}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <Separator />
+
+                        {/* Total */}
+                        <div className="flex justify-between font-bold text-lg text-foreground">
+                            <p>{t("summary.total")}</p>
+                            <p>{formatCurrency(total)}</p>
+                        </div>
+                    </>
+                )}
             </CardContent>
             <CardFooter>
-                <Button className="w-full h-14 text-base font-bold">{t("summary.placeOrder")}</Button>
+                <Button
+                    className="w-full h-14 text-base font-bold"
+                    disabled={cart.length === 0 || isSubmitting}
+                    onClick={onPlaceOrder}
+                >
+                    {isSubmitting ? (
+                        <div className="flex items-center gap-2">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            <span>{t("summary.processing")}</span>
+                        </div>
+                    ) : (
+                        t("summary.placeOrder")
+                    )}
+                </Button>
             </CardFooter>
         </Card>
     )
@@ -412,20 +508,96 @@ const CheckoutFooter = () => {
 
 export default function CheckoutPage() {
     const t = useTranslations("Checkout")
-    const [items] = useState(orderItemsData)
+    const router = useRouter()
+    const { cart, isLoaded } = useCart()
+    const { user, isAuthenticated } = useAuth()
+    const { createOrder, isSubmitting, error: checkoutError } = useCheckout()
+
+    // Form states - Sẽ được auto-fill từ user
+    const [customerInfo, setCustomerInfo] = useState({
+        name: '',
+        email: '',
+        phone: ''
+    })
+
+    const [shippingAddress, setShippingAddress] = useState({
+        address: '',
+        city: '',
+        district: ''
+    })
+
     const [selectedShipping, setSelectedShipping] = useState(shippingMethodsData[0].id)
     const [selectedPayment, setSelectedPayment] = useState(paymentMethodsData[0].id)
+    const [discount] = useState(0)
+    const [notes, setNotes] = useState('')
 
-    // Tính toán hóa đơn
-    const subtotal = useMemo(() => items.reduce((acc, item) => acc + item.price * item.quantity, 0), [items])
+    // Success state
+    const [orderSuccess, setOrderSuccess] = useState(false)
+    const [createdOrder, setCreatedOrder] = useState(null)
+
+    // Auto-fill user info khi component mount hoặc user thay đổi
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            console.log('🔄 Auto-filling user data:', user)
+
+            setCustomerInfo({
+                name: user.user_metadata?.full_name || user.user_metadata?.name || '',
+                email: user.email || '',
+                phone: user.user_metadata?.phone || user.phone || ''
+            })
+
+            // Có thể auto-fill shipping address nếu user đã lưu
+            if (user.user_metadata?.address) {
+                setShippingAddress({
+                    address: user.user_metadata.address || '',
+                    city: user.user_metadata.city || '',
+                    district: user.user_metadata.district || ''
+                })
+            }
+        }
+    }, [isAuthenticated, user])
+
+    // Handlers
+    const handleCustomerInfoChange = (field, value) => {
+        setCustomerInfo(prev => ({ ...prev, [field]: value }))
+    }
+
+    const handleShippingAddressChange = (field, value) => {
+        setShippingAddress(prev => ({ ...prev, [field]: value }))
+    }
+
+    // Tính shipping cost
     const shippingCost = useMemo(
         () => shippingMethodsData.find((m) => m.id === selectedShipping)?.price || 0,
         [selectedShipping]
     )
-    const discount = 0 // Logic mã giảm giá có thể thêm ở đây
-    const total = subtotal + shippingCost - discount
 
-    // Định nghĩa variants cho Framer Motion
+    // Handle place order
+    const handlePlaceOrder = async () => {
+        const checkoutData = {
+            customer: customerInfo,
+            shipping: shippingAddress,
+            shippingMethod: selectedShipping,
+            shippingCost: shippingCost,
+            paymentMethod: selectedPayment,
+            discountAmount: discount,
+            notes: notes
+        }
+
+        const result = await createOrder(checkoutData)
+
+        if (result.success) {
+            setOrderSuccess(true)
+            setCreatedOrder(result.order)
+
+            // Redirect to success page sau 200ms
+            setTimeout(() => {
+                router.push(`checkout/order-success/${result.order.id}`)
+            }, 200)
+        }
+    }
+
+    // Framer Motion variants
     const mainContentVariants = {
         hidden: { opacity: 0, x: -30 },
         visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
@@ -436,34 +608,75 @@ export default function CheckoutPage() {
         visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: 0.1, ease: "easeOut" } },
     }
 
+    // Loading state
+    if (!isLoaded) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+        )
+    }
+
     return (
         <div className="relative font-serif flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-display overflow-x-hidden">
             <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                {/* Error Alert */}
+                {checkoutError && (
+                    <Alert variant="destructive" className="mb-6">
+                        <AlertTitle>{t("error.title")}</AlertTitle>
+                        <AlertDescription>{checkoutError}</AlertDescription>
+                    </Alert>
+                )}
+
                 <div className="flex flex-col lg:flex-row gap-12">
-                    {/* Cột trái: Nội dung chính */}
+                    {/* Cột trái */}
                     <motion.div className="w-full lg:w-3/5" variants={mainContentVariants} initial="hidden" animate="visible">
                         <Card>
                             <div className="flex flex-wrap justify-between gap-3 p-4">
                                 <div className="flex min-w-72 flex-col gap-3">
-                                    <h1 className="text-foreground text-4xl font-black font-sans leading-tight tracking-[-0.033em]">{t("page.title")}</h1>
-                                    <p className="text-muted-foreground text-base font-normal leading-normal">{t("page.description")}</p>
+                                    <h1 className="text-foreground text-4xl font-black font-sans leading-tight tracking-[-0.033em]">
+                                        {t("page.title")}
+                                    </h1>
+                                    <p className="text-muted-foreground text-base font-normal leading-normal">
+                                        {t("page.description")}
+                                    </p>
                                 </div>
                             </div>
 
-                            {/* <CheckoutProgress /> */}
+                            <CheckoutProgress />
 
-                            <div className="space-y-10 ">
-                                <CustomerInfoForm />
-                                <ShippingAddressForm />
-                                <ShippingMethodSection methods={shippingMethodsData} selectedId={selectedShipping} onSelect={setSelectedShipping} />
-                                <PaymentMethodSection methods={paymentMethodsData} selectedId={selectedPayment} onSelect={setSelectedPayment} />
+                            <div className="space-y-10">
+                                <CustomerInfoForm
+                                    customerInfo={customerInfo}
+                                    onCustomerInfoChange={handleCustomerInfoChange}
+                                    isAuthenticated={isAuthenticated}
+                                />
+                                <ShippingAddressForm
+                                    shippingAddress={shippingAddress}
+                                    onShippingAddressChange={handleShippingAddressChange}
+                                />
+                                <ShippingMethodSection
+                                    methods={shippingMethodsData}
+                                    selectedId={selectedShipping}
+                                    onSelect={setSelectedShipping}
+                                />
+                                <PaymentMethodSection
+                                    methods={paymentMethodsData}
+                                    selectedId={selectedPayment}
+                                    onSelect={setSelectedPayment}
+                                />
                             </div>
                         </Card>
                     </motion.div>
 
-                    {/* Cột phải: Tóm tắt đơn hàng */}
+                    {/* Cột phải */}
                     <motion.div className="w-full lg:w-2/5" variants={summaryVariants} initial="hidden" animate="visible">
-                        <OrderSummary items={items} shippingCost={shippingCost} discount={discount} subtotal={subtotal} total={total} />
+                        <OrderSummary
+                            shippingCost={shippingCost}
+                            discount={discount}
+                            onPlaceOrder={handlePlaceOrder}
+                            isSubmitting={isSubmitting}
+                        />
                     </motion.div>
                 </div>
             </main>

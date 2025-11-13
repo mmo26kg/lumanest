@@ -36,6 +36,9 @@ import {
 import { DataProvider, useData } from "@/context/DataContext";
 import { useLocale } from "next-intl";
 import { createClient } from "@/utils/supabase/client";
+import { getProductImageUrls } from "@/lib/image";
+import { Loading } from "@/components/ui/loading";
+import { Link } from "@/i18n/navigation"
 
 // Animation variants with viewport detection
 const fadeInUpVariants = {
@@ -73,7 +76,7 @@ const cardVariants = {
     },
 };
 
-function Searchbar() {
+function Searchbar({ onChange, keyword }) {
     const t = useTranslations("ExploreCategory");
 
     return (
@@ -85,15 +88,14 @@ function Searchbar() {
             variants={fadeInUpVariants}
         >
             <span>
-                <Input type="text" id="search" placeholder={t("searchPlaceholder")} />
+                <Input type="text" id="search" placeholder={t("searchPlaceholder")} onChange={onChange} value={keyword} />
             </span>
         </motion.div>
     );
 }
 
-function CategoryList({ selectedCategory, setSelectedCategory }) {
+function CategoryList({ searchCategoryKeyword, selectedCategory, setSelectedCategory }) {
     const t = useTranslations("ExploreCategory.categories");
-
     const data = [
         { id: 1, nameKey: "bedroom", icon: FaBed },
         { id: 2, nameKey: "kitchen", icon: FaUtensils },
@@ -106,6 +108,18 @@ function CategoryList({ selectedCategory, setSelectedCategory }) {
         { id: 9, nameKey: "kidsRoom", icon: FaBaby },
         { id: 10, nameKey: "diningRoom", icon: FaUtensils },
     ];
+    const [filteredCategories, setFilteredCategories] = React.useState(data);
+
+    React.useEffect(() => {
+        if (searchCategoryKeyword.trim() === '') {
+            setFilteredCategories(data);
+        } else {
+            const filtered = data.filter((category) =>
+                t(category.nameKey).toLowerCase().includes(searchCategoryKeyword.toLowerCase())
+            );
+            setFilteredCategories(filtered);
+        }
+    }, [searchCategoryKeyword]);
 
     return (
         <Carousel
@@ -114,7 +128,7 @@ function CategoryList({ selectedCategory, setSelectedCategory }) {
             className="w-full mt-4"
         >
             <CarouselContent className="mt-1 max-h-[calc(100vh-120px)] flex flex-col gap-2">
-                {data.map((item, index) => (
+                {filteredCategories.map((item, index) => (
                     <CarouselItem key={item.id} className="md:basis-1/2">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
@@ -130,7 +144,7 @@ function CategoryList({ selectedCategory, setSelectedCategory }) {
                         >
                             <Button variant="ghost" className={`w-full justify-start gap-2 p-4 ${selectedCategory === item.nameKey ? 'bg-primary/10' : ''}`}
                                 onClick={() => setSelectedCategory(item.nameKey)}>
-                                <item.icon className="mr-2 text-foreground text-3xl" />
+                                <item.icon className="mr-2 text-secondary text-3xl" />
                                 <span className="text-lg text-foreground font-light">{t(item.nameKey)}</span>
                                 <FaArrowRight className={`ml-auto text-secondary font-light ${selectedCategory === item.nameKey ? 'visible' : 'invisible'}`} />
                             </Button>
@@ -148,29 +162,6 @@ function CategoryList({ selectedCategory, setSelectedCategory }) {
 function GridItem({ products }) {
     const t = useTranslations("ExploreCategory.products");
 
-    // const products = [
-    //     {
-    //         titleKey: "bed.title",
-    //         descriptionKey: "bed.description",
-    //         imageUrl: "https://plus.unsplash.com/premium_photo-1676968002767-1f6a09891350?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
-    //     },
-    //     {
-    //         titleKey: "wardrobe.title",
-    //         descriptionKey: "wardrobe.description",
-    //         imageUrl: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
-    //     },
-    //     {
-    //         titleKey: "nightstand.title",
-    //         descriptionKey: "nightstand.description",
-    //         imageUrl: "https://images.unsplash.com/photo-1606744824163-985d376605aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1932",
-    //     },
-    //     {
-    //         titleKey: "rug.title",
-    //         descriptionKey: "rug.description",
-    //         imageUrl: "https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987",
-    //     },
-    // ];
-
     return (
         <motion.div
             className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3"
@@ -180,128 +171,136 @@ function GridItem({ products }) {
             variants={staggerContainerVariants}
         >
             {/* Tall Feature Card - Left */}
-            <Card className="rounded-xl lg:col-span-2 lg:row-start-1">
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ delay: 0.5 }}
-                    variants={cardVariants}
-                    className="flex flex-col gap-4 h-full"
-                >
-                    <CardHeader>
-                        <CardTitle className="text-3xl font-semibold">
-                            {products[0]?.titleKey}
-                        </CardTitle>
-                        <CardDescription>
-                            {products[0]?.descriptionKey}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col">
-                        <Image
-                            src={products[0]?.imageUrl}
-                            alt={products[0]?.titleKey}
-                            width={1000}
-                            height={1000}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="w-full h-80 object-cover rounded-2xl"
-                        />
-                    </CardContent>
-                </motion.div>
-            </Card>
+            <Link href={`/products/${products[0]?.id}`} className="lg:col-span-2 lg:row-start-1">
+                <Card className="rounded-xl h-full">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ delay: 0.5 }}
+                        variants={cardVariants}
+                        className="flex flex-col gap-4 h-full"
+                    >
+                        <CardHeader>
+                            <CardTitle className="text-3xl font-semibold">
+                                {products[0]?.titleKey}
+                            </CardTitle>
+                            <CardDescription>
+                                {products[0]?.descriptionKey}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex flex-col">
+                            <Image
+                                src={products[0]?.imageUrl}
+                                alt={products[0]?.titleKey}
+                                width={1000}
+                                height={1000}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="w-full h-80 object-cover rounded-2xl"
+                            />
+                        </CardContent>
+                    </motion.div>
+                </Card>
+            </Link>
 
             {/* Regular Feature Card - Top Right */}
-            <Card className="rounded-xl lg:row-start-2">
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ delay: 0.5 }}
-                    variants={cardVariants}
-                    className="flex flex-col gap-4 h-full"
-                >
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-semibold">
-                            {products[1]?.titleKey}
-                        </CardTitle>
-                        <CardDescription>
-                            {products[1]?.descriptionKey}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex h-full flex-col">
-                        <Image
-                            src={products[1]?.imageUrl}
-                            alt={products[1]?.titleKey}
-                            width={1000}
-                            height={1000}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="h-full w-full object-cover h-80 rounded-2xl"
-                        />
-                    </CardContent>
-                </motion.div>
-            </Card>
+            <Link href={`/products/${products[1]?.id}`} className="lg:row-start-2">
+                <Card className="rounded-xl h-full">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ delay: 0.5 }}
+                        variants={cardVariants}
+                        className="flex flex-col gap-4 h-full"
+                    >
+                        <CardHeader>
+                            <CardTitle className="text-2xl font-semibold">
+                                {products[1]?.titleKey}
+                            </CardTitle>
+                            <CardDescription>
+                                {products[1]?.descriptionKey}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex h-full flex-col">
+                            <Image
+                                src={products[1]?.imageUrl}
+                                alt={products[1]?.titleKey}
+                                width={1000}
+                                height={1000}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="h-full w-full object-cover h-80 rounded-2xl"
+                            />
+                        </CardContent>
+                    </motion.div>
+                </Card>
+            </Link>
 
             {/* Regular Feature Card - Bottom Right */}
-            <Card className="rounded-xl lg:row-start-2 lg:col-start-2">
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ delay: 0.5 }}
-                    variants={cardVariants}
-                    className="flex flex-col gap-4 h-full"
-                >
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-semibold">
-                            {products[2]?.titleKey}
-                        </CardTitle>
-                        <CardDescription>
-                            {products[2]?.descriptionKey}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex h-full flex-col">
-                        <Image
-                            src={products[2]?.imageUrl}
-                            alt={products[2]?.titleKey}
-                            width={1000}
-                            height={1000}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="h-full w-full object-cover h-80 rounded-2xl"
-                        />
-                    </CardContent>
-                </motion.div>
-            </Card>
+            <Link href={`/products/${products[2]?.id}`} className="lg:row-start-2 lg:col-start-2">
+                <Card className="rounded-xl h-full">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ delay: 0.5 }}
+                        variants={cardVariants}
+                        className="flex flex-col gap-4 h-full"
+                    >
+                        <CardHeader>
+                            <CardTitle className="text-2xl font-semibold">
+                                {products[2]?.titleKey}
+                            </CardTitle>
+                            <CardDescription>
+                                {products[2]?.descriptionKey}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex h-full flex-col">
+                            <Image
+                                src={products[2]?.imageUrl}
+                                alt={products[2]?.titleKey}
+                                width={1000}
+                                height={1000}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="h-full w-full object-cover h-80 rounded-2xl"
+                            />
+                        </CardContent>
+                    </motion.div>
+                </Card>
+            </Link>
 
             {/* Tall Feature Card - Right */}
-            <Card className="rounded-xl lg:col-start-3 lg:row-span-2 lg:row-start-1">
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ delay: 0.5 }}
-                    variants={cardVariants}
-                    className="flex flex-col gap-4 h-full"
-                >
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-semibold">
-                            {products[3]?.titleKey}
-                        </CardTitle>
-                        <CardDescription>
-                            {products[3]?.descriptionKey}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex h-full flex-col">
-                        <Image
-                            src={products[3]?.imageUrl}
-                            alt={products[3]?.titleKey}
-                            width={1000}
-                            height={1000}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="h-full w-full object-cover rounded-2xl"
-                        />
-                    </CardContent>
-                </motion.div>
-            </Card>
+            <Link href={`/products/${products[3]?.id}`} className="lg:col-start-3 lg:row-span-2 lg:row-start-1">
+                <Card className="rounded-xl h-full">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ delay: 0.5 }}
+                        variants={cardVariants}
+                        className="flex flex-col gap-4 h-full"
+                    >
+                        <CardHeader>
+                            <CardTitle className="text-2xl font-semibold">
+                                {products[3]?.titleKey}
+                            </CardTitle>
+                            <CardDescription>
+                                {products[3]?.descriptionKey}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex h-full flex-col">
+                            <Image
+                                src={products[3]?.imageUrl}
+                                alt={products[3]?.titleKey}
+                                width={1000}
+                                height={1000}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="h-full w-full object-cover rounded-2xl"
+                            />
+                        </CardContent>
+                    </motion.div>
+                </Card>
+            </Link>
         </motion.div>
     );
 }
@@ -310,9 +309,10 @@ export default function ExploreCategory() {
     const t = useTranslations("ExploreCategory");
     const locale = useLocale();
     const [filteredProducts, setFilteredProducts] = React.useState([]);
+    const [searchCategoryKeyword, setSearchCategoryKeyword] = React.useState('');
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
-    const [selectedCategory, setSelectedCategory] = React.useState('livingRoom');
+    const [selectedCategory, setSelectedCategory] = React.useState('bedroom');
     const supabase = createClient();
     React.useEffect(() => {
         const getProducts = async () => {
@@ -327,11 +327,19 @@ export default function ExploreCategory() {
 
                 if (error) throw error;
 
+                const imagePromises = data.slice(0, 4).map(async (product) => {
+                    const images = await getProductImageUrls(product.id);
+                    return images.thumbnail;
+                });
+
+                const imageUrls = await Promise.all(imagePromises);
+
                 console.log('Debug Raw data:', data);
-                const convertedFilteredProducts = data.slice(0, 4).map((item) => ({
+                const convertedFilteredProducts = data.slice(0, 4).map((item, index) => ({
+                    id: item.id,
                     titleKey: locale === 'en' ? item.name_en : item.name_vi,
                     descriptionKey: locale === 'en' ? item.description_en : item.description_vi,
-                    imageUrl: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
+                    imageUrl: imageUrls[index] || "https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
                 }));
                 console.log('Debug Converted Filtered Products:', convertedFilteredProducts);
                 setFilteredProducts(convertedFilteredProducts);
@@ -346,6 +354,10 @@ export default function ExploreCategory() {
         console.log('Debug Filter product :', filteredProducts);
 
     }, [locale, selectedCategory, supabase]);
+
+    const handleSearchChange = (e) => {
+        setSearchCategoryKeyword(e.target.value);
+    };
 
 
 
@@ -372,8 +384,8 @@ export default function ExploreCategory() {
                     viewport={{ once: true, amount: 0.3 }}
                     variants={staggerContainerVariants}
                 >
-                    <Searchbar />
-                    <CategoryList selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+                    <Searchbar onChange={handleSearchChange} keyword={searchCategoryKeyword} />
+                    <CategoryList searchCategoryKeyword={searchCategoryKeyword} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -382,15 +394,24 @@ export default function ExploreCategory() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <Button size="huge" className="w-full mt-6 justify-between">
-                            {t("allCategoriesButton")}
-                            <FaArrowRight />
-                        </Button>
+                        <Link
+                            href="/products"
+                        >
+                            <Button
+                                size="huge"
+                                className="w-full mt-6 justify-between"
+                            >
+                                {t("allCategoriesButton")}
+                                <FaArrowRight />
+                            </Button>
+                        </Link>
                     </motion.div>
                 </motion.div>
                 <div className="lg:flex-4 h-full">
                     {loading ? (
-                        <div>Loading...</div>
+                        <div className="flex items-center justify-center h-screen">
+                            <Loading variant="wave" size="md" text="Processing" />
+                        </div>
                     ) : (
                         <GridItem products={filteredProducts} />
                     )}

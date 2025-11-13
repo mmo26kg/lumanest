@@ -161,12 +161,16 @@
             "price": "Price"
         },
         "categories": {
-            "Chairs": "Chairs",
-            "Tables": "Tables",
-            "Sofas": "Sofas",
-            "Lamps": "Lamps",
-            "Beds": "Beds",
-            "Storage": "Storage"
+            "bedroom": "Bedroom",
+            "kitchen": "Kitchen",
+            "meetingRoom": "Meeting Room",
+            "livingRoom": "Living Room",
+            "office": "Office",
+            "outdoor": "Outdoor",
+            "bathroom": "Bathroom",
+            "toilet": "Toilet",
+            "kidsRoom": "Kids Room",
+            "diningRoom": "Dining Room"
         },
         "rooms": {
             "Office": "Office",
@@ -471,14 +475,17 @@
                 "name": "Modern Arched Floor Lamp",
                 "alt": "Modern arched floor lamp"
             }
+        },
+        "emptyCart": {
+            "title": "Your cart is empty",
+            "description": "You haven't added any products to your cart yet. Explore our products!",
+            "continueShopping": "Continue Shopping"
         }
     },
     "Checkout": {
-        "brandName": "FurnitureCo",
-        "backToCart": "Back to cart",
         "page": {
             "title": "Checkout",
-            "description": "Please fill in the required information to complete your order."
+            "description": "Complete your order"
         },
         "steps": {
             "cart": "Cart",
@@ -489,48 +496,39 @@
         "progress": "Step {current}/{total}: {name}",
         "customer": {
             "title": "Customer Information",
-            "fullName": "Full name",
-            "fullNamePlaceholder": "Enter your full name",
-            "phone": "Phone number",
-            "phonePlaceholder": "Enter your phone number",
+            "fullName": "Full Name",
+            "fullNamePlaceholder": "John Doe",
+            "phone": "Phone Number",
+            "phonePlaceholder": "0123456789",
             "email": "Email",
-            "emailPlaceholder": "Enter your email address",
-            "items": {
-                "boucleSofa": {
-                    "name": "Bouclé Fabric Sofa",
-                    "alt": "Cream-colored bouclé fabric sofa"
-                },
-                "floorLamp": {
-                    "name": "Modern Arched Floor Lamp",
-                    "alt": "Stylish floor lamp with a spherical shade"
-                }
-            }
+            "emailPlaceholder": "example@email.com",
+            "autoFilled": "Automatically filled from your account"
         },
         "address": {
             "title": "Shipping Address",
             "sameAsCustomer": "Same as customer information",
             "line": "Address",
-            "linePlaceholder": "House number, street, ward",
+            "linePlaceholder": "Street address, P.O. box",
             "city": "City/Province",
-            "cityPlaceholder": "Select city/province",
+            "cityPlaceholder": "Ho Chi Minh",
             "district": "District",
-            "districtPlaceholder": "Select district"
+            "districtPlaceholder": "District 1"
         },
         "shipping": {
-            "title": "Shipping method",
+            "title": "Shipping Method",
             "methods": {
                 "standard": {
-                    "name": "Standard shipping",
-                    "description": "Estimated 3-5 days"
+                    "name": "Standard Shipping",
+                    "description": "Delivery in 3-5 business days"
                 },
                 "express": {
-                    "name": "Express shipping",
-                    "description": "Estimated 1-2 days"
+                    "name": "Express Shipping",
+                    "description": "Delivery in 1-2 business days"
                 }
             }
         },
         "payment": {
-            "title": "Payment method",
+            "title": "Payment Method",
             "methods": {
                 "cod": {
                     "name": "Cash on Delivery (COD)"
@@ -539,26 +537,109 @@
                     "name": "Credit/Debit Card"
                 },
                 "bank": {
-                    "name": "Bank transfer"
+                    "name": "Bank Transfer"
                 }
             }
         },
         "summary": {
-            "title": "Order summary",
-            "couponPlaceholder": "Coupon code",
-            "applyCoupon": "Apply",
+            "title": "Order Summary",
+            "emptyCart": "Cart is empty",
             "quantity": "Quantity",
+            "couponPlaceholder": "Enter coupon code",
+            "applyCoupon": "Apply",
             "subtotal": "Subtotal",
-            "shipping": "Shipping fee",
+            "shipping": "Shipping",
             "discount": "Discount",
             "total": "Total",
-            "placeOrder": "Place order"
+            "placeOrder": "Place Order",
+            "processing": "Processing..."
+        },
+        "success": {
+            "title": "Order Placed Successfully!",
+            "description": "Thank you for your purchase. We'll contact you soon.",
+            "orderId": "Order ID"
+        },
+        "error": {
+            "title": "An error occurred"
         },
         "footer": {
-            "securePayment": "Secure and protected payments",
+            "securePayment": "Secure & safe payment",
             "support": "Support",
-            "privacy": "Privacy policy",
-            "terms": "Terms of service"
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Service"
         }
+    },
+    "OrderSuccess": {
+        "title": "Order Placed Successfully!",
+        "subtitle": "Thank you for your purchase. We'll contact you soon.",
+        "orderId": "Order ID",
+        "orderDate": "Order Date",
+        "timeline": {
+            "title": "Order Status",
+            "pending": "Pending",
+            "processing": "Processing",
+            "shipped": "Shipped",
+            "delivered": "Delivered"
+        },
+        "customer": {
+            "title": "Customer Information",
+            "email": "Email",
+            "phone": "Phone",
+            "address": "Shipping Address"
+        },
+        "items": {
+            "title": "Ordered Items",
+            "quantity": "Quantity"
+        },
+        "summary": {
+            "title": "Order Summary",
+            "subtotal": "Subtotal",
+            "shipping": "Shipping",
+            "discount": "Discount",
+            "total": "Total",
+            "paymentMethod": "Payment Method",
+            "shippingMethod": "Shipping Method",
+            "methods": {
+                "cod": "Cash on Delivery",
+                "card": "Credit Card",
+                "bank": "Bank Transfer"
+            },
+            "shippingMethods": {
+                "standard": "Standard Shipping",
+                "express": "Express Shipping"
+            }
+        },
+        "actions": {
+            "continueShopping": "Continue Shopping",
+            "backHome": "Back to Home"
+        },
+        "error": {
+            "title": "An error occurred",
+            "notFound": "Order not found"
+        }
+    },
+    "Auth": {
+        "error": {
+            "title": "Authentication Failed",
+            "subtitle": "An error occurred during authentication",
+            "defaultMessage": "Unable to authenticate your account. Please try again.",
+            "possibleReasons": "Possible reasons:",
+            "reasons": {
+                "invalidCredentials": "Invalid credentials",
+                "emailNotVerified": "Email not verified",
+                "accountBlocked": "Account blocked or suspended",
+                "networkIssue": "Network connection issue"
+            },
+            "tryAgain": "Try Again",
+            "backHome": "Back to Home"
+        }
+    },
+    "Profile": {
+        "guest": "Guest",
+        "orders": "Order Tracking",
+        "profile": "Profile Information",
+        "wishlist": "Wishlist",
+        "logout": "Logout",
+        "secureAccount": "Secure Account"
     }
 }

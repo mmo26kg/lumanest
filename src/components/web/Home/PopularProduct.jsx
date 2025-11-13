@@ -22,6 +22,10 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import { createClient } from "@/utils/supabase/client";
+import { useLocale } from "next-intl";
+import { getProductImageUrls } from "@/lib/image";
+import { Link } from "@/i18n/navigation"
 
 // Animation variants
 const fadeInUpVariants = {
@@ -61,14 +65,14 @@ export function ThreeDCard(data) {
                     />
                 </CardItem>
 
-                <CardItem translateZ="50" className="text-2xl font-bold text-secondary mt-8">
+                <CardItem translateZ="50" className="text-2xl font-bold text-secondary mt-8 line-clamp-1">
                     {data.name}
                 </CardItem>
 
                 <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-neutral-500 text-md font-light max-w-sm mt-2 dark:text-neutral-300"
+                    className="text-neutral-500 text-md font-light max-w-sm mt-2 dark:text-neutral-300 line-clamp-1"
                 >
                     {data.description}
                 </CardItem>
@@ -89,67 +93,67 @@ export function ThreeDCard(data) {
     );
 }
 
-function ProductList() {
+function ProductList({ data }) {
     const t = useTranslations("PopularProducts.products");
 
-    const data = [
-        {
-            id: 1,
-            nameKey: "armchair.name",
-            descriptionKey: "armchair.description",
-            image: "/product-image/armchair.png",
-            price: "$120",
-        },
-        {
-            id: 2,
-            nameKey: "chair.name",
-            descriptionKey: "chair.description",
-            image: "/product-image/chair.png",
-            price: "$100",
-        },
-        {
-            id: 3,
-            nameKey: "minisofa.name",
-            descriptionKey: "minisofa.description",
-            image: "/product-image/minisofa.png",
-            price: "$80",
-        },
-        {
-            id: 4,
-            nameKey: "sofa.name",
-            descriptionKey: "sofa.description",
-            image: "/product-image/sofa.png",
-            price: "$300",
-        },
-        {
-            id: 5,
-            nameKey: "armchair.name",
-            descriptionKey: "armchair.description",
-            image: "/product-image/armchair.png",
-            price: "$120",
-        },
-        {
-            id: 6,
-            nameKey: "chair.name",
-            descriptionKey: "chair.description",
-            image: "/product-image/chair.png",
-            price: "$100",
-        },
-        {
-            id: 7,
-            nameKey: "minisofa.name",
-            descriptionKey: "minisofa.description",
-            image: "/product-image/minisofa.png",
-            price: "$80",
-        },
-        {
-            id: 8,
-            nameKey: "sofa.name",
-            descriptionKey: "sofa.description",
-            image: "/product-image/sofa.png",
-            price: "$300",
-        },
-    ];
+    // const data = [
+    //     {
+    //         id: 1,
+    //         nameKey: "armchair.name",
+    //         descriptionKey: "armchair.description",
+    //         image: "/product-image/armchair.png",
+    //         price: "$120",
+    //     },
+    //     {
+    //         id: 2,
+    //         nameKey: "chair.name",
+    //         descriptionKey: "chair.description",
+    //         image: "/product-image/chair.png",
+    //         price: "$100",
+    //     },
+    //     {
+    //         id: 3,
+    //         nameKey: "minisofa.name",
+    //         descriptionKey: "minisofa.description",
+    //         image: "/product-image/minisofa.png",
+    //         price: "$80",
+    //     },
+    //     {
+    //         id: 4,
+    //         nameKey: "sofa.name",
+    //         descriptionKey: "sofa.description",
+    //         image: "/product-image/sofa.png",
+    //         price: "$300",
+    //     },
+    //     {
+    //         id: 5,
+    //         nameKey: "armchair.name",
+    //         descriptionKey: "armchair.description",
+    //         image: "/product-image/armchair.png",
+    //         price: "$120",
+    //     },
+    //     {
+    //         id: 6,
+    //         nameKey: "chair.name",
+    //         descriptionKey: "chair.description",
+    //         image: "/product-image/chair.png",
+    //         price: "$100",
+    //     },
+    //     {
+    //         id: 7,
+    //         nameKey: "minisofa.name",
+    //         descriptionKey: "minisofa.description",
+    //         image: "/product-image/minisofa.png",
+    //         price: "$80",
+    //     },
+    //     {
+    //         id: 8,
+    //         nameKey: "sofa.name",
+    //         descriptionKey: "sofa.description",
+    //         image: "/product-image/sofa.png",
+    //         price: "$300",
+    //     },
+    // ];
 
     return (
         <Carousel opts={{ align: "start" }} orientation="horizontal" className="">
@@ -168,8 +172,8 @@ function ProductList() {
                         >
                             <ThreeDCard
                                 id={item.id}
-                                name={t(item.nameKey)}
-                                description={t(item.descriptionKey)}
+                                name={item.nameKey}
+                                description={item.descriptionKey}
                                 image={item.image}
                                 price={item.price}
                             />
@@ -185,8 +189,56 @@ function ProductList() {
 }
 
 export default function PopularProducts() {
+    const supabase = createClient();
     const t = useTranslations("PopularProducts");
+    const locale = useLocale();
     const backgroundImageUrl = "/popular-product-bg.png";
+    const [popularProducts, setPopularProducts] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+    React.useEffect(() => {
+        async function fetchPopularProducts() {
+            try {
+                setIsLoading(true);
+
+                const { data, error } = await supabase
+                    .schema('lumanest')
+                    .from('product')
+                    .select('*')
+                    .eq('popular', true);
+
+                console.log('Popular products:', data);
+                const imagePromises = data.map(async (product) => {
+                    const images = await getProductImageUrls(product.id);
+                    // console.log(`Debug Image ${product.name_vi}:`, images);
+                    return images.thumbnail;
+                });
+
+                const imageUrls = await Promise.all(imagePromises);
+                const mappedProducts = data.map((product, index) => ({
+                    id: product.id,
+                    nameKey: locale === "vi" ? product.name_vi : product.name_en,
+                    descriptionKey: locale === "vi" ? product.description_vi : product.description_en,
+                    image: imageUrls[index],
+                    price: `$${product.price}`,
+                }));
+                console.log('Debug mappedProducts:', mappedProducts);
+                setPopularProducts(mappedProducts);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchPopularProducts();
+    }, [supabase]);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <section className="section-padding-y overflow-x-hidden">
@@ -212,11 +264,11 @@ export default function PopularProducts() {
                         alt="Popular Products Background"
                         width={700}
                         height={1080}
-                        className="absolute -top-20 -left-1/2 transform w-auto h-auto"
+                        className="absolute -top-20 -left-1/2 transform "
                     />
                 </motion.div>
 
-                <ProductList />
+                <ProductList data={popularProducts} />
 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -226,10 +278,12 @@ export default function PopularProducts() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                 >
-                    <Button size="huge" className="mx-auto mt-28 flex items-center gap-2">
-                        {t("viewAllButton")}
-                        <FaArrowRight />
-                    </Button>
+                    <Link href="/products">
+                        <Button size="huge" className="mx-auto mt-28 flex items-center gap-2">
+                            {t("viewAllButton")}
+                            <FaArrowRight />
+                        </Button>
+                    </Link>
                 </motion.div>
             </div>
         </section>
