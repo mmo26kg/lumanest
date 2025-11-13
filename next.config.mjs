@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 import createNextIntlPlugin from 'next-intl/plugin';
-const supbaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supbaseUrl = 'https://lhlevixcbgacdibyxdjs.supabase.co';
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
