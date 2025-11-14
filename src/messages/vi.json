@@ -9,6 +9,18 @@
         "aboutLink": "Text link About",
         "toggleTheme": "Text nút chuyển theme"
     },
+    "home": {
+        "meta": {
+            "title": "Lumanest - Nội thất cao cấp | Trang chủ",
+            "description": "Khám phá bộ sưu tập nội thất cao cấp tại Lumanest. Sofa, bàn ghế, đèn trang trí với chất lượng vượt trội và thiết kế tinh tế.",
+            "keywords": "nội thất, sofa, bàn ghế, đèn trang trí, nội thất cao cấp, Lumanest",
+            "ogTitle": "Lumanest - Nội thất cao cấp",
+            "ogDescription": "Khám phá bộ sưu tập nội thất cao cấp tại Lumanest.",
+            "ogImageAlt": "Lumanest - Nội thất cao cấp",
+            "twitterTitle": "Lumanest - Nội thất cao cấp",
+            "twitterDescription": "Khám phá bộ sưu tập nội thất cao cấp tại Lumanest."
+        }
+    },
     "Hero": {
         "title": "Ưu đãi độc quyền cho bộ sưu tập nội thất",
         "description": "Khám phá các danh mục khác nhau. Tìm những ưu đãi tốt nhất.",

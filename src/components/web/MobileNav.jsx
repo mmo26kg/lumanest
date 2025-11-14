@@ -15,7 +15,7 @@ const MobileNav = () => {
 
     const menuItems = [
         { href: "/products", label: "products" },
-        { href: "/categories", label: "category" },
+        // { href: "/categories", label: "category" },
         { href: "/about", label: "about" },
         { href: "/contacts", label: "contacts" }
     ];

@@ -24,6 +24,7 @@ import { createClient } from "@/utils/supabase/client"
 import { getProductImageUrls, getBatchProductImages } from "@/lib/image"
 import { Loading } from "@/components/ui/loading"
 import { Link } from "@/i18n/navigation"
+import { useCart } from "@/provider/CartProvider"
 
 // ✅ Utility: Animated Section
 const AnimatedSection = ({ children, className }) => (
@@ -326,6 +327,18 @@ const CompleteTheLook = ({ currentProductId, categoryNameKey, locale }) => {
 const StickyPurchaseBar = ({ product, thumbnailUrl, locale }) => {
     const [quantity, setQuantity] = React.useState(1)
 
+    const { addToCart } = useCart();
+
+    const handleAddToCart = () => {
+        console.log('Debug add to cart:', quantity);
+        addToCart({
+            ...product,
+            imageUrl: thumbnailUrl,
+        }
+            , quantity
+        );
+    }
+
     return (
         <motion.div
             initial={{ y: 100 }}
@@ -385,7 +398,7 @@ const StickyPurchaseBar = ({ product, thumbnailUrl, locale }) => {
                     </Button>
 
                     {/* Add to Cart */}
-                    <Button className="rounded-full font-serif bg-secondary py-2 md:py-3 px-4 md:px-6 whitespace-nowrap">
+                    <Button className="rounded-full font-serif bg-secondary py-2 md:py-3 px-4 md:px-6 whitespace-nowrap" onClick={handleAddToCart}>
                         {locale === 'vi' ? 'Thêm vào giỏ' : 'Add to Cart'}
                     </Button>
                 </div>

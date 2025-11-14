@@ -9,6 +9,18 @@
         "aboutLink": "About link text",
         "toggleTheme": "Toggle theme button text"
     },
+    "home": {
+        "meta": {
+            "title": "Lumanest - Premium Furniture | Home",
+            "description": "Discover our premium furniture collection at Lumanest. Sofas, tables, lamps with superior quality and elegant design.",
+            "keywords": "furniture, sofa, tables, lamps, premium furniture, Lumanest",
+            "ogTitle": "Lumanest - Premium Furniture",
+            "ogDescription": "Discover our premium furniture collection at Lumanest.",
+            "ogImageAlt": "Lumanest - Premium Furniture",
+            "twitterTitle": "Lumanest - Premium Furniture",
+            "twitterDescription": "Discover our premium furniture collection at Lumanest."
+        }
+    },
     "Hero": {
         "title": "Exclusive Deals of Furniture Collection",
         "description": "Explore different categories. Find the best deals.",

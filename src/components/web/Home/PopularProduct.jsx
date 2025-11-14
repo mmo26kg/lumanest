@@ -53,43 +53,43 @@ const staggerContainerVariants = {
 
 export function ThreeDCard(data) {
     return (
-        <CardContainer className="inter-var font-serif">
-            <CardBody className="relative group/card w-auto h-auto bg-card/50 rounded-xl px-10 py-10 border-muted">
-                <CardItem translateZ="200" className="w-full">
-                    <img
-                        src={data.image}
-                        height="1200"
-                        width="1200"
-                        className="w-auto h-70 mx-auto rounded-xl"
-                    // alt={data.name}
-                    />
-                </CardItem>
-
-                <CardItem translateZ="50" className="text-2xl font-bold text-secondary mt-8 line-clamp-1">
-                    {data.name}
-                </CardItem>
-
-                <CardItem
-                    as="p"
-                    translateZ="60"
-                    className="text-neutral-500 text-md font-light max-w-sm mt-2 dark:text-neutral-300 line-clamp-1"
-                >
-                    {data.description}
-                </CardItem>
-
-                <div className="flex justify-between items-center mt-2">
-                    <CardItem
-                        translateZ={20}
-                        as="a"
-                        href=""
-                        target="__blank"
-                        className="py-2 rounded-xl text-lg font-bold text-primary"
-                    >
-                        {data.price}
+        <Link href={`/products/${data.id}`}>
+            <CardContainer className="inter-var font-serif">
+                <CardBody className="relative group/card w-auto h-auto bg-card/50 rounded-xl px-10 py-10 border-muted">
+                    <CardItem translateZ="200" className="w-full">
+                        <img
+                            src={data.image}
+                            height="1200"
+                            width="1200"
+                            className="w-auto h-70 mx-auto rounded-xl"
+                        // alt={data.name}
+                        />
                     </CardItem>
-                </div>
-            </CardBody>
-        </CardContainer>
+
+                    <CardItem translateZ="50" className="text-2xl font-bold text-secondary mt-8 line-clamp-1">
+                        {data.name}
+                    </CardItem>
+
+                    <CardItem
+                        as="p"
+                        translateZ="60"
+                        className="text-neutral-500 text-md font-light max-w-sm mt-2 dark:text-neutral-300 line-clamp-1"
+                    >
+                        {data.description}
+                    </CardItem>
+
+                    <div className="flex justify-between items-center mt-2">
+                        <CardItem
+                            translateZ={20}
+                            as="p"
+                            className="py-2 rounded-xl text-lg font-bold text-primary"
+                        >
+                            {data.price}
+                        </CardItem>
+                    </div>
+                </CardBody>
+            </CardContainer>
+        </Link>
     );
 }
 

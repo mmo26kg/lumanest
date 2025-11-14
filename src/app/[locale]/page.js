@@ -8,39 +8,46 @@ import PopularProducts from "@/components/web/Home/PopularProduct";
 import Benefit from "@/components/web/Home/Benefit";
 import Testimonials from "@/components/web/Home/Testimonials";
 import Newsletter from "@/components/web/Home/Newsleter";
-
-
-
+import useMeta from "@/hooks/useMeta";
 
 
 
 export default function Home() {
   const t = useTranslations();
 
+  useMeta({
+    title: t('home.meta.title'),
+    description: t('home.meta.description'),
+    canonical: "https://lumanest.com/",
+  });
+
   return (
-    <div className="px-4 lg:px-0">
-      {/* Hero section */}
-      <Hero />
+    <>
 
-      {/* Explore Category */}
-      <ExploreCategory />
+      <div className="px-4 lg:px-0">
+        {/* Hero section */}
+        <Hero />
 
-      {/* Popular product */}
-      <PopularProducts />
-      {/* Special package */}
-      {/* Explore Room */}
+        {/* Explore Category */}
+        <ExploreCategory />
 
-      {/* Benefit */}
-      <Benefit />
+        {/* Popular product */}
+        <PopularProducts />
+        {/* Special package */}
+        {/* Explore Room */}
 
-      {/* Testimonials */}
-      <Testimonials />
+        {/* Benefit */}
+        <Benefit />
 
-      {/* Call to Action Newsletter */}
-      <Newsletter />
+        {/* Testimonials */}
+        <Testimonials />
+
+        {/* Call to Action Newsletter */}
+        <Newsletter />
 
 
-    </div>
+      </div>
+    </>
   );
 }
 
